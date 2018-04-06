@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { PlatformBridge } from './stores/PlatformBridge';
+import { TabNavigator } from 'react-navigation';
 
 const logo = require('./logo.svg');
 
@@ -30,5 +31,7 @@ class App extends React.Component<{}> {
         );
     }
 }
+
+const TabNav = TabNavigator({ App: App });
 
 export default App;
