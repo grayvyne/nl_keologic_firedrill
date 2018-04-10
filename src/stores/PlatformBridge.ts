@@ -1,18 +1,27 @@
+import { StubConsole } from '../utilities/StubConsole';
+
 export enum PlatformBridgeCallType {
     OpenPluginsMenu = 'open_plugins_menu',
     ClosePluginsMenu = 'close_plugins_menu',
     TogglePluginsMenu = 'toggle_plugins_menu',
-    LogDebugMessage = 'log_debug_message'
+    LogDebugMessage = 'log_debug_message',
+    IsAnyoneListening = 'is_anyone_listening'
 }
 
-export class PlatformBridge {
-    public makeCall(name: string): Promise<string> {
-        window.postMessage(name, '');
+export class PlatformBridge extends StubConsole {
+    constructor() {
+        super();
+        this.setSelfAsConsoleIfPlugin();
+    }
+
+    public makeCall(type: PlatformBridgeCallType, data?: object): Promise<object> {
+        this.log('making a call:', name);
+        this.postMessage({ type, data });
         return new Promise((resolve, reject) => {
             const handler = (message: MessageEvent) => {
-                // document.getElementById('message').textContent=JSON.stringify(message.data);
-                if (message.data === name) {
-                    resolve(name);
+                const messageData = JSON.parse(message.data);
+                if (messageData.type === type) {
+                    resolve(data);
                     document.removeEventListener('message', handler);
                 }
             };
@@ -21,6 +30,17 @@ export class PlatformBridge {
     }
 
     public log<T>(...message: T[]): void {
-        window.postMessage(JSON.stringify({ type: PlatformBridgeCallType.LogDebugMessage, data: message }), '');
+        this.postMessage({ type: PlatformBridgeCallType.LogDebugMessage, data: message });
+    }
+
+    private postMessage(message: {}): void {
+        window.postMessage(JSON.stringify(message), '*');
+    }
+
+    private setSelfAsConsoleIfPlugin(): void {
+        setTimeout(async () => {
+            await this.makeCall(PlatformBridgeCallType.IsAnyoneListening);
+            console = this;
+        }, 100);
     }
 }
