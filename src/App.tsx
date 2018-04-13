@@ -1,12 +1,11 @@
+import lightBlue from 'material-ui/colors/lightBlue';
+import orange from 'material-ui/colors/orange';
+import red from 'material-ui/colors/red';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import * as React from 'react';
 import './App.css';
 // import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
 import { Root } from './Root';
-
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
-import lightBlue from 'material-ui/colors/lightBlue';
-import red from 'material-ui/colors/red';
-import orange from 'material-ui/colors/orange';
 
 const theme = createMuiTheme({
     palette: {

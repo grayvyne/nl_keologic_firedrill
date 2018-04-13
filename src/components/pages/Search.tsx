@@ -1,7 +1,7 @@
-import * as React from 'react';
-import AppBar from 'material-ui/AppBar';
 import AppsIcon from '@material-ui/icons/Apps';
-import { Toolbar, IconButton, Card, Input } from 'material-ui';
+import { Card, IconButton, Input, Toolbar } from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import * as React from 'react';
 
 interface SearchState {
     index: number;

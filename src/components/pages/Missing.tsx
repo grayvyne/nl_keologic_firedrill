@@ -1,8 +1,8 @@
-import * as React from 'react';
-import AppBar from 'material-ui/AppBar';
-import SwipeableViews from 'react-swipeable-views';
 import AppsIcon from '@material-ui/icons/Apps';
-import { Toolbar, IconButton } from 'material-ui';
+import { IconButton, Toolbar } from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import * as React from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
 interface MissingState {
     index: number;

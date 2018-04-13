@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Tabs, { Tab } from 'material-ui/Tabs';
-import AppBar from 'material-ui/AppBar';
-import SwipeableViews from 'react-swipeable-views';
-import { Toolbar, IconButton, Badge } from 'material-ui';
 import AppsIcon from '@material-ui/icons/Apps';
-import TabStyles from '../../config/TabStyles';
 import CheckIcon from '@material-ui/icons/CheckCircle';
+import { Badge, IconButton, Toolbar } from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import * as React from 'react';
+import SwipeableViews from 'react-swipeable-views';
+import TabStyles from '../../config/TabStyles';
 
 interface ClassesState {
     index: number;
