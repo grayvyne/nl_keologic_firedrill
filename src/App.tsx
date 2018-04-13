@@ -1,34 +1,32 @@
 import * as React from 'react';
 import './App.css';
 // import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
-import { Home } from './Home';
+import { Root } from './Root';
 
-// const logo = require('./logo.svg');
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
+import lightBlue from 'material-ui/colors/lightBlue';
+import red from 'material-ui/colors/red';
+import orange from 'material-ui/colors/orange';
 
-// const bridge = new PlatformBridge();
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            light: lightBlue[300],
+            main: lightBlue[500],
+            dark: lightBlue[700],
+            contrastText: '#fff'
+        },
+        secondary: red,
+        error: orange
+    }
+});
 
 class App extends React.Component<{}> {
     render() {
         return (
-            // <div className="App">
-            //     <header className="App-header">
-            //         <img src={logo} className="App-logo" alt="logo" />
-            //         <h1 className="App-title">Welcome to React</h1>
-            //     </header>
-            //     <p className="App-intro">
-            //         To get started, edit <code>src/App.tsx</code> and save to reload YOUR DREW FACE.
-            //     </p>
-            //     <button
-            //         onClick={() =>
-            //             bridge
-            //                 .makeCall(PlatformBridgeCallType.TogglePluginsMenu)
-            //                 .then(() => bridge.log('Got a bridge response'))
-            //         }
-            //     >
-            //         <p>Menu</p>
-            //     </button>
-            // </div>
-            <Home />
+            <MuiThemeProvider theme={theme}>
+                <Root />
+            </MuiThemeProvider>
         );
     }
 }
