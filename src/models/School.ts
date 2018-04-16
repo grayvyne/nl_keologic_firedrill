@@ -39,7 +39,6 @@ export class School {
         this.usersByRole = new Map(record.usersByRole);
     }
 
-    @Typeof('function')
     public getFaculty(): User[] {
         const faculty = this.usersByRole.get(UserRole.Faculty);
         const principals = this.usersByRole.get(UserRole.Principal);
@@ -49,7 +48,6 @@ export class School {
         return [...faculty, ...principals];
     }
 
-    @Typeof('function')
     public getStudents(): User[] {
         const students = this.usersByRole.get(UserRole.Student);
         if (null == students) {
@@ -58,12 +56,10 @@ export class School {
         return students;
     }
 
-    @Typeof('function')
     public getCommunity(): User[] {
         return [...this.getFaculty(), ...this.getStudents()];
     }
 
-    @Typeof('function')
     public getClasses(): Class[] {
         return this.classes;
     }
