@@ -18,11 +18,27 @@ export namespace ApplicationServices {
         await getPlatformBridge().makeCall(ApplicationServiceMessageType.TogglePluginsMenu);
     }
 
+    export async function showPluginMenu(): Promise<void> {
+        await getPlatformBridge().makeCall(ApplicationServiceMessageType.OpenPluginsMenu);
+    }
+
+    export async function hidePluginMenu(): Promise<void> {
+        await getPlatformBridge().makeCall(ApplicationServiceMessageType.ClosePluginsMenu);
+    }
+
     export async function getCurrentUser(): Promise<{}> {
         return getPlatformBridge().makeCall(ApplicationServiceMessageType.GetCurrentUser);
     }
 
-    export async function log(...args: any[]): Promise<void> {
-        await getPlatformBridge().log(...args);
+    export function log(...args: any[]): void {
+        getPlatformBridge().log(...args);
+    }
+
+    export function logWarning(...args: any[]): void {
+        getPlatformBridge().logWarning(...args);
+    }
+
+    export function logError(...args: any[]): void {
+        getPlatformBridge().logError(...args);
     }
 }
