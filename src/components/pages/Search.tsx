@@ -24,9 +24,9 @@ export class Search extends React.Component<SearchProps, SearchState> {
     };
 
     render() {
-        return this.props.isVisible === true ? (
+        return this.props.isVisible ? (
             <div>
-                <AppBar position={'static'}>
+                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
                             <AppsIcon />
