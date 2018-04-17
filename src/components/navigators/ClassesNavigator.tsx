@@ -1,9 +1,17 @@
-
-import { StackRouter, createNavigator } from 'react-navigation';
-import ClassDetail from '../pages/ClassDetail';
+import * as React from 'react';
+import { StackNavigator } from 'react-navigation';
 import Classes from '../pages/Classes';
+import ClassDetail from '../pages/ClassDetail';
 
-export const ClassesNavigator = createNavigator(StackRouter({
+const Nav = StackNavigator({
     Classes: Classes,
     ClassDetail: ClassDetail
-}, {}));
+});
+
+export default class ClassesNavigator extends React.Component {
+    render() {
+        return (
+            <Nav style={{ flexGrow: 1, display: 'flex', alignSelf: 'stretch', borderWidth: 1 }} />
+        );
+    }
+}

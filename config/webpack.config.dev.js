@@ -117,17 +117,6 @@ module.exports = {
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
-
-      {
-        // Many react-native libraries do not compile their ES6 JS.
-        test: /\.js$/,
-        include: /node_modules\/react-native-/,
-        // react-native-web is already compiled.
-        exclude: /node_modules\/react-native-web\//,
-        loader: 'babel-loader',
-        query: { cacheDirectory: true },
-      },
-
       {
         test: /\.(js|jsx|mjs)$/,
         loader: require.resolve('source-map-loader'),
@@ -227,6 +216,27 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          {
+            // Many react-native libraries do not compile their ES6 JS.
+            test: /\.js$/,
+            include: /node_modules\/react-native-/,
+            // react-native-web is already compiled.
+            exclude: /node_modules\/react-native-web\//,
+            loader: require.resolve('babel-loader'),
+            query: { cacheDirectory: true },
+          },
+          {
+            test: /\.js$/,
+            include: [
+              /node_modules\/react-navigation/,
+            ],
+            use: {
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: ['react-native'],
+              },
+            },
+          },
         ],
       },
       // ** STOP ** Are you adding a new loader?
@@ -248,7 +258,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin({...env.stringified, __DEV__: JSON.stringify(true)}),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use

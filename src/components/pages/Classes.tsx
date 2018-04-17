@@ -7,6 +7,7 @@ import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../config/TabStyles';
 import ClassesTableCell from '../navigators/ClassesTableCell';
+import PeopleIcon from '@material-ui/icons/People';
 
 export type SingleClass = {
     id: number;
@@ -25,6 +26,11 @@ interface ClassesProps {
 }
 
 export class Classes extends React.Component<ClassesProps, ClassesState> {
+    static navigationOptions = {
+        tabBarIcon: (focused: boolean, tintColor: string) => {
+            return <PeopleIcon />;
+        }
+    };
     data: SingleClass[] = [
         {
             id: 1,
@@ -215,7 +221,7 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
     };
 
     render() {
-        return this.props.isVisible ? (
+        return true ? (
             <div>
                 <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
@@ -255,13 +261,19 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                 <SwipeableViews
                     index={this.state.index}
                     onChangeIndex={this.handleChange}
-                    style={{ position: 'absolute', top: 55, bottom: 55, left: 0, right: 0 }}
+                    style={{ display: 'flex', flexGrow: 1, alignSelf: 'stretch' }}
                 >
                     <div>
                         <Table>
                             <TableBody>
                                 {this.data.map(singleClass => {
-                                    return <ClassesTableCell key={singleClass.id} singleClass={singleClass} />;
+                                    return (
+                                        <ClassesTableCell
+                                            onClick={() => (this.props as any).navigation.navigate('ClassDetail')}
+                                            key={singleClass.id}
+                                            singleClass={singleClass}
+                                        />
+                                    );
                                 })}
                             </TableBody>
                         </Table>

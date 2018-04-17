@@ -6,6 +6,7 @@ import teal from 'material-ui/colors/teal';
 
 interface ClassesTableCellProps {
     singleClass: SingleClass;
+    onClick: () => void;
 }
 
 export default class ClassesTableCell extends React.Component<ClassesTableCellProps> {
@@ -22,12 +23,7 @@ export default class ClassesTableCell extends React.Component<ClassesTableCellPr
                         border: 'unset'
                     }}
                 >
-                    <Button
-                        onClick={() => {
-                            console.log('It works');
-                        }}
-                        style={{ width: '100%', height: '100%', padding: 0 }}
-                    >
+                    <Button onClick={this.props.onClick} style={{ width: '100%', height: '100%', padding: 0 }}>
                         <div
                             style={{
                                 display: 'flex',

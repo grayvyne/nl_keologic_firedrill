@@ -5,8 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import * as React from 'react';
 import './App.css';
 // import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
-import RootWithRouter from './Root';
-import { BrowserRouter as Router } from 'react-router-dom';
+import Root from './Root';
 
 const theme = createMuiTheme({
     palette: {
@@ -24,11 +23,9 @@ const theme = createMuiTheme({
 class App extends React.Component {
     render() {
         return (
-            <Router>
-                <MuiThemeProvider theme={theme}>
-                    <RootWithRouter />
-                </MuiThemeProvider>
-            </Router>
+            <MuiThemeProvider theme={theme}>
+                <Root />
+            </MuiThemeProvider>
         );
     }
 }
