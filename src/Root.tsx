@@ -5,12 +5,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import BottomNavigation from 'material-ui/BottomNavigation';
 import * as React from 'react';
 import Checklist from './components/pages/Checklist';
-import Classes from './components/pages/Classes';
 import Missing from './components/pages/Missing';
 import Search from './components/pages/Search';
 import StyledBottomNavigationAction from './components/shared/StyledBottomNavigation';
 import { Route, RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import { ClassesNavigator } from './components/navigators/ClassesNavigator';
 
 interface RootProps {}
 
@@ -52,7 +52,7 @@ const Root: React.SFC<RootProps> = (props: RootProps & RouteComponentProps<RootP
             <Route
                 exact={false}
                 path="/classes"
-                children={({ match }) => <Classes isVisible={match ? true : false} />}
+                children={({ match }) => <ClassesNavigator />}
             />
             <Route
                 exact={true}
