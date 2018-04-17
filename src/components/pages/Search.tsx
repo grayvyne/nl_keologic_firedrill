@@ -1,7 +1,7 @@
-import * as React from 'react';
-import AppBar from 'material-ui/AppBar';
 import AppsIcon from '@material-ui/icons/Apps';
-import { Toolbar, IconButton, Card, Input } from 'material-ui';
+import { Card, IconButton, Input, Toolbar } from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import * as React from 'react';
 
 interface SearchState {
     index: number;
@@ -24,9 +24,9 @@ export class Search extends React.Component<SearchProps, SearchState> {
     };
 
     render() {
-        return this.props.isVisible === true ? (
+        return this.props.isVisible ? (
             <div>
-                <AppBar position={'static'}>
+                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
                             <AppsIcon />

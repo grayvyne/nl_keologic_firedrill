@@ -1,8 +1,8 @@
-import * as React from 'react';
-import AppBar from 'material-ui/AppBar';
-import SwipeableViews from 'react-swipeable-views';
 import AppsIcon from '@material-ui/icons/Apps';
-import { Toolbar, IconButton } from 'material-ui';
+import { IconButton, Toolbar } from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import * as React from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
 interface MissingState {
     index: number;
@@ -25,9 +25,9 @@ export class Missing extends React.Component<MissingProps, MissingState> {
     };
 
     render() {
-        return this.props.isVisible === true ? (
+        return this.props.isVisible ? (
             <div>
-                <AppBar position={'static'}>
+                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
                             <AppsIcon />
