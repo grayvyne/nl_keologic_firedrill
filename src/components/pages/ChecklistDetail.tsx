@@ -1,29 +1,22 @@
-import AppsIcon from '@material-ui/icons/Apps';
+import BackIcon from '@material-ui/icons/ArrowBack';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
-import PersonIcon from '@material-ui/icons/Person';
-import { NavigationTabScreenOptions } from 'react-navigation';
-import blueGrey from 'material-ui/colors/blueGrey';
+import { NavigationActions } from 'react-navigation';
 
-interface MissingState {
+interface ChecklistDetailState {
     index: number;
 }
 
-interface MissingProps {
+interface ChecklistDetailProps {
     isVisible: boolean;
 }
 
-export class Missing extends React.Component<MissingProps, MissingState> {
-    static navigationOptions: NavigationTabScreenOptions = {
-        tabBarIcon: ({ focused, tintColor }) => {
-            return (
-                <PersonIcon style={{ height: 26, width: 26, color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' }} />
-            );
-        }
-    };
-    constructor(props: MissingProps) {
+const backAction = NavigationActions.back();
+
+export class ChecklistDetail extends React.Component<ChecklistDetailProps, ChecklistDetailState> {
+    constructor(props: ChecklistDetailProps) {
         super(props);
         this.state = {
             index: 0
@@ -39,8 +32,13 @@ export class Missing extends React.Component<MissingProps, MissingState> {
             <div>
                 <AppBar position={'static'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
-                            <AppsIcon />
+                        <IconButton
+                            color="inherit"
+                            aria-label="Menu"
+                            style={{ alignSelf: 'center', marginLeft: -10 }}
+                            onClick={() => (this.props as any).navigation.dispatch(backAction)}
+                        >
+                            <BackIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
@@ -54,4 +52,4 @@ export class Missing extends React.Component<MissingProps, MissingState> {
     }
 }
 
-export default Missing;
+export default ChecklistDetail;
