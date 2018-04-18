@@ -2,36 +2,37 @@ import * as React from 'react';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 import { Missing } from '../pages/Missing';
 import { Search } from '../pages/Search';
-import { Checklist } from '../pages/Checklist';
 import ClassesNavigator from './ClassesNavigator';
+import ChecklistNavigator from './ChecklistNavigator';
+import blueGrey from 'material-ui/colors/blueGrey';
 
 const Nav = TabNavigator(
     {
-        Classes: { screen: ClassesNavigator },
+        Classes: ClassesNavigator,
         Missing: Missing,
         Search: Search,
-        Checklist: Checklist
+        Checklist: ChecklistNavigator
     },
     {
         tabBarPosition: 'bottom',
         tabBarComponent: TabBarBottom,
-        tabBarOptions: { style: { position: 'absolute', bottom: 0, left: 0, right: 0 } }
+        tabBarOptions: {
+            style: { height: 56 },
+            labelStyle: {
+                marginBottom: 7,
+                marginTop: -7,
+                fontSize: 12,
+                fontWeight: '300'
+            },
+            activeTintColor: blueGrey[800]
+        },
+        animationEnabled: false,
+        swipeEnabled: false
     }
 );
 
 export class RootTabNav extends React.Component {
     render() {
-        return (
-            <Nav
-                style={{
-                    borderWidth: 1,
-                    top: 0,
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0
-                }}
-            />
-        );
+        return <Nav />;
     }
 }
