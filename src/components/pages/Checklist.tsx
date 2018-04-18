@@ -2,7 +2,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
+import { View } from 'react-native';
 
 interface ChecklistState {
     index: number;
@@ -25,7 +25,7 @@ export class Checklist extends React.Component<ChecklistProps, ChecklistState> {
     };
 
     render() {
-        return this.props.isVisible ? (
+        return (
             <div>
                 <AppBar position={'static'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
@@ -34,13 +34,15 @@ export class Checklist extends React.Component<ChecklistProps, ChecklistState> {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </SwipeableViews>
+                <View>
+                    <button onClick={() => (this.props as any).navigation.navigate('ChecklistDetail')}>Test One</button>
+                    <button onClick={() => (this.props as any).navigation.navigate('ChecklistDetail')}>Test Two</button>
+                    <button onClick={() => (this.props as any).navigation.navigate('ChecklistDetail')}>
+                        Test Three
+                    </button>
+                </View>
             </div>
-        ) : null;
+        );
     }
 }
 
