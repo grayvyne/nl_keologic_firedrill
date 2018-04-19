@@ -41,6 +41,7 @@ export class PlatformBridge extends StubConsole {
     }
     private inPluginMode: boolean;
     private isReadyToSend: boolean = false;
+    private lastSentMessageID: number = 0;
     @observable private queuedMessages: {}[] = [];
 
     constructor() {
@@ -58,12 +59,14 @@ export class PlatformBridge extends StubConsole {
 
     public makeCall<T>(type: PlatformBridgeMessageType, data?: object): Promise<T> {
         console.log('Sending Bridge Message:', type, data);
-        this.postMessage({ type, data });
+        const messageID = this.lastSentMessageID;
+        this.lastSentMessageID++;
+        this.postMessage({ type, data, id: messageID });
 
         return new Promise((resolve, reject) => {
             const handler = (message: MessageEvent) => {
                 const messageData: BridgeMessage<T> = JSON.parse(message.data);
-                if (messageData.type === type) {
+                if (messageData.type === type && messageData.id === messageID) {
                     this.responseCount++;
                     console.log('Received Bridge Message:', type, data);
                     resolve(messageData.data);
