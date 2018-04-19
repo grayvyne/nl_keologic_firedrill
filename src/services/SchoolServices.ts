@@ -1,4 +1,4 @@
-import { Class, ClassRecord } from '../models/Class';
+import { ClassRecord } from '../models/Class';
 import { School, SchoolRecord } from '../models/School';
 import { Student } from '../models/Student';
 import { SchoolUser, SchoolUserRecord } from '../models/User';
@@ -25,9 +25,8 @@ export namespace SchoolServices {
         return schoolRecords.map(record => new School(record));
     }
 
-    export async function getClasses(): Promise<Class[]> {
-        const classRecords = await getPlatformBridge().makeCall<ClassRecord[]>(SchoolServiceMessageType.GetAllClasses);
-        return classRecords.map(record => new Class(record));
+    export async function getClasses(): Promise<ClassRecord[]> {
+        return getPlatformBridge().makeCall<ClassRecord[]>(SchoolServiceMessageType.GetAllClasses);
     }
 
     export async function getUsers(): Promise<SchoolUser[]> {

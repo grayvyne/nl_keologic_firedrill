@@ -1,5 +1,5 @@
 import { Typeof, Validate } from '../lib/NLValdiate';
-import { SchoolUser } from './User';
+import { SchoolUser, SchoolUserRecord } from './User';
 
 export enum GradeLevel {
     Kindergarten,
@@ -15,27 +15,38 @@ export enum GradeLevel {
 
 export interface ClassRecord {
     readonly classID: number;
+    readonly name: string | undefined;
     readonly gradeLevel: GradeLevel;
-    readonly students: SchoolUser[];
-    readonly teachers: SchoolUser[];
+    readonly students: SchoolUserRecord[];
+    readonly teachers: SchoolUserRecord[];
 }
 
 @Validate
 export class Class {
     @Typeof('number') public readonly classID: number;
+    @Typeof('string') public readonly name: string;
     @Typeof('number') public readonly gradeLevel: GradeLevel;
-    @Typeof('object') private readonly students: SchoolUser[];
+    @Typeof('object') private readonly _users: SchoolUser[];
     @Typeof('object') private readonly teachers: SchoolUser[];
 
     public constructor(record: ClassRecord) {
         this.classID = record.classID;
         this.gradeLevel = record.gradeLevel;
-        this.students = record.students;
-        this.teachers = record.teachers;
+        this._users = record.students.map(s => new SchoolUser(s));
+        this.teachers = record.teachers.map(s => new SchoolUser(s));
+        console.log('record', record);
+        const firstTeacher = record.teachers[0];
+        if (null != record.name) {
+            this.name = record.name;
+        } else if (null != firstTeacher) {
+            this.name = firstTeacher.lastName;
+        } else {
+            this.name = 'Mr. Nobody';
+        }
     }
 
-    public getStudents(): SchoolUser[] {
-        return this.students;
+    public get users(): SchoolUser[] {
+        return this._users;
     }
 
     public getTeachers(): SchoolUser[] {

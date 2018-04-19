@@ -1,8 +1,7 @@
-import { ObservableMap, action, computed, observable, observe } from 'mobx';
+import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { Status, Student } from '../models/Student';
-import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
 
 export class FiredrillStore {
@@ -18,10 +17,9 @@ export class FiredrillStore {
         return this.allClasses.filter(c => null !== c.claimedByID);
     }
 
-    @observable private students: ObservableMap<number, Student> = new ObservableMap();
     @computed
     public get allStudents(): Student[] {
-        return Array.from(this.students.values());
+        return this.allClasses.reduce<Student[]>((a, c) => a.concat([...c.students]), []);
     }
     @computed
     public get allStudentsCount(): number {
@@ -29,57 +27,33 @@ export class FiredrillStore {
     }
     @computed
     public get missingStudentsCount(): number {
-        return this.allStudents.filter(s => s.getStatus() === Status.Missing).length;
+        return this.allStudents.filter(s => s.status === Status.Missing).length;
     }
 
     public constructor() {
-        ApplicationServices.log('Starting FD Stor');
-        ApplicationServices.log('bobson');
-        this.setup()
-            .then(() => this.startFiredrill('test-fd'))
-            .then(() => this.students.forEach(student => observe(student, ApplicationServices.log)))
-            .then(() => ApplicationServices.log('init firedrill'))
-            .catch(ApplicationServices.logError);
-        // setTimeout(() => {
-        //     ApplicationServices.log('fd constructor');
-        // }, 1000);
+        this.setup().then(() => this.startFiredrill('test-fd'));
     }
 
     @action
     public async setup(): Promise<void> {
         // const user = await ApplicationServices.getCurrentUser();
         // this.currentUserID = user.userID;
-        ApplicationServices.log('about to sign in');
-        await Firebase.Auth.signInAnonymouslyAndRetrieveData().catch(ApplicationServices.logError);
-        ApplicationServices.log('signed in now');
-        ApplicationServices.log('user?', Firebase.Auth.currentUser);
-
-        const students = await SchoolServices.getStudents();
-        students.forEach(student => this.students.set(student.userID, student));
+        await Firebase.Auth.signInAnonymouslyAndRetrieveData();
 
         const classes = await SchoolServices.getClasses();
-        classes
-            .map(
-                c =>
-                    new FiredrillClass({
-                        classID: c.classID,
-                        students: c.getStudents(),
-                        gradeLevel: c.gradeLevel,
-                        teachers: c.getTeachers()
-                    })
-            )
-            .forEach(c => this.classes.set(c.classID, c));
+        classes.map(c => new FiredrillClass(c)).forEach(c => this.classes.set(c.classID, c));
     }
 
     @action
     public startFiredrill(firedrillID: string): void {
-        ApplicationServices.log('starting firedrill');
         this.allStudents.forEach(student => this.markStudentAsFound(student.userID));
-        this.allStudents.forEach(student => {
-            Firebase.Refs.addStudentFiredrillStatusListener(
-                firedrillID,
-                student.userID,
-                handleStudentStatusChange(student)
+        this.allClasses.forEach(c => {
+            c.students.forEach(student =>
+                Firebase.Refs.addStudentFiredrillStatusListener(
+                    firedrillID,
+                    student.userID,
+                    handleStudentStatusChange(student)
+                )
             );
         });
     }
@@ -89,7 +63,7 @@ export class FiredrillStore {
     }
 
     public markStudentAsFound(studentID: number): Promise<void> {
-        return this.saveStudentStatus(studentID, Status.Found).catch(ApplicationServices.logError);
+        return this.saveStudentStatus(studentID, Status.Found);
     }
 
     public markStudentAsAbsent(studentID: number): Promise<void> {
@@ -97,7 +71,6 @@ export class FiredrillStore {
     }
 
     private saveStudentStatus(studentID: number, status: Status): Promise<void> {
-        ApplicationServices.log('Saving a student', studentID, status);
         return Firebase.Refs.studentFiredrillStatus('test-fd', studentID).update({ status });
     }
 }

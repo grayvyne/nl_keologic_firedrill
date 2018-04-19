@@ -1,6 +1,6 @@
-import { observable } from 'mobx';
-import { Typeof, Validate } from '../lib/NLValdiate';
+import { observable, computed } from 'mobx';
 import { SchoolUser } from './User';
+import { Typeof, Validate } from '../lib/NLValdiate';
 
 export enum Status {
     Missing,
@@ -10,23 +10,29 @@ export enum Status {
 
 @Validate
 export class Student extends SchoolUser {
-    @observable
     @Typeof('number')
-    private status: Status = Status.Found;
+    @observable
+    private _status: Status = Status.Found;
 
-    public getStatus(): Status {
-        return this.status;
+    @computed
+    public get status(): Status {
+        return this._status;
+    }
+
+    @computed
+    public get isMissing(): boolean {
+        return this._status === Status.Missing;
     }
 
     public markAsFound(): void {
-        this.status = Status.Found;
+        this._status = Status.Found;
     }
 
     public markAsAbsent(): void {
-        this.status = Status.Absent;
+        this._status = Status.Absent;
     }
 
     public markAsMissing(): void {
-        this.status = Status.Missing;
+        this._status = Status.Missing;
     }
 }

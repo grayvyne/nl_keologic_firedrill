@@ -11,8 +11,7 @@ import { RootTabNav } from './components/navigators/RootTabNav';
 // import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
 import { ApplicationServices } from './services/ApplicationServices';
 import { SchoolServices } from './services/SchoolServices';
-import { FiredrillStore } from './stores/FiredrillStore';
-import { PlatformBridge } from './stores/PlatformBridge';
+import { FiredrillStore, PlatformBridge } from './stores';
 
 const theme = createMuiTheme({
     palette: {
