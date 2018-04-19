@@ -29,7 +29,9 @@ interface ClassesState {
 }
 
 interface StoreProps {
+    myClasses: FiredrillClass[];
     classes: FiredrillClass[];
+    unclaimedClasses: FiredrillClass[];
 }
 
 interface ClassesProps extends StoreProps {
@@ -100,7 +102,7 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                     <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
                         <ScrollView>
                             <TableView>
-                                {this.props.classes.map(singleClass => {
+                                {this.props.myClasses.map(singleClass => {
                                     return (
                                         <ClassesTableCell
                                             onClick={() => (this.props as any).navigation.navigate('ClassDetail')}
@@ -131,7 +133,26 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                                 })}
                             </TableView>
                         </ScrollView>
-                        <div>Test Three</div>
+                        <ScrollView>
+                            <TableView>
+                                {this.props.unclaimedClasses.map(singleClass => {
+                                    return (
+                                        <ActionTableCell
+                                            onClick={() => (this.props as any).navigation.navigate('ClassDetail')}
+                                            cellData={{
+                                                id: singleClass.classID,
+                                                label: singleClass.name,
+                                                subLabel: singleClass.gradeLevel.toString()
+                                            }}
+                                            key={singleClass.classID}
+                                            buttonLabel={'Claim'}
+                                            buttonColor={'red'}
+                                            buttonTextColor={'white'}
+                                        />
+                                    );
+                                })}
+                            </TableView>
+                        </ScrollView>
                     </SwipeableViews>
                 </ContentView>
             </div>
@@ -140,7 +161,11 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
 }
 
 function mapStoresToClasses({ firedrillStore }: Stores, props: ClassesProps): StoreProps {
-    return { classes: firedrillStore.allClasses };
+    return {
+        myClasses: firedrillStore.myClasses,
+        classes: firedrillStore.allClasses,
+        unclaimedClasses: firedrillStore.unclaimedClasses
+    };
 }
 
 export default inject(mapStoresToClasses)(Classes);

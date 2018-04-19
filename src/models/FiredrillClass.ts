@@ -37,7 +37,6 @@ export class FiredrillClass extends Class {
     constructor(record: ClassRecord) {
         super(record);
         this._claimedByID = null;
-        console.log('record', record);
         this._students = record.students.map(s => new Student(s));
     }
 

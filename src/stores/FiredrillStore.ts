@@ -3,9 +3,10 @@ import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { Status, Student } from '../models/Student';
 import { SchoolServices } from '../services/SchoolServices';
+import { ApplicationServices } from '../services/ApplicationServices';
 
 export class FiredrillStore {
-    // private currentUserID: number;
+    @observable private currentUserID: number;
 
     @observable private classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
     @computed
@@ -13,8 +14,12 @@ export class FiredrillStore {
         return Array.from(this.classes.values());
     }
     @computed
-    public get claimedClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => null !== c.claimedByID);
+    public get unclaimedClasses(): FiredrillClass[] {
+        return this.allClasses.filter(c => null == c.claimedByID);
+    }
+    @computed
+    public get myClasses(): FiredrillClass[] {
+        return this.allClasses.filter(c => c.claimedByID === this.currentUserID);
     }
 
     @computed
@@ -36,8 +41,8 @@ export class FiredrillStore {
 
     @action
     public async setup(): Promise<void> {
-        // const user = await ApplicationServices.getCurrentUser();
-        // this.currentUserID = user.userID;
+        const user = await ApplicationServices.getCurrentUser();
+        this.currentUserID = user.userID;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
 
         const classes = await SchoolServices.getClasses();
