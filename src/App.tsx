@@ -1,16 +1,18 @@
+import blueGrey from 'material-ui/colors/blueGrey';
 import lightBlue from 'material-ui/colors/lightBlue';
 import orange from 'material-ui/colors/orange';
-import blueGrey from 'material-ui/colors/blueGrey';
 import red from 'material-ui/colors/red';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { Provider, observer } from 'mobx-react';
 import * as React from 'react';
+import { View, Text } from 'react-native';
 import './App.css';
+import { RootTabNav } from './components/navigators/RootTabNav';
 // import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
 import { ApplicationServices } from './services/ApplicationServices';
 import { SchoolServices } from './services/SchoolServices';
+import { FiredrillStore } from './stores/FiredrillStore';
 import { PlatformBridge } from './stores/PlatformBridge';
-import { View } from 'react-native';
-import { RootTabNav } from './components/navigators/RootTabNav';
 
 const theme = createMuiTheme({
     palette: {
@@ -34,13 +36,38 @@ const bridge = new PlatformBridge();
 ApplicationServices.init(bridge);
 SchoolServices.init(bridge);
 
+const fdStore = new FiredrillStore();
+
+ApplicationServices.log(fdStore);
+
+const Counter = observer(() => (
+    <View
+        style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 20,
+            height: 20,
+            borderColor: 'red',
+            borderWidth: 1,
+            backgroundColor: 'red'
+        }}
+    >
+        <Text>{bridge.sendCount}</Text>
+        <Text>{bridge.responseCount}</Text>
+        <Text>{bridge.numQueuedMessages}</Text>
+    </View>
+));
 class App extends React.Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
-                <View style={{ height: '100vh', width: '100vw' }}>
-                    <RootTabNav />
-                </View>
+                <Provider firedrillStore={fdStore}>
+                    <View style={{ height: '100vh', width: '100vw' }}>
+                        <RootTabNav />
+                        <Counter />
+                    </View>
+                </Provider>
             </MuiThemeProvider>
         );
     }

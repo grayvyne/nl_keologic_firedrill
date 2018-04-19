@@ -1,4 +1,5 @@
 import { StubConsole } from '../utilities/StubConsole';
+import { observable, computed } from 'mobx';
 
 export enum ApplicationServiceMessageType {
     OpenPluginsMenu = 'application:open_plugins_menu',
@@ -32,21 +33,39 @@ interface BridgeMessage<T> {
 }
 
 export class PlatformBridge extends StubConsole {
+    @observable public sendCount = 0;
+    @observable public responseCount = 0;
+    @computed
+    public get numQueuedMessages(): number {
+        return this.queuedMessages.length;
+    }
     private inPluginMode: boolean;
+    private isReadyToSend: boolean = false;
+    @observable private queuedMessages: {}[] = [];
 
     constructor() {
         super();
         this.inPluginMode = false;
-        this.checkIfPluginMode();
+        // this.checkIfPluginMode();
+        setTimeout(async () => {
+            this.isReadyToSend = true;
+
+            await this.checkIfPluginMode();
+            console.log('checked if in plugin mode');
+            this.flushQueue();
+        }, 1000);
     }
 
     public makeCall<T>(type: PlatformBridgeMessageType, data?: object): Promise<T> {
-        this.log('making a call: type:', type, 'data:', data);
+        console.log('Sending Bridge Message:', type, data);
         this.postMessage({ type, data });
+
         return new Promise((resolve, reject) => {
             const handler = (message: MessageEvent) => {
                 const messageData: BridgeMessage<T> = JSON.parse(message.data);
                 if (messageData.type === type) {
+                    this.responseCount++;
+                    console.log('Received Bridge Message:', type, data);
                     resolve(messageData.data);
                     document.removeEventListener('message', handler);
                 }
@@ -68,9 +87,7 @@ export class PlatformBridge extends StubConsole {
     }
 
     private logMessageToConsoleOrBridge(type: ApplicationServiceMessageType, message: any[]): void {
-        if (this.inPluginMode) {
-            return this.postMessage({ type, data: message });
-        }
+        this.makeCall(type, message);
         switch (type) {
             case ApplicationServiceMessageType.LogWarningMessage:
                 console.warn(message);
@@ -83,20 +100,28 @@ export class PlatformBridge extends StubConsole {
         }
     }
 
-    private postMessage(message: {}): void {
-        try {
-            window.postMessage(JSON.stringify(message), '*');
-        } catch (error) {
-            const element = document.createElement('pre');
-            element.innerHTML = JSON.stringify(error);
-            document.body.appendChild(element);
+    private postMessage = (message: {}): void => {
+        if (this.isReadyToSend) {
+            try {
+                window.postMessage(JSON.stringify(message), '*');
+                this.sendCount++;
+            } catch (error) {
+                console.error('Error Posting Message:', error, message);
+            }
+        } else {
+            this.queuedMessages.push(message);
         }
+    };
+
+    private async checkIfPluginMode(): Promise<void> {
+        await this.makeCall(ApplicationServiceMessageType.IsAnyoneListening);
+        this.inPluginMode = true;
+        this.log('in plugin mode', this.inPluginMode);
     }
 
-    private checkIfPluginMode(): void {
-        setTimeout(async () => {
-            await this.makeCall(ApplicationServiceMessageType.IsAnyoneListening);
-            this.inPluginMode = true;
-        }, 300);
+    private flushQueue(): void {
+        while (this.queuedMessages.length > 0) {
+            this.postMessage(this.queuedMessages.pop()!);
+        }
     }
 }

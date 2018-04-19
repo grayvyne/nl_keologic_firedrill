@@ -11,6 +11,7 @@ import ActionTableCell from '../shared/ActionTableCell';
 import ContentView from '../shared/ContentView';
 import ScrollView from '../shared/ScrollView';
 import TableView from '../shared/TableView';
+import { ApplicationServices } from '../../services/ApplicationServices';
 
 export type SingleClass = {
     id: number;
@@ -232,6 +233,7 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                                 color="inherit"
                                 aria-label="Menu"
                                 style={{ alignSelf: 'center', marginLeft: -10 }}
+                                onClick={ApplicationServices.togglePluginMenu}
                             >
                                 <AppsIcon />
                             </IconButton>

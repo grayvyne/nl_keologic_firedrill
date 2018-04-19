@@ -1,5 +1,6 @@
 import { Class, ClassRecord } from '../models/Class';
 import { School, SchoolRecord } from '../models/School';
+import { Student } from '../models/Student';
 import { SchoolUser, SchoolUserRecord } from '../models/User';
 import { PlatformBridge, SchoolServiceMessageType } from '../stores/PlatformBridge';
 
@@ -43,10 +44,11 @@ export namespace SchoolServices {
         return userRecords.map(record => new SchoolUser(record));
     }
 
-    export async function getStudents(): Promise<SchoolUser[]> {
+    export async function getStudents(): Promise<Student[]> {
         const userRecords = await getPlatformBridge().makeCall<SchoolUserRecord[]>(
             SchoolServiceMessageType.GetAllStudents
         );
-        return userRecords.map(record => new SchoolUser(record));
+        console.log('User Records:', userRecords);
+        return userRecords.map(record => new Student(record));
     }
 }

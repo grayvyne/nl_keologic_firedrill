@@ -1,4 +1,5 @@
 import { PlatformBridge, ApplicationServiceMessageType } from '../stores/PlatformBridge';
+import { User, UserRecord } from '../models/User';
 
 let platformBridge: PlatformBridge | null = null;
 
@@ -26,8 +27,9 @@ export namespace ApplicationServices {
         await getPlatformBridge().makeCall(ApplicationServiceMessageType.ClosePluginsMenu);
     }
 
-    export async function getCurrentUser(): Promise<{}> {
-        return getPlatformBridge().makeCall(ApplicationServiceMessageType.GetCurrentUser);
+    export async function getCurrentUser(): Promise<User> {
+        const record = await getPlatformBridge().makeCall<UserRecord>(ApplicationServiceMessageType.GetCurrentUser);
+        return new User(record);
     }
 
     export function log(...args: any[]): void {

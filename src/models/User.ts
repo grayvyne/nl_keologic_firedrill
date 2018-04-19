@@ -7,7 +7,7 @@ export enum UserRole {
 }
 
 export interface UserRecord {
-    readonly id: number;
+    readonly userID: number;
     readonly firstName: string;
     readonly lastName: string;
 }
@@ -19,7 +19,7 @@ export class User {
     @Typeof('string') public readonly lastName: string;
 
     public constructor(record: UserRecord) {
-        this.userID = record.id;
+        this.userID = record.userID;
         this.firstName = record.firstName;
         this.lastName = record.lastName;
     }

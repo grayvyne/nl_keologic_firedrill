@@ -20,7 +20,7 @@ export const Validate: CustomClassDecorator = target => {
                 if (this.hasOwnProperty(key)) {
                     const value = this[key];
                     const type = target.prototype[key];
-                    if (false === type.includes(typeof value)) {
+                    if (null != type && false === type.includes(typeof value)) {
                         throw new ValidationError(`${target.prototype.constructor.name}: ${key} is not a ${type}`);
                     }
                 }
