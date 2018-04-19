@@ -12,6 +12,9 @@ import ContentView from '../shared/ContentView';
 import ScrollView from '../shared/ScrollView';
 import TableView from '../shared/TableView';
 import { ApplicationServices } from '../../services/ApplicationServices';
+import { FiredrillClass } from '../../models/FiredrillClass';
+import { Stores } from '../../stores';
+import { inject, observer } from 'mobx-react';
 
 export type SingleClass = {
     id: number;
@@ -25,189 +28,16 @@ interface ClassesState {
     index: number;
 }
 
-interface ClassesProps {
+interface StoreProps {
+    classes: FiredrillClass[];
+}
+
+interface ClassesProps extends StoreProps {
     isVisible: boolean;
 }
 
+@observer
 export class Classes extends React.Component<ClassesProps, ClassesState> {
-    data: SingleClass[] = [
-        {
-            id: 1,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 2,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 3,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 4,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 5,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 6,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 7,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 8,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 9,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 10,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 11,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 12,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 13,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 30,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 14,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 15,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 16,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 17,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 18,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 19,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 21,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 22,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 23,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 24,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 25,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        }
-    ];
-
     constructor(props: ClassesProps) {
         super(props);
         this.state = {
@@ -270,11 +100,11 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                     <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
                         <ScrollView>
                             <TableView>
-                                {this.data.map(singleClass => {
+                                {this.props.classes.map(singleClass => {
                                     return (
                                         <ClassesTableCell
                                             onClick={() => (this.props as any).navigation.navigate('ClassDetail')}
-                                            key={singleClass.id}
+                                            key={singleClass.classID}
                                             singleClass={singleClass}
                                         />
                                     );
@@ -283,16 +113,16 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                         </ScrollView>
                         <ScrollView>
                             <TableView>
-                                {this.data.map(singleClass => {
+                                {this.props.classes.map(singleClass => {
                                     return (
                                         <ActionTableCell
                                             onClick={() => (this.props as any).navigation.navigate('ClassDetail')}
                                             cellData={{
-                                                id: singleClass.id,
+                                                id: singleClass.classID,
                                                 label: singleClass.name,
-                                                subLabel: singleClass.grade
+                                                subLabel: singleClass.gradeLevel.toString()
                                             }}
-                                            key={singleClass.id}
+                                            key={singleClass.classID}
                                             buttonLabel={'Claim'}
                                             buttonColor={'red'}
                                             buttonTextColor={'white'}
@@ -309,4 +139,8 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
     }
 }
 
-export default Classes;
+function mapStoresToClasses({ firedrillStore }: Stores, props: ClassesProps): StoreProps {
+    return { classes: firedrillStore.allClasses };
+}
+
+export default inject(mapStoresToClasses)(Classes);

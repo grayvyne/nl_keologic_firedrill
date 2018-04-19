@@ -1,8 +1,9 @@
-import * as React from 'react';
-import RightArrow from '../../assets/RightArrow';
-import { SingleClass } from '../pages/Classes';
 import teal from 'material-ui/colors/teal';
-import { View, Text, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+import { Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import RightArrow from '../../assets/RightArrow';
+import { FiredrillClass } from '../../models/FiredrillClass';
 
 namespace style {
     export const cellContainer: ViewStyle = { padding: 0, height: 'unset' };
@@ -51,17 +52,19 @@ namespace style {
 }
 
 interface ClassesTableCellProps {
-    singleClass: SingleClass;
+    singleClass: FiredrillClass;
     onClick: () => void;
 }
 
+@observer
 export default class ClassesTableCell extends React.Component<ClassesTableCellProps> {
-    singleClass = this.props.singleClass;
-
     render() {
         const { singleClass } = this.props;
+        if (undefined === singleClass) {
+            return null;
+        }
         return (
-            <View key={singleClass.id} style={style.cellContainer}>
+            <View key={singleClass.classID} style={style.cellContainer}>
                 <TouchableOpacity onPress={this.props.onClick} style={style.touchableHighlight}>
                     <View style={style.highlightWrapper}>
                         <View style={style.labelContainer}>
@@ -69,12 +72,12 @@ export default class ClassesTableCell extends React.Component<ClassesTableCellPr
                                 <Text style={style.labelText}>{singleClass.name}</Text>
                             </View>
                             <View>
-                                <Text style={style.subLabelText}>Grade {singleClass.grade}</Text>
+                                <Text style={style.subLabelText}>Grade {singleClass.gradeLevel}</Text>
                             </View>
                         </View>
 
                         <Text style={style.classCountText}>
-                            {singleClass.found}/{singleClass.total}
+                            {singleClass.foundStudents}/{singleClass.totalStudents}
                         </Text>
                         <View style={style.rightArrowContainer}>
                             <RightArrow height={10} width={6} />
