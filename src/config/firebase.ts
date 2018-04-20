@@ -38,5 +38,27 @@ export namespace Firebase {
                 }
             });
         }
+
+        export function classFiredrillData(firedrillID: string, classID: number): firebase.database.Reference {
+            return database
+                .ref('ActiveFiredrills')
+                .child(firedrillID)
+                .child('Classes')
+                .child(classID.toString());
+        }
+
+        export function addClassFiredrillClaimedListener(
+            firedrillID: string,
+            classID: number,
+            onStatusChange: (newStatus: { claimedByID: number } | null) => void
+        ): void {
+            classFiredrillData(firedrillID, classID).on('value', snapshot => {
+                if (null != snapshot) {
+                    onStatusChange(snapshot.val());
+                } else {
+                    onStatusChange(null);
+                }
+            });
+        }
     }
 }

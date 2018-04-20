@@ -1,8 +1,8 @@
-import * as React from 'react';
-import RightArrow from '../../assets/RightArrow';
-import { SingleClass } from '../pages/Classes';
 import teal from 'material-ui/colors/teal';
-import { View, Text, ViewStyle, TextStyle } from 'react-native';
+import * as React from 'react';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
+import RightArrow from '../../assets/RightArrow';
+import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
 
 namespace style {
@@ -39,7 +39,7 @@ namespace style {
 }
 
 interface ClassesTableCellProps {
-    singleClass: SingleClass;
+    singleClass: FiredrillClass;
     onClick: () => void;
 }
 
@@ -55,12 +55,12 @@ export default class ClassesTableCell extends React.Component<ClassesTableCellPr
                         <Text style={style.labelText}>{singleClass.name}</Text>
                     </View>
                     <View>
-                        <Text style={style.subLabelText}>Grade {singleClass.grade}</Text>
+                        <Text style={style.subLabelText}>Grade {singleClass.gradeLevel}</Text>
                     </View>
                 </View>
 
                 <Text style={style.classCountText}>
-                    {singleClass.found}/{singleClass.total}
+                    {singleClass.foundStudents}/{singleClass.totalStudents}
                 </Text>
                 <View style={style.rightArrowContainer}>
                     <RightArrow height={10} width={6} />

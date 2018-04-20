@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, ViewStyle, View } from 'react-native';
+import { View, ViewStyle, TouchableOpacity, ViewProperties } from 'react-native';
 
 interface TableCellProps {
     height?: number | string;
@@ -10,11 +10,6 @@ interface TableCellProps {
 namespace style {
     export const cellContainerStyle: ViewStyle = {
         width: '100%',
-        padding: 0
-    };
-    export const touchableHighlight: ViewStyle = {
-        width: '100%',
-        height: '100%',
         padding: 0
     };
     export const highlightWrapper: ViewStyle = {
@@ -28,11 +23,16 @@ namespace style {
 
 export default class TableCell extends React.Component<TableCellProps> {
     render() {
+        let ContentWrapperComponent: React.ComponentType<ViewProperties> = View;
+        let wrapperProps: {} = { style: { ...style.highlightWrapper, ...this.props.style } };
+        if (null != this.props.onClick) {
+            ContentWrapperComponent = TouchableOpacity;
+            wrapperProps = { ...wrapperProps, onPress: this.props.onClick };
+        }
+
         return (
             <View style={{ ...style.cellContainerStyle, ...{ height: this.props.height } }}>
-                <TouchableOpacity onPress={this.props.onClick} style={style.touchableHighlight}>
-                    <View style={{ ...style.highlightWrapper, ...this.props.style }}>{this.props.children}</View>
-                </TouchableOpacity>
+                <ContentWrapperComponent {...wrapperProps}>{this.props.children}</ContentWrapperComponent>
             </View>
         );
     }

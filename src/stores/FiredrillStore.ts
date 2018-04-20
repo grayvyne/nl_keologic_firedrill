@@ -51,9 +51,8 @@ export class FiredrillStore {
 
     @action
     public startFiredrill(firedrillID: string): void {
-        this.allStudents.forEach(student => this.markStudentAsFound(student.userID));
-        this.allClasses.forEach(c => {
-            c.students.forEach(student =>
+        this.allClasses.forEach(aClass => {
+            aClass.students.forEach(student =>
                 Firebase.Refs.addStudentFiredrillStatusListener(
                     firedrillID,
                     student.userID,
@@ -61,6 +60,18 @@ export class FiredrillStore {
                 )
             );
         });
+        this.allClasses.forEach(aClass =>
+            Firebase.Refs.addClassFiredrillClaimedListener(
+                firedrillID,
+                aClass.classID,
+                handleClassClaimedByChange(aClass)
+            )
+        );
+    }
+
+    public claimClass(classID: number): Promise<void> {
+        ApplicationServices.log('Claiming a class', classID, this.currentUserID);
+        return Firebase.Refs.classFiredrillData('test-fd', classID).update({ claimedByID: this.currentUserID });
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {
@@ -95,6 +106,17 @@ function handleStudentStatusChange(student: Student): (newStatus: { status: Stat
             default:
                 student.markAsFound();
                 break;
+        }
+    };
+}
+
+function handleClassClaimedByChange(aClass: FiredrillClass): (newStatus: { claimedByID: number } | null) => void {
+    return newStatus => {
+        ApplicationServices.log('Claimed by change', newStatus, aClass);
+        if (null == newStatus) {
+            aClass.unclaim();
+        } else {
+            aClass.claim(newStatus.claimedByID);
         }
     };
 }

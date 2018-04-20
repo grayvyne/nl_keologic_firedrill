@@ -45,6 +45,11 @@ export class FiredrillClass extends Class {
         this._claimedByID = teacherID;
     }
 
+    @action
+    public unclaim(): void {
+        this._claimedByID = null;
+    }
+
     @computed
     public get students(): Student[] {
         return this._students;

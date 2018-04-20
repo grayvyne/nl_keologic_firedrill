@@ -3,21 +3,20 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import { Badge, IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../config/TabStyles';
-import ClassesTableCell from '../shared/ClassesTableCell';
-import ActionTableCell from '../shared/ActionTableCell';
-import ContentView from '../shared/ContentView';
-import { ScrollView, View, Text, ViewStyle } from 'react-native';
-import TableView from '../shared/TableView';
-import { NavigationScreenProps } from 'react-navigation';
-import SearchBar from '../shared/SearchBar';
-import TableHeader from '../shared/TableHeader';
-import { ApplicationServices } from '../../services/ApplicationServices';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import { Stores } from '../../stores';
-import { inject, observer } from 'mobx-react';
+import ActionTableCell from '../shared/ActionTableCell';
+import ClassesTableCell from '../shared/ClassesTableCell';
+import ContentView from '../shared/ContentView';
+import SearchBar from '../shared/SearchBar';
+import TableHeader from '../shared/TableHeader';
+import TableView from '../shared/TableView';
 
 export type SingleClass = {
     id: number;
@@ -35,10 +34,10 @@ interface StoreProps {
     myClasses: FiredrillClass[];
     classes: FiredrillClass[];
     unclaimedClasses: FiredrillClass[];
+    claimClass(classID: number): Promise<void>;
 }
 
-interface ClassesProps extends StoreProps {
-interface ClassesProps extends NavigationScreenProps {
+interface ClassesProps extends StoreProps, NavigationScreenProps {
     isVisible: boolean;
 }
 
@@ -54,107 +53,11 @@ namespace style {
     export const headerRight: ViewStyle = { marginRight: 25 };
 }
 
+@observer
 export class Classes extends React.Component<ClassesProps & NavigationScreenProps, ClassesState> {
-    data: SingleClass[] = [
-        {
-            id: 1,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 2,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 3,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 4,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 5,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 6,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 7,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 8,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 9,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 10,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 11,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 12,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 13,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        }
-    ];
-
-    constructor(props: ClassesProps) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
+    state = {
+        index: 0
+    };
 
     handleTabChange = (event: any, index: any) => {
         this.setState({ index });
@@ -188,7 +91,7 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                                         <span style={style.unclaimedTabStyle}>Unclaimed</span>
                                         <Badge
                                             color="secondary"
-                                            badgeContent={999}
+                                            badgeContent={this.props.unclaimedClasses.length}
                                             children={<span />}
                                             style={style.unclaimedTabBadgeStyle}
                                         />
@@ -209,11 +112,11 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                 >
                     <ScrollView>
                         <TableView>
-                            {this.data.map(singleClass => {
+                            {this.props.myClasses.map(singleClass => {
                                 return (
                                     <ClassesTableCell
                                         onClick={() => this.props.navigation.navigate('ClassDetail')}
-                                        key={singleClass.id}
+                                        key={singleClass.classID}
                                         singleClass={singleClass}
                                     />
                                 );
@@ -223,22 +126,20 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                     <ScrollView>
                         <SearchBar />
                         <TableView>
-                            {this.data.map(singleClass => {
-                                return (
-                                    <ActionTableCell
-                                        onClick={() => this.props.navigation.navigate('ClassDetail')}
-                                        cellData={{
-                                            id: singleClass.id,
-                                            label: singleClass.name,
-                                            subLabel: singleClass.grade
-                                        }}
-                                        key={singleClass.id}
-                                        buttonLabel={'Claim'}
-                                        buttonColor={'red'}
-                                        buttonTextColor={'white'}
-                                    />
-                                );
-                            })}
+                            {this.props.classes.map(singleClass => (
+                                <ActionTableCell
+                                    onClick={this.handlePressClaim(singleClass.classID)}
+                                    cellData={{
+                                        id: singleClass.classID,
+                                        label: singleClass.name,
+                                        subLabel: singleClass.gradeLevel.toString()
+                                    }}
+                                    key={singleClass.classID}
+                                    buttonLabel={'Claim'}
+                                    buttonColor={'red'}
+                                    buttonTextColor={'white'}
+                                />
+                            ))}
                         </TableView>
                     </ScrollView>
                     <ScrollView>
@@ -251,16 +152,16 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                                     <Text>Status</Text>
                                 </View>
                             </TableHeader>
-                            {this.data.map(singleClass => {
+                            {this.props.unclaimedClasses.map(singleClass => {
                                 return (
                                     <ActionTableCell
                                         onClick={() => this.props.navigation.navigate('ClassDetail')}
                                         cellData={{
-                                            id: singleClass.id,
+                                            id: singleClass.classID,
                                             label: singleClass.name,
-                                            subLabel: singleClass.grade
+                                            subLabel: singleClass.gradeLevel.toString()
                                         }}
-                                        key={singleClass.id}
+                                        key={singleClass.classID}
                                         buttonLabel={'Claim'}
                                         buttonColor={'red'}
                                         buttonTextColor={'white'}
@@ -273,14 +174,19 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
             </ContentView>
         );
     }
+
+    private handlePressClaim(classID: number): () => void {
+        return () => this.props.claimClass(classID);
+    }
 }
 
-function mapStoresToClasses({ firedrillStore }: Stores, props: ClassesProps): StoreProps {
+function mapStoresToProps({ firedrillStore }: Stores, props: ClassesProps): StoreProps {
     return {
         myClasses: firedrillStore.myClasses,
         classes: firedrillStore.allClasses,
-        unclaimedClasses: firedrillStore.unclaimedClasses
+        unclaimedClasses: firedrillStore.unclaimedClasses,
+        claimClass: classID => firedrillStore.claimClass(classID)
     };
 }
 
-export default inject(mapStoresToClasses)(Classes);
+export default inject(mapStoresToProps)(Classes);
