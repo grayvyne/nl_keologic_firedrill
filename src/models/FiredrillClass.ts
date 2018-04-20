@@ -29,6 +29,15 @@ export class FiredrillClass extends Class {
         return this._students.filter(s => s.status === Status.Found).length;
     }
 
+    @computed
+    public get claimedByName(): string {
+        const claimedByUser = [...this.students, ...this.getTeachers()].find(user => user.userID === this._claimedByID);
+        if (null == claimedByUser) {
+            return '';
+        }
+        return claimedByUser.firstName + ' ' + claimedByUser.lastName;
+    }
+
     @Typeof(['number', 'object'])
     @observable
     private _claimedByID: number | null;

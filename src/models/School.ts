@@ -1,6 +1,7 @@
 import { Typeof, Validate } from '../lib/NLValdiate';
 import { Class } from './Class';
 import { SchoolUser, User, UserRole } from './User';
+import { ClassRecord } from './FiredrillClass';
 
 export interface SchoolRecord {
     readonly schoolID: number;
@@ -11,7 +12,7 @@ export interface SchoolRecord {
     readonly state: string;
     readonly postalCode: string;
     usersByRole: Map<UserRole, SchoolUser[]>;
-    classes: Class[];
+    classes: ClassRecord[];
 }
 
 @Validate
@@ -35,7 +36,7 @@ export class School {
         this.city = record.city;
         this.state = record.state;
         this.postalCode = record.postalCode;
-        this.classes = record.classes;
+        this.classes = record.classes.map(c => new Class(c));
         this.usersByRole = new Map(record.usersByRole);
     }
 

@@ -50,4 +50,11 @@ export namespace SchoolServices {
         console.log('User Records:', userRecords);
         return userRecords.map(record => new Student(record));
     }
+
+    export async function getClassesForSchool(schoolID: number): Promise<ClassRecord[]> {
+        const school = await getPlatformBridge().makeCall<SchoolRecord>(SchoolServiceMessageType.GetSingleSchool, {
+            id: schoolID
+        });
+        return school.classes;
+    }
 }

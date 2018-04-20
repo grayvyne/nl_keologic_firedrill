@@ -21,12 +21,12 @@ export namespace Firebase {
             return database.ref('StudentFiredrillStatus').child(firedrillID);
         }
 
-        export function studentFiredrillStatus(firedrillID: string, studentID: number): firebase.database.Reference {
-            return allStudentFiredrillStatuses(firedrillID).child(studentID.toString());
+        export function studentFiredrillStatus(firedrillID: number, studentID: number): firebase.database.Reference {
+            return allStudentFiredrillStatuses(firedrillID.toString()).child(studentID.toString());
         }
 
         export function addStudentFiredrillStatusListener(
-            firedrillID: string,
+            firedrillID: number,
             studentID: number,
             onStatusChange: (newStatus: { status: Status } | null) => void
         ): void {
@@ -39,16 +39,16 @@ export namespace Firebase {
             });
         }
 
-        export function classFiredrillData(firedrillID: string, classID: number): firebase.database.Reference {
+        export function classFiredrillData(firedrillID: number, classID: number): firebase.database.Reference {
             return database
                 .ref('ActiveFiredrills')
-                .child(firedrillID)
+                .child(firedrillID.toString())
                 .child('Classes')
                 .child(classID.toString());
         }
 
         export function addClassFiredrillClaimedListener(
-            firedrillID: string,
+            firedrillID: number,
             classID: number,
             onStatusChange: (newStatus: { claimedByID: number } | null) => void
         ): void {
@@ -57,6 +57,23 @@ export namespace Firebase {
                     onStatusChange(snapshot.val());
                 } else {
                     onStatusChange(null);
+                }
+            });
+        }
+
+        export function acitveFiredrillForSchool(schoolID: number): firebase.database.Reference {
+            return database.ref('ActiveFiredrills').child(schoolID.toString());
+        }
+
+        export function addActiveFiredrillForSchoolListener(
+            schoolID: number,
+            onChange: (firedrill: {} | null) => void
+        ): void {
+            acitveFiredrillForSchool(schoolID).on('value', snapshot => {
+                if (null != snapshot) {
+                    onChange(snapshot.val());
+                } else {
+                    onChange(null);
                 }
             });
         }

@@ -7,11 +7,16 @@ import { ApplicationServices } from '../services/ApplicationServices';
 
 export class FiredrillStore {
     @observable private currentUserID: number;
+    @observable private currentFiredrillID: number;
 
-    @observable private classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
+    @observable private _classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
+    @computed
+    public get classes(): Map<number, FiredrillClass> {
+        return this._classes.toJS();
+    }
     @computed
     public get allClasses(): FiredrillClass[] {
-        return Array.from(this.classes.values());
+        return Array.from(this._classes.values());
     }
     @computed
     public get unclaimedClasses(): FiredrillClass[] {
@@ -36,7 +41,7 @@ export class FiredrillStore {
     }
 
     public constructor() {
-        this.setup().then(() => this.startFiredrill('test-fd'));
+        this.setup();
     }
 
     @action
@@ -44,13 +49,22 @@ export class FiredrillStore {
         const user = await ApplicationServices.getCurrentUser();
         this.currentUserID = user.userID;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
-
-        const classes = await SchoolServices.getClasses();
-        classes.map(c => new FiredrillClass(c)).forEach(c => this.classes.set(c.classID, c));
+        const schools = await SchoolServices.getSchools();
+        schools.forEach(school =>
+            Firebase.Refs.addActiveFiredrillForSchoolListener(school.schoolID, firedrill => {
+                if (null != firedrill) {
+                    this.startFiredrill(school.schoolID);
+                }
+            })
+        );
     }
 
     @action
-    public startFiredrill(firedrillID: string): void {
+    public async startFiredrill(firedrillID: number): Promise<void> {
+        this.currentFiredrillID = firedrillID;
+        const classes = await SchoolServices.getClassesForSchool(firedrillID);
+        classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
+
         this.allClasses.forEach(aClass => {
             aClass.students.forEach(student =>
                 Firebase.Refs.addStudentFiredrillStatusListener(
@@ -71,7 +85,9 @@ export class FiredrillStore {
 
     public claimClass(classID: number): Promise<void> {
         ApplicationServices.log('Claiming a class', classID, this.currentUserID);
-        return Firebase.Refs.classFiredrillData('test-fd', classID).update({ claimedByID: this.currentUserID });
+        return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
+            claimedByID: this.currentUserID
+        });
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {
@@ -87,7 +103,7 @@ export class FiredrillStore {
     }
 
     private saveStudentStatus(studentID: number, status: Status): Promise<void> {
-        return Firebase.Refs.studentFiredrillStatus('test-fd', studentID).update({ status });
+        return Firebase.Refs.studentFiredrillStatus(this.currentFiredrillID, studentID).update({ status });
     }
 }
 
