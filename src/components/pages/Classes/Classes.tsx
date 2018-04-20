@@ -1,23 +1,18 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import CheckIcon from '@material-ui/icons/CheckCircle';
-import { Badge, IconButton, Toolbar } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import { AppBar, Badge, IconButton, Tab, Tabs, Toolbar } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../../config/TabStyles';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
-import ActionTableCell from '../../shared/ActionTableCell';
-import ClassesTableCell from '../../shared/ClassesTableCell';
 import ContentView from '../../shared/ContentView';
-import SearchBar from '../../shared/SearchBar';
-import TableHeader from '../../shared/TableHeader';
-import TableView from '../../shared/TableView';
+import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
+import UnclaimedClasses from './UnclaimedClasses';
+import { Routes } from '../../../config/routes';
 
 export type SingleClass = {
     id: number;
@@ -50,12 +45,10 @@ namespace style {
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
     export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
-    export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
-    export const headerRight: ViewStyle = { marginRight: 25 };
 }
 
 @observer
-export class Classes extends React.Component<ClassesProps & NavigationScreenProps, ClassesState> {
+export class Classes extends React.Component<ClassesProps, ClassesState> {
     state = {
         index: 0
     };
@@ -111,65 +104,21 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                     onChangeIndex={this.handleChange}
                     style={style.swipeableViewStyle}
                 >
-                    <MyClasses
-                        classes={this.props.myClasses}
-                        onClickClass={() => this.props.navigation.navigate('ClassDetail')}
-                    />
-                    <ScrollView>
-                        <SearchBar />
-                        <TableView>
-                            {this.props.classes.map(singleClass => (
-                                <ActionTableCell
-                                    onClick={this.handlePressClaim(singleClass.classID)}
-                                    cellData={{
-                                        id: singleClass.classID,
-                                        label: singleClass.name,
-                                        subLabel: singleClass.gradeLevel.toString()
-                                    }}
-                                    key={singleClass.classID}
-                                    buttonLabel={'Claim'}
-                                    buttonColor={'red'}
-                                    buttonTextColor={'white'}
-                                />
-                            ))}
-                        </TableView>
-                    </ScrollView>
-                    <ScrollView>
-                        <TableView>
-                            <TableHeader>
-                                <View style={style.headerLeft}>
-                                    <Text>Class</Text>
-                                </View>
-                                <View style={style.headerRight}>
-                                    <Text>Status</Text>
-                                </View>
-                            </TableHeader>
-                            {this.props.unclaimedClasses.map(singleClass => {
-                                return (
-                                    <ActionTableCell
-                                        onClick={() => this.props.navigation.navigate('ClassDetail')}
-                                        cellData={{
-                                            id: singleClass.classID,
-                                            label: singleClass.name,
-                                            subLabel: singleClass.gradeLevel.toString()
-                                        }}
-                                        key={singleClass.classID}
-                                        buttonLabel={'Claim'}
-                                        buttonColor={'red'}
-                                        buttonTextColor={'white'}
-                                    />
-                                );
-                            })}
-                        </TableView>
-                    </ScrollView>
+                    <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
+                    <FindClasses classes={this.props.classes} onPressClaim={this.handlePressClaim} />
+                    <UnclaimedClasses classes={this.props.unclaimedClasses} />
                 </SwipeableViews>
             </ContentView>
         );
     }
 
-    private handlePressClaim(classID: number): () => void {
-        return () => this.props.claimClass(classID);
-    }
+    private handlePressClaim = (classID: number): Promise<void> => {
+        return this.props.claimClass(classID);
+    };
+
+    private handlePressGoToClass = (classID: number): void => {
+        this.props.navigation.navigate(Routes.ClassDetail, { classID });
+    };
 }
 
 function mapStoresToProps({ firedrillStore }: Stores, props: ClassesProps): StoreProps {

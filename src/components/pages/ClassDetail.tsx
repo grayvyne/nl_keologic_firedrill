@@ -2,108 +2,25 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
+import { ScrollView, View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import ContentView from '../shared/ContentView';
-import { SingleClass } from './Classes';
-import ActionTableCell from '../shared/ActionTableCell';
 import TableView from '../shared/TableView';
-import { View, ScrollView } from 'react-native';
+import { FiredrillClass } from '../../models/FiredrillClass';
+import { Stores } from '../../stores';
+import { inject, observer } from 'mobx-react';
+import { ActionTableCell } from '../shared';
+import { Student, Status } from '../../models/Student';
 
-export default class ClassDetail extends React.Component<NavigationScreenProps> {
-    data: SingleClass[] = [
-        {
-            id: 1,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 2,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 3,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 4,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 5,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 6,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 7,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 8,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 9,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 10,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 11,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 12,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        },
-        {
-            id: 13,
-            name: 'Mrs. Smithson',
-            grade: '3',
-            found: 12,
-            total: 24
-        }
-    ];
-    render() {
+interface StoreProps {
+    class: FiredrillClass | undefined;
+}
+
+interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
+
+@observer
+class ClassDetail extends React.Component<Props> {
+    public render(): JSX.Element {
         return (
             <View>
                 <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
@@ -120,26 +37,38 @@ export default class ClassDetail extends React.Component<NavigationScreenProps> 
                 </AppBar>
                 <ContentView>
                     <ScrollView>
-                        <TableView>
-                            {this.data.map(singleClass => {
-                                return (
-                                    <ActionTableCell
-                                        cellData={{
-                                            id: singleClass.id,
-                                            label: singleClass.name,
-                                            subLabel: singleClass.grade
-                                        }}
-                                        key={singleClass.id}
-                                        buttonLabel={'Claim'}
-                                        buttonColor={'red'}
-                                        buttonTextColor={'white'}
-                                    />
-                                );
-                            })}
-                        </TableView>
+                        <TableView>{this.props.class!.students.map(this.renderTableCell)}</TableView>
                     </ScrollView>
                 </ContentView>
             </View>
         );
     }
+
+    private renderTableCell = (student: Student): JSX.Element => {
+        let cellProps = this.buildTableCellProps(student.status);
+
+        return (
+            <ActionTableCell
+                key={student.userID}
+                cellData={{ id: student.userID, label: student.firstName + ' ' + student.lastName }}
+                buttonTextColor="white"
+                {...cellProps}
+            />
+        );
+    };
+
+    private buildTableCellProps(status: Status): {} {
+        switch (status) {
+            case Status.Missing:
+                return { buttonLabel: 'Missing', buttonColor: 'red' };
+            default:
+                return { buttonLabel: 'Found', buttonColor: 'blue' };
+        }
+    }
 }
+
+function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
+    return { class: firedrillStore.classes.get(props.navigation.state.params!.classID) };
+}
+
+export default inject(mapStoresToProps)(ClassDetail);
