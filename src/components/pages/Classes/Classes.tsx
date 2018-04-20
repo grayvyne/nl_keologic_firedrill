@@ -8,15 +8,16 @@ import * as React from 'react';
 import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
-import TabStyles from '../../config/TabStyles';
-import { FiredrillClass } from '../../models/FiredrillClass';
-import { Stores } from '../../stores';
-import ActionTableCell from '../shared/ActionTableCell';
-import ClassesTableCell from '../shared/ClassesTableCell';
-import ContentView from '../shared/ContentView';
-import SearchBar from '../shared/SearchBar';
-import TableHeader from '../shared/TableHeader';
-import TableView from '../shared/TableView';
+import TabStyles from '../../../config/TabStyles';
+import { FiredrillClass } from '../../../models/FiredrillClass';
+import { Stores } from '../../../stores';
+import ActionTableCell from '../../shared/ActionTableCell';
+import ClassesTableCell from '../../shared/ClassesTableCell';
+import ContentView from '../../shared/ContentView';
+import SearchBar from '../../shared/SearchBar';
+import TableHeader from '../../shared/TableHeader';
+import TableView from '../../shared/TableView';
+import MyClasses from './MyClasses';
 
 export type SingleClass = {
     id: number;
@@ -110,19 +111,10 @@ export class Classes extends React.Component<ClassesProps & NavigationScreenProp
                     onChangeIndex={this.handleChange}
                     style={style.swipeableViewStyle}
                 >
-                    <ScrollView>
-                        <TableView>
-                            {this.props.myClasses.map(singleClass => {
-                                return (
-                                    <ClassesTableCell
-                                        onClick={() => this.props.navigation.navigate('ClassDetail')}
-                                        key={singleClass.classID}
-                                        singleClass={singleClass}
-                                    />
-                                );
-                            })}
-                        </TableView>
-                    </ScrollView>
+                    <MyClasses
+                        classes={this.props.myClasses}
+                        onClickClass={() => this.props.navigation.navigate('ClassDetail')}
+                    />
                     <ScrollView>
                         <SearchBar />
                         <TableView>
