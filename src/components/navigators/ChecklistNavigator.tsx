@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { StackNavigator, NavigationTabScreenOptions } from 'react-navigation';
-import Checklist from '../pages/Checklist';
-import ChecklistDetail from '../pages/ChecklistDetail';
 import CheckIcon from '@material-ui/icons/CheckCircle';
 import blueGrey from 'material-ui/colors/blueGrey';
+import * as React from 'react';
+import { NavigationTabScreenOptions, StackNavigator } from 'react-navigation';
+import { Routes } from '../../config/routes';
+import Checklist from '../pages/Checklist';
+import ChecklistDetail from '../pages/ChecklistDetail';
 
 const Nav = StackNavigator(
     {
-        Checklist: Checklist,
-        ChecklistDetail: ChecklistDetail
+        [Routes.Checklist]: Checklist,
+        [Routes.ChecklistDetail]: ChecklistDetail
     },
     { headerMode: 'none' }
 );

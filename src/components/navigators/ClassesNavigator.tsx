@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { StackNavigator, NavigationTabScreenOptions, NavigationScreenProps } from 'react-navigation';
-import Classes from '../pages/Classes';
-import ClassDetail from '../pages/ClassDetail';
 import PeopleIcon from '@material-ui/icons/People';
 import blueGrey from 'material-ui/colors/blueGrey';
+import * as React from 'react';
+import { NavigationScreenProps, NavigationTabScreenOptions, StackNavigator } from 'react-navigation';
+import { Routes } from '../../config/routes';
+import ClassDetail from '../pages/ClassDetail';
+import Classes from '../pages/Classes';
 
 const Nav = StackNavigator(
     {
-        Classes: Classes,
-        ClassDetail: ClassDetail
+        [Routes.Classes]: Classes,
+        [Routes.ClassDetail]: ClassDetail
     },
     { headerMode: 'none' }
 );

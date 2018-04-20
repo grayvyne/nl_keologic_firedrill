@@ -5,13 +5,14 @@ import { Search } from '../pages/Search';
 import ClassesNavigator from './ClassesNavigator';
 import ChecklistNavigator from './ChecklistNavigator';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { Routes } from '../../config/routes';
 
 const Nav = TabNavigator(
     {
-        Classes: ClassesNavigator,
-        Missing: { screen: Missing },
-        Search: { screen: Search },
-        Checklist: ChecklistNavigator
+        [Routes.Classes]: ClassesNavigator,
+        [Routes.Missing]: { screen: Missing },
+        [Routes.Search]: { screen: Search },
+        [Routes.Checklist]: ChecklistNavigator
     },
     {
         tabBarPosition: 'bottom',
