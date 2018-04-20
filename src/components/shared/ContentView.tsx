@@ -1,30 +1,33 @@
 import * as React from 'react';
+import { View, ViewStyle } from 'react-native';
 
 interface ContentViewProps {
-    containerStyle?: React.CSSProperties;
-    style?: React.CSSProperties;
+    containerStyle?: ViewStyle;
+    style?: ViewStyle;
+}
+
+namespace style {
+    export const contentWrapperStyle: ViewStyle = {
+        height: '100vh',
+        paddingTop: 56,
+        paddingBottom: 56,
+        overflow: 'hidden',
+        width: '100%'
+    };
+    export const contentStyle: ViewStyle = { width: '100%', height: '100%' };
 }
 
 export default class ContentView extends React.Component<ContentViewProps> {
     render() {
         return (
-            <div
+            <View
                 style={{
-                    ...{
-                        height: '100vh',
-                        paddingTop: 56,
-                        paddingBottom: 56,
-                        boxSizing: 'border-box',
-                        overflow: 'hidden',
-                        width: '100%'
-                    },
+                    ...style.contentWrapperStyle,
                     ...this.props.containerStyle
                 }}
             >
-                <div style={{ ...{ width: '100vw', height: '100%', overflowY: 'scroll' }, ...this.props.style }}>
-                    {this.props.children}
-                </div>
-            </div>
+                <View style={{ ...style.contentStyle, ...this.props.style }}>{this.props.children}</View>
+            </View>
         );
     }
 }
