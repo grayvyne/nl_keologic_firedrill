@@ -2,54 +2,55 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
 import PersonIcon from '@material-ui/icons/Person';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import blueGrey from 'material-ui/colors/blueGrey';
-
-interface MissingState {
-    index: number;
-}
+import { View, Text, ScrollView } from 'react-native';
+import ContentView from '../shared/ContentView';
 
 interface MissingProps {
     isVisible: boolean;
 }
 
-export class Missing extends React.Component<MissingProps, MissingState> {
+namespace style {
+    export const personIconStyle: React.CSSProperties = {
+        height: 26,
+        width: 26
+    };
+    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
+    export const toolbarStyle: React.CSSProperties = { alignItems: 'stretch' };
+    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+}
+
+export class Missing extends React.Component<MissingProps> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
-                <PersonIcon style={{ height: 26, width: 26, color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' }} />
+                <PersonIcon
+                    style={{ ...style.personIconStyle, ...{ color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' } }}
+                />
             );
         }
-    };
-    constructor(props: MissingProps) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
-
-    handleChange = (event: any, index: any) => {
-        this.setState({ index });
     };
 
     render() {
         return (
-            <div>
-                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
+            <View>
+                <AppBar position={'absolute'} style={style.appBarStyle}>
+                    <Toolbar style={style.toolbarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={style.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </SwipeableViews>
-            </div>
+                <ContentView>
+                    <ScrollView>
+                        <View>
+                            <Text>Test Three</Text>
+                        </View>
+                    </ScrollView>
+                </ContentView>
+            </View>
         );
     }
 }

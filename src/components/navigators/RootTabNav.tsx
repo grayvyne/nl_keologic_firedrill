@@ -9,8 +9,8 @@ import blueGrey from 'material-ui/colors/blueGrey';
 const Nav = TabNavigator(
     {
         Classes: ClassesNavigator,
-        Missing: Missing,
-        Search: Search,
+        Missing: { screen: Missing },
+        Search: { screen: Search },
         Checklist: ChecklistNavigator
     },
     {
