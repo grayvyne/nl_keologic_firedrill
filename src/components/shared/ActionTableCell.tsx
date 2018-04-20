@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Button } from 'material-ui';
+import { View, Text, ViewStyle, TextStyle } from 'react-native';
+import TableCell from '../shared/TableCell';
 
 interface ActionTableCellProps {
     buttonLabel?: string;
@@ -15,94 +17,53 @@ type ActionTableCellData = {
     subLabel?: string;
 };
 
+namespace style {
+    export const labelContainer: ViewStyle = {
+        display: 'flex',
+        flexGrow: 1,
+        flexDirection: 'column'
+    };
+    export const label: TextStyle = {
+        textAlign: 'left',
+        fontWeight: '400',
+        fontSize: 16,
+        marginBottom: '3px'
+    };
+    export const subLabel: TextStyle = {
+        textAlign: 'left',
+        fontWeight: '300',
+        color: 'grey'
+    };
+    export const button: React.CSSProperties = {
+        borderRadius: 2,
+        width: 110
+    };
+}
+
 export default class ActionTableCell extends React.Component<ActionTableCellProps> {
     render() {
         return (
-            <div
-                key={this.props.cellData.id}
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    padding: 0,
-                    border: 'unset'
-                }}
-            >
-                <div
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        padding: 0,
-                        textRendering: 'auto',
-                        color: 'initial',
-                        letterSpacing: 'normal',
-                        wordSpacing: 'normal',
-                        textTransform: 'none',
-                        textIndent: 0,
-                        textShadow: 'none',
-                        display: 'inline-block',
-                        textAlign: 'start',
-                        margin: 0,
-                        font: '400 11px system-ui'
-                    }}
-                >
-                    <div
+            <TableCell>
+                <View style={style.labelContainer}>
+                    <Text style={style.label}>{this.props.cellData.label}</Text>
+                    <Text style={style.subLabel}>{this.props.cellData.subLabel}</Text>
+                </View>
+                <View>
+                    <Button
+                        variant="raised"
                         style={{
-                            display: 'flex',
-                            flexGrow: 1,
-                            alignItems: 'center',
-                            width: '100%',
-                            height: '100%',
-                            padding: 0
+                            ...style.button,
+                            ...{
+                                color: this.props.buttonTextColor,
+                                backgroundColor: this.props.buttonColor
+                            }
                         }}
+                        onClick={this.props.onClick}
                     >
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexGrow: 1,
-                                flexDirection: 'column',
-                                padding: 20
-                            }}
-                        >
-                            <div
-                                style={{
-                                    textAlign: 'left',
-                                    fontWeight: 400,
-                                    textTransform: 'capitalize',
-                                    fontSize: 16,
-                                    marginBottom: '3px'
-                                }}
-                            >
-                                {this.props.cellData.label}
-                            </div>
-                            <div
-                                style={{
-                                    textAlign: 'left',
-                                    fontWeight: 300,
-                                    textTransform: 'capitalize',
-                                    color: 'grey'
-                                }}
-                            >
-                                {this.props.cellData.subLabel}
-                            </div>
-                        </div>
-                        <div>
-                            <Button
-                                variant="raised"
-                                style={{
-                                    borderRadius: 2,
-                                    color: this.props.buttonTextColor,
-                                    backgroundColor: this.props.buttonColor,
-                                    marginRight: 10,
-                                    width: 110
-                                }}
-                                onClick={this.props.onClick}
-                            >
-                                {this.props.buttonLabel}
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        {this.props.buttonLabel}
+                    </Button>
+                </View>
+            </TableCell>
         );
     }
 }

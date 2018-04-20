@@ -2,52 +2,44 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
-import { NavigationActions } from 'react-navigation';
-
-interface ChecklistDetailState {
-    index: number;
-}
+import { NavigationScreenProps } from 'react-navigation';
+import { ViewStyle, View, Text } from 'react-native';
 
 interface ChecklistDetailProps {
     isVisible: boolean;
 }
 
-const backAction = NavigationActions.back();
-
-export class ChecklistDetail extends React.Component<ChecklistDetailProps, ChecklistDetailState> {
-    constructor(props: ChecklistDetailProps) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
-
-    handleChange = (event: any, index: any) => {
-        this.setState({ index });
+namespace style {
+    export const viewStyle: ViewStyle = {
+        backgroundColor: 'white',
+        display: 'flex',
+        flexGrow: 1,
+        height: '100%'
     };
+}
 
+export class ChecklistDetail extends React.Component<ChecklistDetailProps & NavigationScreenProps> {
     render() {
         return (
-            <div>
-                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
+            <View style={style.viewStyle}>
+                <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton
                             color="inherit"
                             aria-label="Menu"
                             style={{ alignSelf: 'center', marginLeft: -10 }}
-                            onClick={() => (this.props as any).navigation.dispatch(backAction)}
+                            onClick={() => this.props.navigation.goBack()}
                         >
                             <BackIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </SwipeableViews>
-            </div>
+                <View>
+                    <Text>Test One</Text>
+                    <Text>Test Two</Text>
+                    <Text>Test Three</Text>
+                </View>
+            </View>
         );
     }
 }

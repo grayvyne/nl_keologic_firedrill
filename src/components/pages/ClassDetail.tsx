@@ -3,12 +3,110 @@ import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
+import ContentView from '../shared/ContentView';
+import { SingleClass } from './Classes';
+import ActionTableCell from '../shared/ActionTableCell';
+import TableView from '../shared/TableView';
+import { View, ScrollView } from 'react-native';
 
 export default class ClassDetail extends React.Component<NavigationScreenProps> {
+    data: SingleClass[] = [
+        {
+            id: 1,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 2,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 3,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 4,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 5,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 6,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 7,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 8,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 9,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 10,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 11,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 12,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        },
+        {
+            id: 13,
+            name: 'Mrs. Smithson',
+            grade: '3',
+            found: 12,
+            total: 24
+        }
+    ];
     render() {
         return (
-            <div>
-                <AppBar position={'static'} style={{ boxShadow: 'none' }}>
+            <View>
+                <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton
                             color="inherit"
@@ -20,12 +118,28 @@ export default class ClassDetail extends React.Component<NavigationScreenProps> 
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <div>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </div>
-            </div>
+                <ContentView>
+                    <ScrollView>
+                        <TableView>
+                            {this.data.map(singleClass => {
+                                return (
+                                    <ActionTableCell
+                                        cellData={{
+                                            id: singleClass.id,
+                                            label: singleClass.name,
+                                            subLabel: singleClass.grade
+                                        }}
+                                        key={singleClass.id}
+                                        buttonLabel={'Claim'}
+                                        buttonColor={'red'}
+                                        buttonTextColor={'white'}
+                                    />
+                                );
+                            })}
+                        </TableView>
+                    </ScrollView>
+                </ContentView>
+            </View>
         );
     }
 }
