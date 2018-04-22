@@ -1,5 +1,3 @@
-import { StubConsole } from '../utilities/StubConsole';
-
 export enum PlatformBridgeCallType {
     OpenPluginsMenu = 'open_plugins_menu',
     ClosePluginsMenu = 'close_plugins_menu',
@@ -8,9 +6,8 @@ export enum PlatformBridgeCallType {
     IsAnyoneListening = 'is_anyone_listening'
 }
 
-export class PlatformBridge extends StubConsole {
+export class PlatformBridge {
     constructor() {
-        super();
         this.setSelfAsConsoleIfPlugin();
     }
 
@@ -40,7 +37,6 @@ export class PlatformBridge extends StubConsole {
     private setSelfAsConsoleIfPlugin(): void {
         setTimeout(async () => {
             await this.makeCall(PlatformBridgeCallType.IsAnyoneListening);
-            console = this;
         }, 100);
     }
 }

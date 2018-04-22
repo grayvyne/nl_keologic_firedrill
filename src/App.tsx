@@ -4,7 +4,6 @@ import red from 'material-ui/colors/red';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import * as React from 'react';
 import './App.css';
-// import { PlatformBridge, PlatformBridgeCallType } from './stores/PlatformBridge';
 import { Root } from './Root';
 
 const theme = createMuiTheme({
