@@ -23,12 +23,16 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
         };
     }
 
-    handleChange = (event: any, index: any) => {
+    public handleChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    render() {
-        return this.props.isVisible === true ? (
+    public render(): JSX.Element | null {
+        if (this.props.isVisible === false) {
+            return null;
+        }
+
+        return (
             <div>
                 <AppBar position={'static'}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
@@ -71,7 +75,7 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                     <div>Test Three</div>
                 </SwipeableViews>
             </div>
-        ) : null;
+        );
     }
 }
 

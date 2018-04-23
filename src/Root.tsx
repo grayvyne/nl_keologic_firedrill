@@ -24,11 +24,11 @@ export class Root extends React.Component<RootProps, RootState> {
         };
     }
 
-    handleChange = (event: any, index: any) => {
+    public handleChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div>
                 <Classes isVisible={this.state.index === 0} />

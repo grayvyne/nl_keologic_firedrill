@@ -19,12 +19,16 @@ export class Search extends React.Component<SearchProps, SearchState> {
         };
     }
 
-    handleChange = (event: any, index: any) => {
+    public handleChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    render() {
-        return this.props.isVisible === true ? (
+    public render(): JSX.Element | null {
+        if (this.props.isVisible === false) {
+            return null;
+        }
+
+        return (
             <div>
                 <AppBar position={'static'}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
@@ -37,7 +41,7 @@ export class Search extends React.Component<SearchProps, SearchState> {
                     <Input placeholder={'Search'} type={'search'} style={{ width: '100%' }} disableUnderline={true} />
                 </Card>
             </div>
-        ) : null;
+        );
     }
 }
 
