@@ -11,7 +11,7 @@ namespace style {
 }
 
 export default class TableHeader extends React.Component {
-    render() {
+    public render(): JSX.Element {
         return <TableCell style={style.cellStyle}>{this.props.children}</TableCell>;
     }
 }

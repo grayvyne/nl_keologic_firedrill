@@ -8,7 +8,7 @@ namespace style {
 }
 
 export default class SearchBar extends React.Component {
-    render() {
+    public render(): JSX.Element {
         return (
             <Card style={style.cardStyle}>
                 <Input placeholder={'Search'} type={'search'} style={style.searchInputStyle} disableUnderline={true} />

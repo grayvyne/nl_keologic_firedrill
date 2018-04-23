@@ -44,9 +44,9 @@ interface ClassesTableCellProps {
 }
 
 export default class ClassesTableCell extends React.Component<ClassesTableCellProps> {
-    singleClass = this.props.singleClass;
+    public singleClass: FiredrillClass = this.props.singleClass;
 
-    render() {
+    public render(): JSX.Element {
         const { singleClass } = this.props;
         return (
             <TableCell onClick={this.props.onClick}>

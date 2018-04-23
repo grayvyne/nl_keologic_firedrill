@@ -22,7 +22,7 @@ export type SingleClass = {
     total: number;
 };
 
-interface ClassesState {
+interface State {
     index: number;
 }
 
@@ -33,7 +33,7 @@ interface StoreProps {
     claimClass(classID: number): Promise<void>;
 }
 
-interface ClassesProps extends StoreProps, NavigationScreenProps {
+interface Props extends StoreProps, NavigationScreenProps {
     isVisible: boolean;
 }
 
@@ -48,20 +48,20 @@ namespace style {
 }
 
 @observer
-export class Classes extends React.Component<ClassesProps, ClassesState> {
-    state = {
+export class Classes extends React.Component<Props, State> {
+    public state: State = {
         index: 0
     };
 
-    handleTabChange = (event: any, index: any) => {
+    public handleTabChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    handleChange = (index: any) => {
+    public handleChange = (index: any) => {
         this.setState({ index });
     };
 
-    render() {
+    public render(): JSX.Element {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={style.appBarStyle}>
@@ -90,7 +90,6 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
                                             style={style.unclaimedTabBadgeStyle}
                                         />
                                     </span>
-                                    // tslint:disable-next-line:jsx-curly-spacing
                                 }
                                 style={TabStyles}
                             >
@@ -121,7 +120,7 @@ export class Classes extends React.Component<ClassesProps, ClassesState> {
     };
 }
 
-function mapStoresToProps({ firedrillStore }: Stores, props: ClassesProps): StoreProps {
+function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
     return {
         myClasses: firedrillStore.myClasses,
         classes: firedrillStore.allClasses,

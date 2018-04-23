@@ -8,7 +8,7 @@ import blueGrey from 'material-ui/colors/blueGrey';
 import { View, Text, ScrollView } from 'react-native';
 import ContentView from '../shared/ContentView';
 
-interface MissingProps {
+interface Props {
     isVisible: boolean;
 }
 
@@ -22,7 +22,7 @@ namespace style {
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-export class Missing extends React.Component<MissingProps> {
+export class Missing extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
@@ -33,7 +33,7 @@ export class Missing extends React.Component<MissingProps> {
         }
     };
 
-    render() {
+    public render(): JSX.Element {
         return (
             <View>
                 <AppBar position={'absolute'} style={style.appBarStyle}>

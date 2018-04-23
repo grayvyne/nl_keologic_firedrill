@@ -9,11 +9,11 @@ import { View, Text, ScrollView } from 'react-native';
 import ContentView from '../shared/ContentView';
 import SearchBar from '../shared/SearchBar';
 
-interface SearchState {
+interface State {
     index: number;
 }
 
-interface SearchProps {
+interface Props {
     isVisible: boolean;
 }
 
@@ -25,7 +25,7 @@ namespace style {
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
 }
 
-export class Search extends React.Component<SearchProps, SearchState> {
+export class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
@@ -33,18 +33,18 @@ export class Search extends React.Component<SearchProps, SearchState> {
             );
         }
     };
-    constructor(props: SearchProps) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0
         };
     }
 
-    handleChange = (event: any, index: any) => {
+    public handleChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    render() {
+    public render(): JSX.Element {
         return (
             <View>
                 <AppBar position={'absolute'} style={style.appBarStyle}>

@@ -33,7 +33,7 @@ const Nav = TabNavigator(
 );
 
 export class RootTabNav extends React.Component {
-    render() {
+    public render(): JSX.Element {
         return <Nav />;
     }
 }

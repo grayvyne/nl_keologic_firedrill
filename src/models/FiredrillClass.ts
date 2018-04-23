@@ -41,6 +41,7 @@ export class FiredrillClass extends Class {
     @Typeof(['number', 'object'])
     @observable
     private _claimedByID: number | null;
+
     @observable private _students: Student[];
 
     constructor(record: ClassRecord) {

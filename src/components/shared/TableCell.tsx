@@ -22,7 +22,7 @@ namespace style {
 }
 
 export default class TableCell extends React.Component<TableCellProps> {
-    render() {
+    public render(): JSX.Element {
         let ContentWrapperComponent: React.ComponentType<ViewProperties> = View;
         let wrapperProps: {} = { style: { ...style.highlightWrapper, ...this.props.style } };
         if (null != this.props.onClick) {

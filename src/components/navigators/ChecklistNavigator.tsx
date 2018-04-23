@@ -11,7 +11,9 @@ const Nav = StackNavigator(
         [Routes.Checklist]: Checklist,
         [Routes.ChecklistDetail]: ChecklistDetail
     },
-    { headerMode: 'none' }
+    {
+        headerMode: 'none'
+    }
 );
 
 export default class ClassesNavigator extends React.Component {
@@ -22,7 +24,8 @@ export default class ClassesNavigator extends React.Component {
             );
         }
     };
-    render() {
+
+    public render(): JSX.Element {
         return <Nav />;
     }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 
-interface ContentViewProps {
+interface Props {
     containerStyle?: ViewStyle;
     style?: ViewStyle;
 }
@@ -17,8 +17,8 @@ namespace style {
     export const contentStyle: ViewStyle = { width: '100%', height: '100%' };
 }
 
-export default class ContentView extends React.Component<ContentViewProps> {
-    render() {
+export default class ContentView extends React.Component<Props> {
+    public render(): JSX.Element {
         return (
             <View
                 style={{

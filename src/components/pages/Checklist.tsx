@@ -5,11 +5,11 @@ import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import ContentView from '../shared/ContentView';
 
-interface ChecklistState {
+interface State {
     index: number;
 }
 
-interface ChecklistProps {
+interface Props {
     isVisible: boolean;
 }
 
@@ -22,19 +22,19 @@ namespace style {
     };
 }
 
-export class Checklist extends React.Component<ChecklistProps, ChecklistState> {
-    constructor(props: ChecklistProps) {
+export class Checklist extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0
         };
     }
 
-    handleChange = (event: any, index: any) => {
+    public handleChange = (event: any, index: any) => {
         this.setState({ index });
     };
 
-    render() {
+    public render(): JSX.Element {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>

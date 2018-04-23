@@ -5,7 +5,7 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { ViewStyle, View, Text } from 'react-native';
 
-interface ChecklistDetailProps {
+interface Props {
     isVisible: boolean;
 }
 
@@ -18,8 +18,8 @@ namespace style {
     };
 }
 
-export class ChecklistDetail extends React.Component<ChecklistDetailProps & NavigationScreenProps> {
-    render() {
+export class ChecklistDetail extends React.Component<Props & NavigationScreenProps> {
+    public render(): JSX.Element {
         return (
             <View style={style.viewStyle}>
                 <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>

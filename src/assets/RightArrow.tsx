@@ -7,7 +7,7 @@ interface SvgProps {
 }
 
 export default class RightArrow extends React.Component<SvgProps> {
-    render() {
+    public render(): JSX.Element {
         return (
             <SvgIcon width={this.props.width} height={this.props.height}>
                 <g

@@ -41,7 +41,7 @@ namespace style {
 }
 
 export default class ActionTableCell extends React.Component<ActionTableCellProps> {
-    render() {
+    public render(): JSX.Element {
         return (
             <TableCell>
                 <View style={style.labelContainer}>

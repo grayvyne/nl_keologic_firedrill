@@ -34,7 +34,7 @@ export class Class {
         this.gradeLevel = record.gradeLevel;
         this._users = record.students.map(s => new SchoolUser(s));
         this.teachers = record.teachers.map(s => new SchoolUser(s));
-        console.log('record', record);
+
         const firstTeacher = record.teachers[0];
         if (null != record.name) {
             this.name = record.name;

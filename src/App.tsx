@@ -57,8 +57,9 @@ const Counter = observer(() => (
         <Text>{bridge.numQueuedMessages}</Text>
     </View>
 ));
+
 class App extends React.Component {
-    render() {
+    render(): JSX.Element {
         return (
             <MuiThemeProvider theme={theme}>
                 <Provider firedrillStore={fdStore}>
