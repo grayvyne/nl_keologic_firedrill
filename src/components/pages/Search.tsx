@@ -11,6 +11,13 @@ interface Props {
     isVisible: boolean;
 }
 
+namespace styles {
+    export const alignStretch = { alignItems: 'stretch' };
+    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const fullWidth = { width: '100%' };
+    export const card = { margin: 10, padding: 10 };
+}
+
 export class Search extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -31,14 +38,14 @@ export class Search extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar position={'static'}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
+                    <Toolbar style={styles.alignStretch}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Card style={{ margin: 10, padding: 10 }}>
-                    <Input placeholder={'Search'} type={'search'} style={{ width: '100%' }} disableUnderline={true} />
+                <Card style={styles.card}>
+                    <Input placeholder={'Search'} type={'search'} style={styles.fullWidth} disableUnderline={true} />
                 </Card>
             </div>
         );

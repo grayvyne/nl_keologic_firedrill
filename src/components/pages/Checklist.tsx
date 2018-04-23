@@ -12,6 +12,11 @@ interface Props {
     isVisible: boolean;
 }
 
+namespace styles {
+    export const toolbar = { alignItems: 'stretch' };
+    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+}
+
 export class Checklist extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -32,8 +37,8 @@ export class Checklist extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar position={'static'}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
+                    <Toolbar style={styles.toolbar}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>

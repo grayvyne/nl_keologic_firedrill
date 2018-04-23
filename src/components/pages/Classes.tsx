@@ -15,6 +15,15 @@ interface Props {
     isVisible: boolean;
 }
 
+namespace styles {
+    export const tab = { height: '100%' };
+    export const tabFont = { fontSize: 10 };
+    export const badge = { marginLeft: -20 };
+    export const unclaimed = { fontSize: 10, marginRight: 40 };
+    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const alignStretch = { alignItems: 'stretch' };
+}
+
 export class Classes extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -35,8 +44,8 @@ export class Classes extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar position={'static'}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
+                    <Toolbar style={styles.alignStretch}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />
                         </IconButton>
                         <Tabs
@@ -45,22 +54,21 @@ export class Classes extends React.Component<Props, State> {
                             indicatorColor="white"
                             textColor="inherit"
                             fullWidth={true}
-                            style={{ height: '100%' }}
+                            style={styles.tab}
                         >
-                            <Tab label={<span style={{ fontSize: 10 }}>Your Classes</span>} style={TabStyles} />
-                            <Tab label={<span style={{ fontSize: 10 }}>Find Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
                             <Tab
                                 label={
                                     <span>
-                                        <span style={{ fontSize: 10, marginRight: 40 }}>Unclaimed</span>
+                                        <span style={styles.unclaimed}>Unclaimed</span>
                                         <Badge
                                             color="secondary"
                                             badgeContent={999}
                                             children={<span />}
-                                            style={{ marginLeft: -20 }}
+                                            style={styles.badge}
                                         />
                                     </span>
-                                    // tslint:disable-next-line:jsx-curly-spacing
                                 }
                                 style={TabStyles}
                             >

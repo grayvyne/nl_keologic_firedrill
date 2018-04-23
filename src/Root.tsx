@@ -16,6 +16,16 @@ interface State {
 
 interface Props {}
 
+namespace styles {
+    export const bottomNavigation: React.CSSProperties = {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        boxShadow: '1px 1px 10px 1px rgba(0, 0, 0, 0.15)'
+    };
+}
+
 export class Root extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -39,13 +49,7 @@ export class Root extends React.Component<Props, State> {
                     value={this.state.index}
                     onChange={this.handleChange}
                     showLabels={true}
-                    style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        boxShadow: '1px 1px 10px 1px rgba(0, 0, 0, 0.15)'
-                    }}
+                    style={styles.bottomNavigation}
                 >
                     <StyledBottomNavigationAction label="Classes" icon={<PeopleIcon />} />
                     <StyledBottomNavigationAction label="Missing" icon={<PersonIcon />} />
