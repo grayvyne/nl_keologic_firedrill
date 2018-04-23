@@ -9,6 +9,7 @@ import Classes from './components/pages/Classes';
 import Missing from './components/pages/Missing';
 import Search from './components/pages/Search';
 import StyledBottomNavigationAction from './components/shared/StyledBottomNavigation';
+import { RootTabLabels as ui } from './config/uiConstants';
 
 interface State {
     index: number;
@@ -51,10 +52,10 @@ export class Root extends React.Component<Props, State> {
                     showLabels={true}
                     style={styles.bottomNavigation}
                 >
-                    <StyledBottomNavigationAction label="Classes" icon={<PeopleIcon />} />
-                    <StyledBottomNavigationAction label="Missing" icon={<PersonIcon />} />
-                    <StyledBottomNavigationAction label="Search" icon={<SearchIcon />} />
-                    <StyledBottomNavigationAction label="Checklist" icon={<CheckIcon />} />
+                    <StyledBottomNavigationAction label={ui.CLASSES} icon={<PeopleIcon />} />
+                    <StyledBottomNavigationAction label={ui.MISSING} icon={<PersonIcon />} />
+                    <StyledBottomNavigationAction label={ui.SEARCH} icon={<SearchIcon />} />
+                    <StyledBottomNavigationAction label={ui.CHECKLIST} icon={<CheckIcon />} />
                 </BottomNavigation>
             </div>
         );

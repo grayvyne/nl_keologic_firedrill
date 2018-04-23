@@ -6,6 +6,7 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../config/TabStyles';
+import { ClassTabStrings as ui } from '../../config/uiConstants';
 
 interface State {
     index: number;
@@ -56,12 +57,12 @@ export class Classes extends React.Component<Props, State> {
                             fullWidth={true}
                             style={styles.tab}
                         >
-                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
-                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>{ui.YOUR_CLASSES}</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>{ui.FIND_CLASSES}</span>} style={TabStyles} />
                             <Tab
                                 label={
                                     <span>
-                                        <span style={styles.unclaimed}>Unclaimed</span>
+                                        <span style={styles.unclaimed}>{ui.UNCLAIMED}</span>
                                         <Badge
                                             color="secondary"
                                             badgeContent={999}

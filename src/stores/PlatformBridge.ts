@@ -11,9 +11,9 @@ export class PlatformBridge {
         this.setSelfAsConsoleIfPlugin();
     }
 
-    public makeCall(type: PlatformBridgeCallType, data?: object): Promise<object> {
+    public callOverBridge(type: PlatformBridgeCallType, data?: object): Promise<object> {
         this.log('making a call:', name);
-        this.postMessage({ type, data });
+        this.sendWebViewMessage({ type, data });
         return new Promise((resolve, reject) => {
             const handler = (message: MessageEvent) => {
                 const messageData = JSON.parse(message.data);
@@ -27,16 +27,16 @@ export class PlatformBridge {
     }
 
     public log<T>(...message: T[]): void {
-        this.postMessage({ type: PlatformBridgeCallType.LogDebugMessage, data: message });
+        this.sendWebViewMessage({ type: PlatformBridgeCallType.LogDebugMessage, data: message });
     }
 
-    private postMessage(message: {}): void {
+    private sendWebViewMessage(message: {}): void {
         window.postMessage(JSON.stringify(message), '*');
     }
 
     private setSelfAsConsoleIfPlugin(): void {
         setTimeout(async () => {
-            await this.makeCall(PlatformBridgeCallType.IsAnyoneListening);
+            await this.callOverBridge(PlatformBridgeCallType.IsAnyoneListening);
         }, 100);
     }
 }
