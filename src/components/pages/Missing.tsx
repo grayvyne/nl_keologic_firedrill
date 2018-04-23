@@ -1,18 +1,18 @@
 import AppsIcon from '@material-ui/icons/Apps';
+import PersonIcon from '@material-ui/icons/Person';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
-import * as React from 'react';
-import PersonIcon from '@material-ui/icons/Person';
-import { NavigationTabScreenOptions } from 'react-navigation';
 import blueGrey from 'material-ui/colors/blueGrey';
-import { View, Text, ScrollView } from 'react-native';
+import * as React from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { NavigationTabScreenOptions } from 'react-navigation';
 import ContentView from '../shared/ContentView';
 
 interface Props {
     isVisible: boolean;
 }
 
-namespace style {
+namespace styles {
     export const personIconStyle: React.CSSProperties = {
         height: 26,
         width: 26
@@ -20,6 +20,7 @@ namespace style {
     export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
     export const toolbarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
 export class Missing extends React.Component<Props> {
@@ -27,7 +28,7 @@ export class Missing extends React.Component<Props> {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
                 <PersonIcon
-                    style={{ ...style.personIconStyle, ...{ color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' } }}
+                    style={{ ...styles.personIconStyle, ...{ color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' } }}
                 />
             );
         }
@@ -36,9 +37,9 @@ export class Missing extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar position={'absolute'} style={style.appBarStyle}>
-                    <Toolbar style={style.toolbarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={style.iconButtonStyle}>
+                <AppBar position={'absolute'} style={styles.appBarStyle}>
+                    <Toolbar style={styles.toolbarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>

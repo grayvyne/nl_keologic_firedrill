@@ -59,7 +59,7 @@ const Counter = observer(() => (
 ));
 
 class App extends React.Component {
-    render(): JSX.Element {
+    public render(): JSX.Element {
         return (
             <MuiThemeProvider theme={theme}>
                 <Provider firedrillStore={fdStore}>

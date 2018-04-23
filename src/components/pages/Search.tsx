@@ -1,11 +1,11 @@
 import AppsIcon from '@material-ui/icons/Apps';
+import SearchIcon from '@material-ui/icons/Search';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
-import * as React from 'react';
-import SearchIcon from '@material-ui/icons/Search';
-import { NavigationTabScreenOptions } from 'react-navigation';
 import blueGrey from 'material-ui/colors/blueGrey';
-import { View, Text, ScrollView } from 'react-native';
+import * as React from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { NavigationTabScreenOptions } from 'react-navigation';
 import ContentView from '../shared/ContentView';
 import SearchBar from '../shared/SearchBar';
 
@@ -17,7 +17,7 @@ interface Props {
     isVisible: boolean;
 }
 
-namespace style {
+namespace styles {
     export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
     export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
@@ -48,9 +48,9 @@ export class Search extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar position={'absolute'} style={style.appBarStyle}>
-                    <Toolbar style={style.toolBarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={style.iconButtonStyle}>
+                <AppBar position={'absolute'} style={styles.appBarStyle}>
+                    <Toolbar style={styles.toolBarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>

@@ -13,7 +13,9 @@ interface Props {
     isVisible: boolean;
 }
 
-namespace style {
+namespace styles {
+    export const toolbar = { alignItems: 'stretch' };
+    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const viewStyle: ViewStyle = {
         backgroundColor: 'white',
         display: 'flex',
@@ -38,13 +40,13 @@ export class Checklist extends React.Component<Props, State> {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
-                        <IconButton color="inherit" aria-label="Menu" style={{ alignSelf: 'center', marginLeft: -10 }}>
+                    <Toolbar style={styles.toolbar}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <View style={style.viewStyle} />
+                <View style={styles.viewStyle} />
             </ContentView>
         );
     }
