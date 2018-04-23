@@ -44,7 +44,7 @@ export class FiredrillClass extends Class {
 
     @observable private _students: Student[];
 
-    constructor(record: ClassRecord) {
+    public constructor(record: ClassRecord) {
         super(record);
         this._claimedByID = null;
         this._students = record.students.map(s => new Student(s));

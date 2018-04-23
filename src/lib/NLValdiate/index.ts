@@ -11,9 +11,10 @@ export function Typeof(value: string | string[]): PropertyDecorator {
 }
 
 type CustomClassDecorator = <T extends { new (...args: any[]): {} }>(t: T) => T;
+
 export const Validate: CustomClassDecorator = target => {
     const newClass = class Validated extends target {
-        constructor(...args: any[]) {
+        public constructor(...args: any[]) {
             super(...args);
 
             for (const key in this) {

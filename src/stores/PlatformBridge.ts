@@ -44,7 +44,7 @@ export class PlatformBridge extends StubConsole {
     private lastSentMessageID: number = 0;
     @observable private queuedMessages: {}[] = [];
 
-    constructor() {
+    public constructor() {
         super();
         this.inPluginMode = false;
         // this.checkIfPluginMode();
