@@ -26,7 +26,7 @@ namespace styles {
 }
 
 export class Classes extends React.Component<Props, State> {
-    constructor(props: Props) {
+    public constructor(props: Props) {
         super(props);
         this.state = {
             index: 0

@@ -7,7 +7,7 @@ export enum PlatformBridgeCallType {
 }
 
 export class PlatformBridge {
-    constructor() {
+    public constructor() {
         this.setSelfAsConsoleIfPlugin();
     }
 
