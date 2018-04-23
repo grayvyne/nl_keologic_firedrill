@@ -16,19 +16,21 @@ export namespace ApplicationServices {
     }
 
     export async function togglePluginMenu(): Promise<void> {
-        await getPlatformBridge().makeCall(ApplicationServiceMessageType.TogglePluginsMenu);
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.TogglePluginsMenu);
     }
 
     export async function showPluginMenu(): Promise<void> {
-        await getPlatformBridge().makeCall(ApplicationServiceMessageType.OpenPluginsMenu);
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.OpenPluginsMenu);
     }
 
     export async function hidePluginMenu(): Promise<void> {
-        await getPlatformBridge().makeCall(ApplicationServiceMessageType.ClosePluginsMenu);
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.ClosePluginsMenu);
     }
 
     export async function getCurrentUser(): Promise<User> {
-        const record = await getPlatformBridge().makeCall<UserRecord>(ApplicationServiceMessageType.GetCurrentUser);
+        const record = await getPlatformBridge().callOverBridge<UserRecord>(
+            ApplicationServiceMessageType.GetCurrentUser
+        );
         return new User(record);
     }
 

@@ -128,7 +128,6 @@ function handleStudentStatusChange(student: Student): (newStatus: { status: Stat
 
 function handleClassClaimedByChange(aClass: FiredrillClass): (newStatus: { claimedByID: number } | null) => void {
     return newStatus => {
-        ApplicationServices.log('Claimed by change', newStatus, aClass);
         if (null == newStatus) {
             aClass.unclaim();
         } else {

@@ -1,7 +1,6 @@
 import { action, computed, observable } from 'mobx';
-import { Typeof, Validate } from '../lib/NLValdiate';
 import { Class, GradeLevel } from './Class';
-import { Student, Status } from './Student';
+import { Status, Student } from './Student';
 import { SchoolUserRecord } from './User';
 
 export interface ClassRecord {
@@ -12,7 +11,6 @@ export interface ClassRecord {
     readonly teachers: SchoolUserRecord[];
 }
 
-@Validate
 export class FiredrillClass extends Class {
     @computed
     public get claimedByID(): number | null {
@@ -38,9 +36,7 @@ export class FiredrillClass extends Class {
         return claimedByUser.firstName + ' ' + claimedByUser.lastName;
     }
 
-    @Typeof(['number', 'object'])
-    @observable
-    private _claimedByID: number | null;
+    @observable private _claimedByID: number | null;
 
     @observable private _students: Student[];
 

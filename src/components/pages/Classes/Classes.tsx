@@ -6,13 +6,13 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../../config/TabStyles';
+import { Routes } from '../../../config/routes';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
 import ContentView from '../../shared/ContentView';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
-import { Routes } from '../../../config/routes';
 
 export type SingleClass = {
     id: number;
@@ -33,11 +33,9 @@ interface StoreProps {
     claimClass(classID: number): Promise<void>;
 }
 
-interface Props extends StoreProps, NavigationScreenProps {
-    isVisible: boolean;
-}
+interface Props extends StoreProps, NavigationScreenProps {}
 
-namespace style {
+namespace styles {
     export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
     export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
@@ -45,6 +43,7 @@ namespace style {
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
     export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
+    export const tabFont = { fontSize: 10 };
 }
 
 @observer
@@ -53,20 +52,20 @@ export class Classes extends React.Component<Props, State> {
         index: 0
     };
 
-    public handleTabChange = (event: any, index: any) => {
+    public handleTabChange = (event: any, index: number) => {
         this.setState({ index });
     };
 
-    public handleChange = (index: any) => {
+    public handleChange = (index: number) => {
         this.setState({ index });
     };
 
     public render(): JSX.Element {
         return (
             <ContentView>
-                <AppBar position={'fixed'} style={style.appBarStyle}>
-                    <Toolbar style={style.toolBarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={style.iconButtonStyle}>
+                <AppBar position={'fixed'} style={styles.appBarStyle}>
+                    <Toolbar style={styles.toolBarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                         <Tabs
@@ -75,19 +74,19 @@ export class Classes extends React.Component<Props, State> {
                             indicatorColor="white"
                             textColor="inherit"
                             fullWidth={true}
-                            style={style.tabsStyle}
+                            style={styles.tabsStyle}
                         >
-                            <Tab label={<span style={{ fontSize: 10 }}>Your Classes</span>} style={TabStyles} />
-                            <Tab label={<span style={{ fontSize: 10 }}>Find Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
                             <Tab
                                 label={
                                     <span>
-                                        <span style={style.unclaimedTabStyle}>Unclaimed</span>
+                                        <span style={styles.unclaimedTabStyle}>Unclaimed</span>
                                         <Badge
                                             color="secondary"
                                             badgeContent={this.props.unclaimedClasses.length}
                                             children={<span />}
-                                            style={style.unclaimedTabBadgeStyle}
+                                            style={styles.unclaimedTabBadgeStyle}
                                         />
                                     </span>
                                 }
@@ -101,7 +100,7 @@ export class Classes extends React.Component<Props, State> {
                 <SwipeableViews
                     index={this.state.index}
                     onChangeIndex={this.handleChange}
-                    style={style.swipeableViewStyle}
+                    style={styles.swipeableViewStyle}
                 >
                     <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
                     <FindClasses classes={this.props.classes} onPressClaim={this.handlePressClaim} />

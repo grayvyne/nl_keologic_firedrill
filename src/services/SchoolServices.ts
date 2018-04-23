@@ -19,32 +19,32 @@ export namespace SchoolServices {
     }
 
     export async function getSchools(): Promise<School[]> {
-        const schoolRecords = await getPlatformBridge().makeCall<SchoolRecord[]>(
+        const schoolRecords = await getPlatformBridge().callOverBridge<SchoolRecord[]>(
             SchoolServiceMessageType.GetAllSchools
         );
         return schoolRecords.map(record => new School(record));
     }
 
     export async function getClasses(): Promise<ClassRecord[]> {
-        return getPlatformBridge().makeCall<ClassRecord[]>(SchoolServiceMessageType.GetAllClasses);
+        return getPlatformBridge().callOverBridge<ClassRecord[]>(SchoolServiceMessageType.GetAllClasses);
     }
 
     export async function getUsers(): Promise<SchoolUser[]> {
-        const userRecords = await getPlatformBridge().makeCall<SchoolUserRecord[]>(
+        const userRecords = await getPlatformBridge().callOverBridge<SchoolUserRecord[]>(
             SchoolServiceMessageType.GetAllUsers
         );
         return userRecords.map(record => new SchoolUser(record));
     }
 
     export async function getFaculty(): Promise<SchoolUser[]> {
-        const userRecords = await getPlatformBridge().makeCall<SchoolUserRecord[]>(
+        const userRecords = await getPlatformBridge().callOverBridge<SchoolUserRecord[]>(
             SchoolServiceMessageType.GetAllFaculty
         );
         return userRecords.map(record => new SchoolUser(record));
     }
 
     export async function getStudents(): Promise<Student[]> {
-        const userRecords = await getPlatformBridge().makeCall<SchoolUserRecord[]>(
+        const userRecords = await getPlatformBridge().callOverBridge<SchoolUserRecord[]>(
             SchoolServiceMessageType.GetAllStudents
         );
         console.log('User Records:', userRecords);
@@ -52,9 +52,12 @@ export namespace SchoolServices {
     }
 
     export async function getClassesForSchool(schoolID: number): Promise<ClassRecord[]> {
-        const school = await getPlatformBridge().makeCall<SchoolRecord>(SchoolServiceMessageType.GetSingleSchool, {
-            id: schoolID
-        });
+        const school = await getPlatformBridge().callOverBridge<SchoolRecord>(
+            SchoolServiceMessageType.GetSingleSchool,
+            {
+                id: schoolID
+            }
+        );
         return school.classes;
     }
 }
