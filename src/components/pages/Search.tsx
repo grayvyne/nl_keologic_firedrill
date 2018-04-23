@@ -3,16 +3,16 @@ import { Card, IconButton, Input, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 
-interface SearchState {
+interface State {
     index: number;
 }
 
-interface SearchProps {
+interface Props {
     isVisible: boolean;
 }
 
-export class Search extends React.Component<SearchProps, SearchState> {
-    constructor(props: SearchProps) {
+export class Search extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0

@@ -4,16 +4,16 @@ import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 
-interface MissingState {
+interface State {
     index: number;
 }
 
-interface MissingProps {
+interface Props {
     isVisible: boolean;
 }
 
-export class Missing extends React.Component<MissingProps, MissingState> {
-    constructor(props: MissingProps) {
+export class Missing extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0

@@ -4,16 +4,16 @@ import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 
-interface ChecklistState {
+interface State {
     index: number;
 }
 
-interface ChecklistProps {
+interface Props {
     isVisible: boolean;
 }
 
-export class Checklist extends React.Component<ChecklistProps, ChecklistState> {
-    constructor(props: ChecklistProps) {
+export class Checklist extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0

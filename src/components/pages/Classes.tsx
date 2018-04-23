@@ -7,16 +7,16 @@ import * as React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../config/TabStyles';
 
-interface ClassesState {
+interface State {
     index: number;
 }
 
-interface ClassesProps {
+interface Props {
     isVisible: boolean;
 }
 
-export class Classes extends React.Component<ClassesProps, ClassesState> {
-    constructor(props: ClassesProps) {
+export class Classes extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0

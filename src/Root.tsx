@@ -10,14 +10,14 @@ import Missing from './components/pages/Missing';
 import Search from './components/pages/Search';
 import StyledBottomNavigationAction from './components/shared/StyledBottomNavigation';
 
-interface RootState {
+interface State {
     index: number;
 }
 
-interface RootProps {}
+interface Props {}
 
-export class Root extends React.Component<RootProps, RootState> {
-    constructor(props: RootProps) {
+export class Root extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             index: 0
