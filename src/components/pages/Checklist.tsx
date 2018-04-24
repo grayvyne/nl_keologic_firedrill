@@ -22,6 +22,7 @@ namespace styles {
         flexGrow: 1,
         height: '100%'
     };
+    export const hideBoxShadow = { boxShadow: 'none' };
 }
 
 export class Checklist extends React.Component<Props, State> {
@@ -39,7 +40,7 @@ export class Checklist extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <ContentView>
-                <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
+                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
                     <Toolbar style={styles.toolbar}>
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />

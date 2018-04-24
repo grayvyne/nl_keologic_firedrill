@@ -11,6 +11,12 @@ import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
 import { ActionTableCell } from '../shared';
 import { Student, Status } from '../../models/Student';
+import { CSSProperties } from 'react';
+
+namespace styles {
+    export const hideBoxShadow = { boxShadow: 'none' };
+    export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+}
 
 interface StoreProps {
     class: FiredrillClass | undefined;
@@ -23,12 +29,12 @@ class ClassDetail extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar position={'fixed'} style={{ boxShadow: 'none' }}>
+                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton
                             color="inherit"
                             aria-label="Menu"
-                            style={{ alignSelf: 'center', marginLeft: -10 }}
+                            style={styles.iconButton}
                             onClick={() => this.props.navigation.goBack()}
                         >
                             <BackIcon />
@@ -61,8 +67,12 @@ class ClassDetail extends React.Component<Props> {
         switch (status) {
             case Status.Missing:
                 return { buttonLabel: 'Missing', buttonColor: 'red' };
-            default:
+            case Status.Absent:
+                return { buttonLabel: 'Absent', buttonColor: 'yellow' };
+            case Status.Found:
                 return { buttonLabel: 'Found', buttonColor: 'blue' };
+            default:
+                throw new Error('CASE UNACCOUNTED FOR: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
         }
     }
 }

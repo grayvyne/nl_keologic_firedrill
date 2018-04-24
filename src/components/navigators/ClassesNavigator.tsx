@@ -5,6 +5,7 @@ import { NavigationScreenProps, NavigationTabScreenOptions, StackNavigator } fro
 import { Routes } from '../../config/routes';
 import ClassDetail from '../pages/ClassDetail';
 import Classes from '../pages/Classes';
+import { Colors } from '../../config/materialUiTheme';
 
 const Nav = StackNavigator(
     {
@@ -16,12 +17,21 @@ const Nav = StackNavigator(
     }
 );
 
+namespace styles {
+    export const iconStyle = { height: 28, width: 28 };
+}
+
 export default class ClassesNavigator extends React.Component {
     static navigationOptions = ({ navigation }: NavigationScreenProps): NavigationTabScreenOptions => ({
         tabBarIcon: ({ focused, tintColor }) => {
-            return (
-                <PeopleIcon style={{ height: 28, width: 28, color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' }} />
-            );
+            const iconStyle = (isFocused: boolean) => {
+                return {
+                    ...styles.iconStyle,
+                    color: isFocused ? blueGrey[800] : Colors.DISABLED_TAB_ICON
+                };
+            };
+
+            return <PeopleIcon style={iconStyle(focused)} />;
         }
     });
 

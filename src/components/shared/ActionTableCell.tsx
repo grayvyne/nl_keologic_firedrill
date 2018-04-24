@@ -3,7 +3,7 @@ import { Button } from 'material-ui';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import TableCell from '../shared/TableCell';
 
-interface ActionTableCellProps {
+interface Props {
     buttonLabel?: string;
     buttonColor?: string;
     buttonTextColor?: string;
@@ -17,7 +17,7 @@ type ActionTableCellData = {
     subLabel?: string;
 };
 
-namespace style {
+namespace styles {
     export const labelContainer: ViewStyle = {
         display: 'flex',
         flexGrow: 1,
@@ -40,19 +40,19 @@ namespace style {
     };
 }
 
-export default class ActionTableCell extends React.Component<ActionTableCellProps> {
+export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <TableCell>
-                <View style={style.labelContainer}>
-                    <Text style={style.label}>{this.props.cellData.label}</Text>
-                    <Text style={style.subLabel}>{this.props.cellData.subLabel}</Text>
+                <View style={styles.labelContainer}>
+                    <Text style={styles.label}>{this.props.cellData.label}</Text>
+                    <Text style={styles.subLabel}>{this.props.cellData.subLabel}</Text>
                 </View>
                 <View>
                     <Button
                         variant="raised"
                         style={{
-                            ...style.button,
+                            ...styles.button,
                             ...{
                                 color: this.props.buttonTextColor,
                                 backgroundColor: this.props.buttonColor

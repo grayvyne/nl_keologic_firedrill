@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { SvgIcon } from 'material-ui';
 
-interface SvgProps {
+interface Props {
     height: number;
     width: number;
 }
 
-export default class RightArrow extends React.Component<SvgProps> {
+export default class RightArrow extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <SvgIcon width={this.props.width} height={this.props.height}>

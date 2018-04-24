@@ -44,7 +44,7 @@ export class School {
         const faculty = this.usersByRole.get(UserRole.Faculty);
         const principals = this.usersByRole.get(UserRole.Principal);
         if (null == faculty || null == principals) {
-            throw Error('usersByRole did not contain an array for faculty or principal');
+            throw new Error('usersByRole did not contain an array for faculty or principal');
         }
         return [...faculty, ...principals];
     }
@@ -52,7 +52,7 @@ export class School {
     public getStudents(): User[] {
         const students = this.usersByRole.get(UserRole.Student);
         if (null == students) {
-            throw Error('usersByRole did not contain an array for student');
+            throw new Error('usersByRole did not contain an array for student');
         }
         return students;
     }

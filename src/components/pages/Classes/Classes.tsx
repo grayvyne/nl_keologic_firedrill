@@ -13,6 +13,7 @@ import ContentView from '../../shared/ContentView';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
+import { ClassesTabStrings as ui } from '../../../config/uiConstants';
 
 export type SingleClass = {
     id: number;
@@ -81,7 +82,7 @@ export class Classes extends React.Component<Props, State> {
                             <Tab
                                 label={
                                     <span>
-                                        <span style={styles.unclaimedTabStyle}>Unclaimed</span>
+                                        <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
                                         <Badge
                                             color="secondary"
                                             badgeContent={this.props.unclaimedClasses.length}

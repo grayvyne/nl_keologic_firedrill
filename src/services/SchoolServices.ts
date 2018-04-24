@@ -47,7 +47,6 @@ export namespace SchoolServices {
         const userRecords = await getPlatformBridge().callOverBridge<SchoolUserRecord[]>(
             SchoolServiceMessageType.GetAllStudents
         );
-        console.log('User Records:', userRecords);
         return userRecords.map(record => new Student(record));
     }
 

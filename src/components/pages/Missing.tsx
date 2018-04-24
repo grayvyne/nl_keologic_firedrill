@@ -7,6 +7,7 @@ import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import ContentView from '../shared/ContentView';
+import { Colors } from '../../config/materialUiTheme';
 
 interface Props {
     isVisible: boolean;
@@ -28,7 +29,10 @@ export class Missing extends React.Component<Props> {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
                 <PersonIcon
-                    style={{ ...styles.personIconStyle, ...{ color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' } }}
+                    style={{
+                        ...styles.personIconStyle,
+                        ...{ color: focused ? blueGrey[800] : Colors.DISABLED_TAB_ICON }
+                    }}
                 />
             );
         }

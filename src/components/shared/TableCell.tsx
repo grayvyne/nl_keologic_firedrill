@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ViewStyle, TouchableOpacity, ViewProperties } from 'react-native';
 
-interface TableCellProps {
+interface Props {
     height?: number | string;
     style?: ViewStyle;
     onClick?: () => void;
@@ -21,7 +21,7 @@ namespace style {
     };
 }
 
-export default class TableCell extends React.Component<TableCellProps> {
+export default class TableCell extends React.Component<Props> {
     public render(): JSX.Element {
         let ContentWrapperComponent: React.ComponentType<ViewProperties> = View;
         let wrapperProps: {} = { style: { ...style.highlightWrapper, ...this.props.style } };

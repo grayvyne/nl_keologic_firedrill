@@ -2,6 +2,8 @@ import * as React from 'react';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ScrollView } from 'react-native';
 import { TableView, ActionTableCell, SearchBar } from '../../shared';
+import { FindClassesStrings as ui } from '../../../config/uiConstants';
+import { Colors } from '../../../config/materialUiTheme';
 
 interface Props {
     classes: FiredrillClass[];
@@ -22,18 +24,24 @@ class FindClasses extends React.Component<Props> {
         return () => this.props.onPressClaim(classID);
     }
 
+    private buildCellPropsForClass(singleClass: FiredrillClass) {
+        const claimedProps = {
+            buttonLabel: ui.CLAIMED_CLASS(singleClass.claimedByName),
+            buttonColor: Colors.CLAIMED_CLASS_BUTTON
+        };
+
+        const unclaimedProps = {
+            buttonLabel: ui.UNCLAIMED_CLASS,
+            buttonColor: Colors.UNCLAIMED_CLASS_BUTTON,
+            onClick: this.handlePressClaim(singleClass.classID)
+        };
+
+        const cellProps = singleClass.claimedByID ? claimedProps : unclaimedProps;
+
+        return cellProps;
+    }
+
     private renderTableCell = (singleClass: FiredrillClass): JSX.Element => {
-        const cellProps =
-            null == singleClass.claimedByID
-                ? {
-                      buttonLabel: 'Claim',
-                      buttonColor: 'green',
-                      onClick: this.handlePressClaim(singleClass.classID)
-                  }
-                : {
-                      buttonLabel: 'Claimed By ' + singleClass.claimedByName,
-                      buttonColor: 'orange'
-                  };
         return (
             <ActionTableCell
                 cellData={{
@@ -42,8 +50,8 @@ class FindClasses extends React.Component<Props> {
                     subLabel: singleClass.gradeLevel.toString()
                 }}
                 key={singleClass.classID}
-                buttonTextColor={'white'}
-                {...cellProps}
+                buttonTextColor={Colors.CLASS_BUTTON_TEXT}
+                {...this.buildCellPropsForClass(singleClass)}
             />
         );
     };

@@ -6,7 +6,17 @@ import ClassesNavigator from './ClassesNavigator';
 import ChecklistNavigator from './ChecklistNavigator';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { Routes } from '../../config/routes';
+import { TextStyle } from 'react-native';
 
+namespace styles {
+    export const tabStyle = { height: 56 };
+    export const labelStyle: TextStyle = {
+        marginBottom: 7,
+        marginTop: -7,
+        fontSize: 12,
+        fontWeight: '300'
+    };
+}
 const Nav = TabNavigator(
     {
         [Routes.Classes]: ClassesNavigator,
@@ -18,13 +28,8 @@ const Nav = TabNavigator(
         tabBarPosition: 'bottom',
         tabBarComponent: TabBarBottom,
         tabBarOptions: {
-            style: { height: 56 },
-            labelStyle: {
-                marginBottom: 7,
-                marginTop: -7,
-                fontSize: 12,
-                fontWeight: '300'
-            },
+            style: styles.tabStyle,
+            labelStyle: styles.labelStyle,
             activeTintColor: blueGrey[800]
         },
         animationEnabled: false,

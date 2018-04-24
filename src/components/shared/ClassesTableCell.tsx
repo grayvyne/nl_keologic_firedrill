@@ -38,14 +38,12 @@ namespace style {
     };
 }
 
-interface ClassesTableCellProps {
+interface Props {
     singleClass: FiredrillClass;
     onClick: () => void;
 }
 
-export default class ClassesTableCell extends React.Component<ClassesTableCellProps> {
-    public singleClass: FiredrillClass = this.props.singleClass;
-
+export default class ClassesTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const { singleClass } = this.props;
         return (

@@ -10,7 +10,11 @@ export enum GradeLevel {
     Fifth,
     Sixth,
     Seventh,
-    Eighth
+    Eighth,
+    Ninth,
+    Tenth,
+    Eleventh,
+    Twelth
 }
 
 export interface ClassRecord {
@@ -41,7 +45,7 @@ export class Class {
         } else if (null != firstTeacher) {
             this.name = firstTeacher.lastName;
         } else {
-            this.name = 'Mr. Nobody';
+            throw new Error('There was no name for the record @constructor #Class.ts');
         }
     }
 

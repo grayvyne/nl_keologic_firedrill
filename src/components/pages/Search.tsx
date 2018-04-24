@@ -8,6 +8,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import ContentView from '../shared/ContentView';
 import SearchBar from '../shared/SearchBar';
+import { Colors } from '../../config/materialUiTheme';
 
 interface State {
     index: number;
@@ -23,13 +24,19 @@ namespace styles {
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
+    export const iconButton: React.CSSProperties = { height: 25, width: 25 };
 }
 
 export class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
-                <SearchIcon style={{ height: 25, width: 25, color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' }} />
+                <SearchIcon
+                    style={{
+                        ...styles.iconButton,
+                        color: focused ? blueGrey[800] : Colors.DISABLED_TAB_ICON
+                    }}
+                />
             );
         }
     };

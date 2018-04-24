@@ -119,9 +119,15 @@ function handleStudentStatusChange(student: Student): (newStatus: { status: Stat
             case Status.Absent:
                 student.markAsAbsent();
                 break;
-            default:
+            case Status.Found:
                 student.markAsFound();
                 break;
+            default:
+                throw new Error(
+                    'Case is unaccounted for @handleStudentStatusChange(), for case: `' +
+                        newStatus.status +
+                        '`. #FiredrillStore.ts'
+                );
         }
     };
 }
