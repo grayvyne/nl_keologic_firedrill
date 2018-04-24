@@ -104,6 +104,10 @@ export class FiredrillStore {
         });
     }
 
+    public async saveMultipleStudentStatuses(students: Student[]): Promise<void> {
+        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
+    }
+
     public markStudentAsMissiong(studentID: number): Promise<void> {
         return this.saveStudentStatus(studentID, Status.Missing);
     }
