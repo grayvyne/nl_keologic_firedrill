@@ -10,3 +10,12 @@ export const RootTabLabels = {
     SEARCH: 'Search',
     CHECKLIST: 'Checklist'
 };
+
+export const ClassesTabStrings = {
+    UNCLAIMED: 'Unclaimed'
+};
+
+export const FindClassesStrings = {
+    CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
+    UNCLAIMED_CLASS: 'Claim'
+};

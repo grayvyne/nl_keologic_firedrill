@@ -2,7 +2,8 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
+import { View, ViewStyle } from 'react-native';
+import ContentView from '../shared/ContentView';
 
 interface State {
     index: number;
@@ -15,6 +16,13 @@ interface Props {
 namespace styles {
     export const toolbar = { alignItems: 'stretch' };
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const viewStyle: ViewStyle = {
+        backgroundColor: 'white',
+        display: 'flex',
+        flexGrow: 1,
+        height: '100%'
+    };
+    export const hideBoxShadow = { boxShadow: 'none' };
 }
 
 export class Checklist extends React.Component<Props, State> {
@@ -29,26 +37,18 @@ export class Checklist extends React.Component<Props, State> {
         this.setState({ index });
     };
 
-    public render(): JSX.Element | null {
-        if (this.props.isVisible === false) {
-            return null;
-        }
-
+    public render(): JSX.Element {
         return (
-            <div>
-                <AppBar position={'static'}>
+            <ContentView>
+                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
                     <Toolbar style={styles.toolbar}>
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </SwipeableViews>
-            </div>
+                <View style={styles.viewStyle} />
+            </ContentView>
         );
     }
 }

@@ -1,53 +1,61 @@
 import AppsIcon from '@material-ui/icons/Apps';
+import PersonIcon from '@material-ui/icons/Person';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
+import blueGrey from 'material-ui/colors/blueGrey';
 import * as React from 'react';
-import SwipeableViews from 'react-swipeable-views';
-
-interface State {
-    index: number;
-}
+import { ScrollView, Text, View } from 'react-native';
+import { NavigationTabScreenOptions } from 'react-navigation';
+import ContentView from '../shared/ContentView';
+import { Colors } from '../../config/materialUiTheme';
 
 interface Props {
     isVisible: boolean;
 }
 
 namespace styles {
-    export const toolbar = { alignItems: 'stretch' };
+    export const personIconStyle: React.CSSProperties = {
+        height: 26,
+        width: 26
+    };
+    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
+    export const toolbarStyle: React.CSSProperties = { alignItems: 'stretch' };
+    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
-export class Missing extends React.Component<Props, State> {
-    public constructor(props: Props) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
 
-    public handleChange = (event: any, index: any) => {
-        this.setState({ index });
+export class Missing extends React.Component<Props> {
+    static navigationOptions: NavigationTabScreenOptions = {
+        tabBarIcon: ({ focused, tintColor }) => {
+            return (
+                <PersonIcon
+                    style={{
+                        ...styles.personIconStyle,
+                        ...{ color: focused ? blueGrey[800] : Colors.DISABLED_TAB_ICON }
+                    }}
+                />
+            );
+        }
     };
 
-    public render(): JSX.Element | null {
-        if (this.props.isVisible === false) {
-            return null;
-        }
-
+    public render(): JSX.Element {
         return (
-            <div>
-                <AppBar position={'static'}>
-                    <Toolbar style={styles.toolbar}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
+            <View>
+                <AppBar position={'absolute'} style={styles.appBarStyle}>
+                    <Toolbar style={styles.toolbarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <SwipeableViews index={this.state.index} onChangeIndex={this.handleChange}>
-                    <div>Test One</div>
-                    <div>Test Two</div>
-                    <div>Test Three</div>
-                </SwipeableViews>
-            </div>
+                <ContentView>
+                    <ScrollView>
+                        <View>
+                            <Text>Test Three</Text>
+                        </View>
+                    </ScrollView>
+                </ContentView>
+            </View>
         );
     }
 }
