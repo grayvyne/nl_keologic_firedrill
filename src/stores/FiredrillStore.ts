@@ -52,7 +52,7 @@ export class FiredrillStore {
         const schools = await SchoolServices.getSchools();
         schools.forEach(school =>
             Firebase.Refs.addActiveFiredrillForSchoolListener(school.schoolID, firedrill => {
-                if (null != firedrill) {
+                if (null != firedrill && null == this.currentFiredrillID) {
                     this.startFiredrill(school.schoolID);
                 }
             })
@@ -84,7 +84,6 @@ export class FiredrillStore {
     }
 
     public claimClass(classID: number): Promise<void> {
-        ApplicationServices.log('Claiming a class', classID, this.currentUserID);
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
             claimedByID: this.currentUserID
         });
