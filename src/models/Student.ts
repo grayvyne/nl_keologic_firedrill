@@ -1,6 +1,6 @@
 import { observable, computed } from 'mobx';
 import { SchoolUser } from './User';
-import { Typeof, Validate } from '../lib/NLValdiate';
+import { Typeof } from '../lib/NLValdiate';
 
 export enum Status {
     Missing,
@@ -8,7 +8,6 @@ export enum Status {
     Found
 }
 
-@Validate
 export class Student extends SchoolUser {
     @Typeof('number')
     @observable

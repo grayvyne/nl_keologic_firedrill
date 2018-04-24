@@ -31,7 +31,7 @@ export class FiredrillClass extends Class {
     public get claimedByName(): string {
         const claimedByUser = [...this.students, ...this.getTeachers()].find(user => user.userID === this._claimedByID);
         if (null == claimedByUser) {
-            throw new Error('User name was not found.. @claimedByName #FiredrillClass.ts');
+            return '';
         }
 
         return claimedByUser.firstName + ' ' + claimedByUser.lastName;

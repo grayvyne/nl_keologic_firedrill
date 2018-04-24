@@ -45,7 +45,7 @@ export class Class {
         } else if (null != firstTeacher) {
             this.name = firstTeacher.lastName;
         } else {
-            throw new Error('There was no name for the record @constructor #Class.ts');
+            this.name = '';
         }
     }
 
