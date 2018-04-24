@@ -1,7 +1,13 @@
 import AppsIcon from '@material-ui/icons/Apps';
-import { Card, IconButton, Input, Toolbar } from 'material-ui';
+import SearchIcon from '@material-ui/icons/Search';
+import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
+import blueGrey from 'material-ui/colors/blueGrey';
 import * as React from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { NavigationTabScreenOptions } from 'react-navigation';
+import ContentView from '../shared/ContentView';
+import SearchBar from '../shared/SearchBar';
 
 interface State {
     index: number;
@@ -12,13 +18,22 @@ interface Props {
 }
 
 namespace styles {
-    export const alignStretch = { alignItems: 'stretch' };
-    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
-    export const fullWidth = { width: '100%' };
-    export const card = { margin: 10, padding: 10 };
+    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
+    export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
+    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
+    export const searchInputStyle: React.CSSProperties = { width: '100%' };
 }
 
 export class Search extends React.Component<Props, State> {
+    static navigationOptions: NavigationTabScreenOptions = {
+        tabBarIcon: ({ focused, tintColor }) => {
+            return (
+                <SearchIcon style={{ height: 25, width: 25, color: focused ? blueGrey[800] : 'rgba(0, 0, 0, 0.26)' }} />
+            );
+        }
+    };
+
     public constructor(props: Props) {
         super(props);
         this.state = {
@@ -30,24 +45,26 @@ export class Search extends React.Component<Props, State> {
         this.setState({ index });
     };
 
-    public render(): JSX.Element | null {
-        if (this.props.isVisible === false) {
-            return null;
-        }
-
+    public render(): JSX.Element {
         return (
-            <div>
-                <AppBar position={'static'}>
-                    <Toolbar style={styles.alignStretch}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
+            <View>
+                <AppBar position={'absolute'} style={styles.appBarStyle}>
+                    <Toolbar style={styles.toolBarStyle}>
+                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Card style={styles.card}>
-                    <Input placeholder={'Search'} type={'search'} style={styles.fullWidth} disableUnderline={true} />
-                </Card>
-            </div>
+
+                <ContentView>
+                    <SearchBar />
+                    <ScrollView>
+                        <View>
+                            <Text>TEST 123456</Text>
+                        </View>
+                    </ScrollView>
+                </ContentView>
+            </View>
         );
     }
 }

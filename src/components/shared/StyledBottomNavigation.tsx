@@ -12,7 +12,11 @@ const styles = {
 };
 
 function bottomNavigationAction(props: BottomNavigationActionProps) {
-    return <BottomNavigationAction {...props}>{props.children}</BottomNavigationAction>;
+    return (
+        <BottomNavigationAction {...props} showLabel={props.showLabel}>
+            {props.children}
+        </BottomNavigationAction>
+    );
 }
 
 const StyledBottomNavigationAction = withStyles(styles)(bottomNavigationAction);
