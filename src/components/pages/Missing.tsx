@@ -1,16 +1,23 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { IconButton, Toolbar } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
+import { AppBar, IconButton, Toolbar } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { inject } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
-import ContentView from '../shared/ContentView';
 import { Colors } from '../../config/materialUiTheme';
+import { Status, Student } from '../../models/Student';
+import { ApplicationServices } from '../../services/ApplicationServices';
+import { Stores } from '../../stores';
+import { ActionTableCell } from '../shared';
+import ContentView from '../shared/ContentView';
+import TableView from '../shared/TableView';
 
 interface Props {
-    isVisible: boolean;
+    students: Student[];
+    totalStudentsCount: number;
+    foundStudentsCount: number;
 }
 
 namespace styles {
@@ -24,9 +31,9 @@ namespace styles {
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-export class Missing extends React.Component<Props> {
+class Missing extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
-        tabBarIcon: ({ focused, tintColor }) => {
+        tabBarIcon: ({ focused }) => {
             return (
                 <PersonIcon
                     style={{
@@ -39,6 +46,7 @@ export class Missing extends React.Component<Props> {
     };
 
     public render(): JSX.Element {
+        ApplicationServices.log('props', this.props);
         return (
             <View>
                 <AppBar position={'absolute'} style={styles.appBarStyle}>
@@ -50,9 +58,15 @@ export class Missing extends React.Component<Props> {
                 </AppBar>
                 <ContentView>
                     <ScrollView>
-                        <View>
-                            <Text>Test Three</Text>
-                        </View>
+                        <Text>{`${this.props.foundStudentsCount}/${this.props.totalStudentsCount}`}</Text>
+                        <TableView>
+                            {this.props.students.map(student => (
+                                <ActionTableCell
+                                    key={student.userID}
+                                    cellData={{ id: student.userID, label: student.firstName }}
+                                />
+                            ))}
+                        </TableView>
                     </ScrollView>
                 </ContentView>
             </View>
@@ -60,4 +74,12 @@ export class Missing extends React.Component<Props> {
     }
 }
 
-export default Missing;
+function mapStoresToProps({ firedrillStore }: Stores): Props {
+    return {
+        students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
+        totalStudentsCount: firedrillStore.allStudentsCount,
+        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount
+    };
+}
+
+export default inject(mapStoresToProps)(Missing);
