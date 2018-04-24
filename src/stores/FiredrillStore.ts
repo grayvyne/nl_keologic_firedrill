@@ -1,9 +1,10 @@
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
-import { Status, Student } from '../models/Student';
+import { Student } from '../models/Student';
 import { SchoolServices } from '../services/SchoolServices';
 import { ApplicationServices } from '../services/ApplicationServices';
+import { Status } from '../models/Status';
 
 export class FiredrillStore {
     @observable private currentUserID: number;
@@ -88,6 +89,10 @@ export class FiredrillStore {
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
             claimedByID: this.currentUserID
         });
+    }
+
+    public async saveMultipleStudentStatuses(students: Student[]): Promise<void> {
+        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {

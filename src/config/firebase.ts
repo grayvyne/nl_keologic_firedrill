@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { Status } from '../models/Student';
+import { Status } from '../models/Status';
 
 const config = {
     apiKey: 'AIzaSyCXmmJo0ZkUwWntEXFqEkZY10HqnapOFpg',
