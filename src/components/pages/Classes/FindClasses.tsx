@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ScrollView } from 'react-native';
-import { TableView, ActionTableCell, SearchBar } from '../../shared';
-import { FindClassesStrings as ui } from '../../../config/uiConstants';
 import { Colors } from '../../../config/materialUiTheme';
+import { FindClassesStrings as ui } from '../../../config/uiConstants';
+import { FiredrillClass } from '../../../models/FiredrillClass';
+import { ActionTableCell, SearchBar, TableView } from '../../shared';
 
 interface Props {
     classes: FiredrillClass[];
+    getClaimedByNameForClass(aClass: FiredrillClass): string;
     onPressClaim(classID: number): Promise<void>;
 }
 
@@ -26,7 +27,7 @@ class FindClasses extends React.Component<Props> {
 
     private buildCellPropsForClass(singleClass: FiredrillClass) {
         const claimedProps = {
-            buttonLabel: ui.CLAIMED_CLASS(singleClass.claimedByName),
+            buttonLabel: ui.CLAIMED_CLASS(this.props.getClaimedByNameForClass(singleClass)),
             buttonColor: Colors.CLAIMED_CLASS_BUTTON
         };
 

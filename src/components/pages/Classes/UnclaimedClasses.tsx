@@ -1,10 +1,11 @@
-import { FiredrillClass } from '../../../models/FiredrillClass';
 import * as React from 'react';
-import { ScrollView, View, Text, ViewStyle } from 'react-native';
-import { TableHeader, TableView, ActionTableCell } from '../../shared';
+import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { FiredrillClass } from '../../../models/FiredrillClass';
+import { ActionTableCell, TableHeader, TableView } from '../../shared';
 
 interface Props {
     classes: FiredrillClass[];
+    getClaimedByNameForClass(aClass: FiredrillClass): string;
 }
 
 namespace style {
@@ -34,7 +35,9 @@ function UnclaimedClasses(props: Props) {
                             }}
                             key={singleClass.classID}
                             buttonLabel={
-                                null == singleClass.claimedByID ? 'Claim' : 'Claimed By ' + singleClass.claimedByName
+                                null == singleClass.claimedByID
+                                    ? 'Claim'
+                                    : 'Claimed By ' + props.getClaimedByNameForClass(singleClass)
                             }
                             buttonColor={'red'}
                             buttonTextColor={'white'}

@@ -7,13 +7,13 @@ import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../../config/TabStyles';
 import { Routes } from '../../../config/routes';
+import { ClassesTabStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
 import ContentView from '../../shared/ContentView';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
-import { ClassesTabStrings as ui } from '../../../config/uiConstants';
 
 export type SingleClass = {
     id: number;
@@ -31,6 +31,7 @@ interface StoreProps {
     myClasses: FiredrillClass[];
     classes: FiredrillClass[];
     unclaimedClasses: FiredrillClass[];
+    getClaimedByNameForClass(aClass: FiredrillClass): string;
     claimClass(classID: number): Promise<void>;
 }
 
@@ -53,7 +54,7 @@ export class Classes extends React.Component<Props, State> {
         index: 0
     };
 
-    public handleTabChange = (event: any, index: number) => {
+    public handleTabChange = (_event: any, index: number) => {
         this.setState({ index });
     };
 
@@ -104,8 +105,15 @@ export class Classes extends React.Component<Props, State> {
                     style={styles.swipeableViewStyle}
                 >
                     <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
-                    <FindClasses classes={this.props.classes} onPressClaim={this.handlePressClaim} />
-                    <UnclaimedClasses classes={this.props.unclaimedClasses} />
+                    <FindClasses
+                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                        classes={this.props.classes}
+                        onPressClaim={this.handlePressClaim}
+                    />
+                    <UnclaimedClasses
+                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                        classes={this.props.unclaimedClasses}
+                    />
                 </SwipeableViews>
             </ContentView>
         );
@@ -120,12 +128,13 @@ export class Classes extends React.Component<Props, State> {
     };
 }
 
-function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
+function mapStoresToProps({ firedrillStore }: Stores, _props: Props): StoreProps {
     return {
         myClasses: firedrillStore.myClasses,
         classes: firedrillStore.allClasses,
         unclaimedClasses: firedrillStore.unclaimedClasses,
-        claimClass: classID => firedrillStore.claimClass(classID)
+        claimClass: classID => firedrillStore.claimClass(classID),
+        getClaimedByNameForClass: (aClass: FiredrillClass) => firedrillStore.getClaimedByNameForClass(aClass)
     };
 }
 
