@@ -26,5 +26,8 @@ export const Colors = {
     DISABLED_TAB_ICON: 'rgba(0, 0, 0, 0.26)',
     CLAIMED_CLASS_BUTTON: 'green',
     UNCLAIMED_CLASS_BUTTON: 'blue',
-    CLASS_BUTTON_TEXT: 'white'
+    CLASS_BUTTON_TEXT: 'white',
+    MISSING_BUTTON: '#EC5F59',
+    ABSENT_BUTTON: '#49A8EE',
+    FOUND_BUTTON: '#71BF83',
 };
