@@ -1,5 +1,5 @@
-import { PlatformBridge, ApplicationServiceMessageType } from '../stores/PlatformBridge';
-import { User, UserRecord } from '../models/User';
+import { SchoolUser, SchoolUserRecord } from '../models/User';
+import { ApplicationServiceMessageType, PlatformBridge } from '../stores/PlatformBridge';
 
 let platformBridge: PlatformBridge | null = null;
 
@@ -27,11 +27,11 @@ export namespace ApplicationServices {
         await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.ClosePluginsMenu);
     }
 
-    export async function getCurrentUser(): Promise<User> {
-        const record = await getPlatformBridge().callOverBridge<UserRecord>(
+    export async function getCurrentUser(): Promise<SchoolUser> {
+        const record = await getPlatformBridge().callOverBridge<SchoolUserRecord>(
             ApplicationServiceMessageType.GetCurrentUser
         );
-        return new User(record);
+        return new SchoolUser(record);
     }
 
     export function log(...args: any[]): void {

@@ -63,16 +63,13 @@ export class FiredrillStore {
         const user = await ApplicationServices.getCurrentUser();
         this.currentUserID = user.userID;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
-        const schools = await SchoolServices.getSchools();
-        schools.forEach(school =>
-            Firebase.Listeners.activeFiredrillForSchool(school.schoolID, firedrill => {
-                if (null != firedrill && null == this.currentFiredrillID) {
-                    this.startFiredrill(school.schoolID);
-                } else if (null == firedrill && null != this.currentFiredrillID) {
-                    this.stopFiredrill();
-                }
-            })
-        );
+        Firebase.Listeners.activeFiredrillForSchool(user.schoolID, firedrill => {
+            if (null != firedrill && null == this.currentFiredrillID) {
+                this.startFiredrill(user.schoolID);
+            } else if (null == firedrill && null != this.currentFiredrillID) {
+                this.stopFiredrill();
+            }
+        });
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
