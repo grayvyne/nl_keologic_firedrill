@@ -124,7 +124,21 @@ export class FiredrillStore {
         if (null == school) {
             throw new Error(`School ID ${schoolID} is not an available school`);
         }
+        Firebase.Refs.acitveFiredrillForSchool(schoolID).set({ startTime: Date.now() });
         return ApplicationServices.sendNotification(schoolID, `A firedrill is starting at ${school.name}`);
+    }
+
+    public async endFireDrill(): Promise<void> {
+        const schools = await SchoolServices.getSchools();
+        const school = schools.find(s => s.schoolID === this.currentFiredrillID);
+        if (null == school) {
+            throw new Error(`School ID ${this.currentFiredrillID} is not an available school`);
+        }
+        Firebase.Refs.acitveFiredrillForSchool(this.currentFiredrillID).set(null);
+        return ApplicationServices.sendNotification(
+            this.currentFiredrillID,
+            `The fire drill at ${school.name} has ended`
+        );
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {

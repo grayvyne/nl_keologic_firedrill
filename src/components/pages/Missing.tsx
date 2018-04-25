@@ -13,6 +13,8 @@ import ContentView from '../shared/ContentView';
 
 interface Props {
     shouldShowManage: boolean;
+    initiateFireDrill(schoolID: number): Promise<void>;
+    endFireDrill(): Promise<void>;
 }
 
 interface State {
@@ -83,20 +85,27 @@ class Missing extends React.Component<Props, State> {
     private closeManageModal = () => this.setState({ isManageModalOpen: false });
 
     private handleStartFireDrillClick = () => {
+        this.props.initiateFireDrill(1);
         this.closeManageModal();
     };
 
     private handleCancelFireDrillClick = () => {
+        this.props.endFireDrill();
         this.closeManageModal();
     };
 
     private handleEndFireDrillClick = () => {
+        this.props.endFireDrill();
         this.closeManageModal();
     };
 }
 
 function mapStoresToProps({ firedrillStore }: Stores): Props {
-    return { shouldShowManage: firedrillStore.shouldShowManage };
+    return {
+        shouldShowManage: firedrillStore.shouldShowManage,
+        initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
+        endFireDrill: () => firedrillStore.endFireDrill()
+    };
 }
 
 export default inject(mapStoresToProps)(Missing);
