@@ -1,7 +1,7 @@
 import { Typeof, Validate } from '../lib/NLValdiate';
 import { Class } from './Class';
-import { SchoolUser, User, UserRole } from './User';
 import { ClassRecord } from './FiredrillClass';
+import { SchoolUser, SchoolUserRecord, UserRole } from './User';
 
 export interface SchoolRecord {
     readonly schoolID: number;
@@ -11,7 +11,7 @@ export interface SchoolRecord {
     readonly city: string;
     readonly state: string;
     readonly postalCode: string;
-    usersByRole: Map<UserRole, SchoolUser[]>;
+    usersByRole: [UserRole, SchoolUserRecord[]][];
     classes: ClassRecord[];
 }
 
@@ -37,10 +37,16 @@ export class School {
         this.state = record.state;
         this.postalCode = record.postalCode;
         this.classes = record.classes.map(c => new Class(c));
-        this.usersByRole = new Map(record.usersByRole);
+
+        this.usersByRole = new Map(
+            record.usersByRole.map<[UserRole, SchoolUser[]]>(([role, users]) => [
+                role,
+                users.map(user => new SchoolUser(user))
+            ])
+        );
     }
 
-    public getFaculty(): User[] {
+    public getFaculty(): SchoolUser[] {
         const faculty = this.usersByRole.get(UserRole.Faculty);
         const principals = this.usersByRole.get(UserRole.Principal);
         if (null == faculty || null == principals) {
@@ -49,7 +55,7 @@ export class School {
         return [...faculty, ...principals];
     }
 
-    public getStudents(): User[] {
+    public getStudents(): SchoolUser[] {
         const students = this.usersByRole.get(UserRole.Student);
         if (null == students) {
             throw new Error('usersByRole did not contain an array for student');
@@ -57,7 +63,7 @@ export class School {
         return students;
     }
 
-    public getCommunity(): User[] {
+    public getCommunity(): SchoolUser[] {
         return [...this.getFaculty(), ...this.getStudents()];
     }
 

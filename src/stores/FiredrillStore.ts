@@ -2,12 +2,12 @@ import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { Status, Student } from '../models/Student';
-import { SchoolUser } from '../models/User';
+import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
 
 export class FiredrillStore {
-    @observable private currentUserID: number;
+    @observable private currentUser: SchoolUser;
     @observable private currentFiredrillID: number;
 
     @observable private _classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
@@ -25,7 +25,7 @@ export class FiredrillStore {
     }
     @computed
     public get myClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => c.claimedByID === this.currentUserID);
+        return this.allClasses.filter(c => c.claimedByID === this.currentUser.userID);
     }
 
     @computed
@@ -46,6 +46,11 @@ export class FiredrillStore {
         return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
     }
 
+    @computed
+    public get shouldShowManage(): boolean {
+        return this.currentUser.getUserRole() === UserRole.Principal;
+    }
+
     public constructor() {
         this.setup();
     }
@@ -53,9 +58,18 @@ export class FiredrillStore {
     @action
     public async setup(): Promise<void> {
         const user = await ApplicationServices.getCurrentUser();
-        this.currentUserID = user.userID;
-        await Firebase.Auth.signInAnonymouslyAndRetrieveData();
         const schools = await SchoolServices.getSchools();
+        const firstSchool = schools[0];
+        if (null == firstSchool) {
+            throw new Error('User must be part of a school');
+        }
+        const currentUser = firstSchool.getCommunity().find(schoolUser => user.userID === schoolUser.userID);
+        if (null == currentUser) {
+            throw new Error('User must be part of the school that they are part of!');
+        }
+        this.currentUser = currentUser;
+        await Firebase.Auth.signInAnonymouslyAndRetrieveData();
+        ApplicationServices.log('schools', schools);
         schools.forEach(school =>
             Firebase.Refs.addActiveFiredrillForSchoolListener(school.schoolID, firedrill => {
                 if (null != firedrill && null == this.currentFiredrillID) {
@@ -100,7 +114,7 @@ export class FiredrillStore {
 
     public claimClass(classID: number): Promise<void> {
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
-            claimedByID: this.currentUserID
+            claimedByID: this.currentUser
         });
     }
 

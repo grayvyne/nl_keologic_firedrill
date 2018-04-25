@@ -1,16 +1,22 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { IconButton, Toolbar } from 'material-ui';
+import { Button, IconButton, Toolbar, Modal } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { inject } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
-import ContentView from '../shared/ContentView';
 import { Colors } from '../../config/materialUiTheme';
+import { Stores } from '../../stores';
+import ContentView from '../shared/ContentView';
 
 interface Props {
-    isVisible: boolean;
+    shouldShowManage: boolean;
+}
+
+interface State {
+    isManageModalOpen: boolean;
 }
 
 namespace styles {
@@ -24,7 +30,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-export class Missing extends React.Component<Props> {
+class Missing extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
@@ -38,6 +44,8 @@ export class Missing extends React.Component<Props> {
         }
     };
 
+    public state = { isManageModalOpen: false };
+
     public render(): JSX.Element {
         return (
             <View>
@@ -46,6 +54,9 @@ export class Missing extends React.Component<Props> {
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
+                        {this.props.shouldShowManage && (
+                            <Button onClick={() => this.setState({ isManageModalOpen: true })}>Manage</Button>
+                        )}
                     </Toolbar>
                 </AppBar>
                 <ContentView>
@@ -55,9 +66,37 @@ export class Missing extends React.Component<Props> {
                         </View>
                     </ScrollView>
                 </ContentView>
+                {this.props.shouldShowManage && (
+                    <Modal open={this.state.isManageModalOpen}>
+                        <View>
+                            <Button onClick={this.handleStartFireDrillClick}>Start Fire Drill</Button>
+                            <Button onClick={this.handleCancelFireDrillClick}>Cancel Fire Drill</Button>
+                            <Button onClick={this.handleEndFireDrillClick}>End Fire Drill</Button>
+                            <Button onClick={this.closeManageModal}>Cancel</Button>
+                        </View>
+                    </Modal>
+                )}
             </View>
         );
     }
+
+    private closeManageModal = () => this.setState({ isManageModalOpen: false });
+
+    private handleStartFireDrillClick = () => {
+        this.closeManageModal();
+    };
+
+    private handleCancelFireDrillClick = () => {
+        this.closeManageModal();
+    };
+
+    private handleEndFireDrillClick = () => {
+        this.closeManageModal();
+    };
 }
 
-export default Missing;
+function mapStoresToProps({ firedrillStore }: Stores): Props {
+    return { shouldShowManage: firedrillStore.shouldShowManage };
+}
+
+export default inject(mapStoresToProps)(Missing);
