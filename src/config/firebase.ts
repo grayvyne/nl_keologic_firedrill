@@ -25,57 +25,60 @@ export namespace Firebase {
             return allStudentFiredrillStatuses(firedrillID.toString()).child(studentID.toString());
         }
 
-        export function addStudentFiredrillStatusListener(
-            firedrillID: number,
-            studentID: number,
-            onStatusChange: (newStatus: { status: Status } | null) => void
-        ): void {
-            studentFiredrillStatus(firedrillID, studentID).on('value', snapshot => {
-                if (snapshot) {
-                    onStatusChange(snapshot.val());
-                } else {
-                    onStatusChange(null);
-                }
-            });
-        }
-
-        export function classFiredrillData(firedrillID: number, classID: number): firebase.database.Reference {
-            return database
-                .ref('ActiveFiredrills')
-                .child(firedrillID.toString())
+        export function classFiredrillData(schoolID: number, classID: number): firebase.database.Reference {
+            return activeFiredrillForSchool(schoolID)
                 .child('Classes')
                 .child(classID.toString());
         }
 
-        export function addClassFiredrillClaimedListener(
-            firedrillID: number,
-            classID: number,
-            onStatusChange: (newStatus: { claimedByID: number } | null) => void
-        ): void {
-            classFiredrillData(firedrillID, classID).on('value', snapshot => {
-                if (null != snapshot) {
-                    onStatusChange(snapshot.val());
-                } else {
-                    onStatusChange(null);
-                }
-            });
-        }
-
-        export function acitveFiredrillForSchool(schoolID: number): firebase.database.Reference {
+        export function activeFiredrillForSchool(schoolID: number): firebase.database.Reference {
             return database.ref('ActiveFiredrills').child(schoolID.toString());
         }
+    }
 
-        export function addActiveFiredrillForSchoolListener(
-            schoolID: number,
-            onChange: (firedrill: {} | null) => void
-        ): void {
-            acitveFiredrillForSchool(schoolID).on('value', snapshot => {
-                if (null != snapshot) {
-                    onChange(snapshot.val());
-                } else {
-                    onChange(null);
-                }
-            });
+    export namespace Getters {
+        export async function activeFiredrillStartTimeForSchool(schoolID: number): Promise<number | null> {
+            const snapshot = await Refs.activeFiredrillForSchool(schoolID)
+                .child('startTime')
+                .once('value');
+            if (null == snapshot) {
+                return null;
+            }
+            return snapshot.val();
         }
     }
+
+    export namespace Listeners {
+        export function activeFiredrillForSchool(schoolID: number, onChange: (firedrill: {} | null) => void): void {
+            Refs.activeFiredrillForSchool(schoolID).on('value', handleNewSnapshot(onChange));
+        }
+
+        export function classFiredrillData(
+            firedrillID: number,
+            classID: number,
+            onClaimedByChange: (newStatus: { claimedByID: number } | null) => void
+        ): void {
+            Refs.classFiredrillData(firedrillID, classID).on('value', handleNewSnapshot(onClaimedByChange));
+        }
+
+        export function studentFiredrillStatus(
+            firedrillID: number,
+            studentID: number,
+            onStatusChange: (newStatus: { status: Status } | null) => void
+        ): void {
+            Refs.studentFiredrillStatus(firedrillID, studentID).on('value', handleNewSnapshot(onStatusChange));
+        }
+    }
+}
+
+function handleNewSnapshot<T>(
+    dataHandler: (data: T | null) => void
+): (snapshot: firebase.database.DataSnapshot | null) => void {
+    return snapshot => {
+        if (snapshot) {
+            dataHandler(snapshot.val());
+        } else {
+            dataHandler(null);
+        }
+    };
 }
