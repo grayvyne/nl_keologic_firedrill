@@ -7,7 +7,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../../config/TabStyles';
 import { Routes } from '../../../config/routes';
-import { ClassesTabStrings as ui } from '../../../config/uiConstants';
+import { ClassTabStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
 import ContentView from '../../shared/ContentView';
@@ -110,10 +110,7 @@ export class Classes extends React.Component<Props, State> {
                         classes={this.props.classes}
                         onPressClaim={this.handlePressClaim}
                     />
-                    <UnclaimedClasses
-                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                        classes={this.props.unclaimedClasses}
-                    />
+                    <UnclaimedClasses classes={this.props.unclaimedClasses} />
                 </SwipeableViews>
             </ContentView>
         );

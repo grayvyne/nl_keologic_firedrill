@@ -18,11 +18,11 @@ export namespace SchoolServices {
         platformBridge = bridge;
     }
 
-    export async function getSchools(): Promise<School[]> {
-        const schoolRecords = await getPlatformBridge().callOverBridge<SchoolRecord[]>(
+    export async function getSchool(): Promise<School> {
+        const schoolRecord = await getPlatformBridge().callOverBridge<SchoolRecord>(
             SchoolServiceMessageType.GetAllSchools
         );
-        return schoolRecords.map(record => new School(record));
+        return new School(schoolRecord);
     }
 
     export async function getClasses(): Promise<ClassRecord[]> {
