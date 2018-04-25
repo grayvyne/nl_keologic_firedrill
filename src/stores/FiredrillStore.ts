@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
@@ -46,6 +47,13 @@ export class FiredrillStore {
         return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
     }
 
+    private firedrillElapsedTimeTracker: NodeJS.Timer | undefined = undefined;
+    @observable private _firedrillElapsedTime: string = '0:00';
+    @computed
+    public get firedrillElapsedTime(): string {
+        return this._firedrillElapsedTime;
+    }
+
     public constructor() {
         this.setup();
     }
@@ -60,6 +68,8 @@ export class FiredrillStore {
             Firebase.Listeners.activeFiredrillForSchool(school.schoolID, firedrill => {
                 if (null != firedrill && null == this.currentFiredrillID) {
                     this.startFiredrill(school.schoolID);
+                } else if (null == firedrill && null != this.currentFiredrillID) {
+                    this.stopFiredrill();
                 }
             })
         );
@@ -103,6 +113,8 @@ export class FiredrillStore {
         classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
 
         this.addFiredrillDataListeners(firedrillID);
+
+        this.trackFiredrillElapsedTime();
     }
 
     private addFiredrillDataListeners(firedrillID: number) {
@@ -118,6 +130,29 @@ export class FiredrillStore {
         });
     }
 
+    @action
+    private trackFiredrillElapsedTime() {
+        this.firedrillElapsedTimeTracker = setInterval(async () => {
+            const startTime = await Firebase.Getters.activeFiredrillStartTimeForSchool(this.currentFiredrillID);
+            if (null == startTime) {
+                return;
+            }
+            this._firedrillElapsedTime = moment(Date.now() - startTime).format('m:ss');
+        }, 1000);
+    }
+
+    @action
+    private stopFiredrill(): void {
+        this.allClasses.forEach(aClass => {
+            Firebase.Refs.classFiredrillData(this.currentFiredrillID, aClass.classID).off();
+            aClass.students.forEach(student =>
+                Firebase.Refs.studentFiredrillStatus(this.currentFiredrillID, student.userID).off()
+            );
+        });
+        if (null != this.firedrillElapsedTimeTracker) {
+            clearInterval(this.firedrillElapsedTimeTracker);
+        }
+    }
 }
 
 function handleStudentStatusChange(student: Student): (newStatus: { status: Status } | null) => void {
