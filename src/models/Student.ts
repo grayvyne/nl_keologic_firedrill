@@ -1,5 +1,4 @@
-import { observable, computed } from 'mobx';
-import { SchoolUser } from './User';
+import { computed, observable } from 'mobx';
 import { Typeof } from '../lib/NLValdiate';
 import { Status } from './Status';
 

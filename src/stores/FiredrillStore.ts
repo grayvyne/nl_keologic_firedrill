@@ -1,10 +1,10 @@
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
-import { Student } from '../models/Student';
-import { SchoolServices } from '../services/SchoolServices';
+import { Status, Student } from '../models/Student';
+import { SchoolUser } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
-import { Status } from '../models/Status';
+import { SchoolServices } from '../services/SchoolServices';
 
 export class FiredrillStore {
     @observable private currentUserID: number;
@@ -41,6 +41,11 @@ export class FiredrillStore {
         return this.allStudents.filter(s => s.status === Status.Missing).length;
     }
 
+    @computed
+    public get teachers(): SchoolUser[] {
+        return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
+    }
+
     public constructor() {
         this.setup();
     }
@@ -53,7 +58,7 @@ export class FiredrillStore {
         const schools = await SchoolServices.getSchools();
         schools.forEach(school =>
             Firebase.Refs.addActiveFiredrillForSchoolListener(school.schoolID, firedrill => {
-                if (null != firedrill) {
+                if (null != firedrill && null == this.currentFiredrillID) {
                     this.startFiredrill(school.schoolID);
                 }
             })
@@ -84,8 +89,16 @@ export class FiredrillStore {
         );
     }
 
+    public getClaimedByNameForClass(aClass: FiredrillClass): string {
+        const claimedByUser = [...this.teachers, ...this.allStudents].find(user => user.userID === aClass.claimedByID);
+        if (null == claimedByUser) {
+            return '';
+        }
+
+        return claimedByUser.firstName + ' ' + claimedByUser.lastName;
+    }
+
     public claimClass(classID: number): Promise<void> {
-        ApplicationServices.log('Claiming a class', classID, this.currentUserID);
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
             claimedByID: this.currentUserID
         });
