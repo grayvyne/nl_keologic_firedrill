@@ -1,3 +1,5 @@
+export const pluginName = 'Firedrill';
+
 export const ClassTabStrings = {
     YOUR_CLASSES: 'Your Classes',
     FIND_CLASSES: 'Find Classes',

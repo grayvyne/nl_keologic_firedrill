@@ -1,5 +1,6 @@
 import { PlatformBridge, ApplicationServiceMessageType } from '../stores/PlatformBridge';
 import { User, UserRecord } from '../models/User';
+import { pluginName } from '../config/uiConstants';
 
 let platformBridge: PlatformBridge | null = null;
 
@@ -32,6 +33,14 @@ export namespace ApplicationServices {
             ApplicationServiceMessageType.GetCurrentUser
         );
         return new User(record);
+    }
+
+    export async function sendNotification(schoolID: number, text: string): Promise<void> {
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.SendNotification, {
+            schoolID,
+            text,
+            pluginName
+        });
     }
 
     export function log(...args: any[]): void {

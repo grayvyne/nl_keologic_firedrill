@@ -118,6 +118,15 @@ export class FiredrillStore {
         });
     }
 
+    public async initiateFiredrill(schoolID: number): Promise<void> {
+        const schools = await SchoolServices.getSchools();
+        const school = schools.find(s => s.schoolID === schoolID);
+        if (null == school) {
+            throw new Error(`School ID ${schoolID} is not an available school`);
+        }
+        return ApplicationServices.sendNotification(schoolID, `A firedrill is starting at ${school.name}`);
+    }
+
     public markStudentAsMissiong(studentID: number): Promise<void> {
         return this.saveStudentStatus(studentID, Status.Missing);
     }
