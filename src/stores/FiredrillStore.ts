@@ -58,16 +58,6 @@ export class FiredrillStore {
     @action
     public async setup(): Promise<void> {
         const user = await ApplicationServices.getCurrentUser();
-        const schools = await SchoolServices.getSchools();
-        const firstSchool = schools[0];
-        if (null == firstSchool) {
-            throw new Error('User must be part of a school');
-        }
-        const currentUser = firstSchool.getCommunity().find(schoolUser => user.userID === schoolUser.userID);
-        if (null == currentUser) {
-            throw new Error('User must be part of the school that they are part of!');
-        }
-        this.currentUser = currentUser;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
         Firebase.Refs.addActiveFiredrillForSchoolListener(user.schoolID, firedrill => {
             if (null != firedrill && null == this.currentFiredrillID) {
@@ -116,24 +106,17 @@ export class FiredrillStore {
     }
 
     public async initiateFiredrill(schoolID: number): Promise<void> {
-        const schools = await SchoolServices.getSchools();
-        const school = schools.find(s => s.schoolID === schoolID);
-        if (null == school) {
-            throw new Error(`School ID ${schoolID} is not an available school`);
-        }
+        const school = await SchoolServices.getSchool();
         Firebase.Refs.acitveFiredrillForSchool(schoolID).set({ startTime: Date.now() });
         return ApplicationServices.sendNotification(schoolID, `A firedrill is starting at ${school.name}`);
     }
 
     public async endFireDrill(): Promise<void> {
-        const schools = await SchoolServices.getSchools();
-        const school = schools.find(s => s.schoolID === this.currentFiredrillID);
-        if (null == school) {
-            throw new Error(`School ID ${this.currentFiredrillID} is not an available school`);
-        }
+        const school = await SchoolServices.getSchool();
+
         Firebase.Refs.acitveFiredrillForSchool(this.currentFiredrillID).set(null);
         return ApplicationServices.sendNotification(
-            this.currentFiredrillID,
+            this.currentUser.schoolID,
             `The fire drill at ${school.name} has ended`
         );
     }
