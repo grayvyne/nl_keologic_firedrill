@@ -10,7 +10,7 @@ export enum StatusString {
     Found = 'Found'
 }
 
-export function StatusToString(status: Status): string {
+export function statusToString(status: Status): string {
     switch (status) {
         case Status.Missing:
             return StatusString.Missing;
@@ -23,7 +23,7 @@ export function StatusToString(status: Status): string {
     }
 }
 
-export function StringToStatus(status: string): Status {
+export function stringToStatus(status: string): Status {
     switch (status) {
         case StatusString.Missing:
             return Status.Missing;

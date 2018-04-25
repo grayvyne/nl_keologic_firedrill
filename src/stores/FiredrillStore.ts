@@ -1,10 +1,11 @@
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
-import { Status, Student } from '../models/Student';
+import { Student } from '../models/Student';
 import { SchoolUser } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
+import { Status } from '../models/Status';
 
 export class FiredrillStore {
     @observable private currentUserID: number;

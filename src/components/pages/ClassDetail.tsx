@@ -11,15 +11,7 @@ import {
     Button,
     Divider
 } from 'material-ui';
-import {
-    ScrollView,
-    View,
-    TouchableOpacity,
-    Text,
-    Dimensions,
-    ViewStyle,
-    TextStyle
-} from 'react-native';
+import { ScrollView, View, TouchableOpacity, Text, Dimensions, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
@@ -32,7 +24,7 @@ import { inject, observer } from 'mobx-react';
 import { ActionTableCell } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties } from 'react';
-import { Status, StatusToString, StringToStatus } from '../../models/Status';
+import { Status, statusToString, stringToStatus } from '../../models/Status';
 import { MaterialAlert } from '../shared/MaterialAlert';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
@@ -61,11 +53,11 @@ namespace styles {
         alignItems: 'center',
         borderRadius: 3
     };
-    export const submitClassText: TextStyle = { 
-        color: 'white', 
-        fontSize: 16, 
-        fontWeight: 'bold', 
-        textAlign: 'center' 
+    export const submitClassText: TextStyle = {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center'
     };
     export const centerContent = { justifyContent: 'center', alignItems: 'center' };
     export const dialogContainer = {
@@ -80,7 +72,7 @@ namespace styles {
         marginBottom: 20,
         marginTop: 20,
         marginLeft: 20
-    }
+    };
     export const radioButton = { marginLeft: 20, marginRight: 20 };
     export const divider = { marginTop: 20 };
     export const buttonTextColor = 'white';
@@ -91,7 +83,7 @@ interface StoreProps {
     saveMultipleStudentStatuses: (students: Student[]) => void;
 }
 
-interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps { }
+interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
 
 interface State {
     editStatusModalIsVisible: boolean;
@@ -106,7 +98,7 @@ interface State {
 class ClassDetail extends React.Component<Props, State> {
     public state: State = {
         editStatusModalIsVisible: false,
-        selectedStudentStatus: StatusToString(Status.Found),
+        selectedStudentStatus: statusToString(Status.Found),
         showSubmitClassAlert: false,
         students: this.props.class!.students,
         studentsWithUpdatedStatuses: this.props.class!.students.map(val => {
@@ -115,9 +107,9 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     public render(): JSX.Element {
-        const foundLabel = StatusToString(Status.Found);
-        const absentLabel = StatusToString(Status.Absent);
-        const missingLabel = StatusToString(Status.Missing);
+        const foundLabel = statusToString(Status.Found);
+        const absentLabel = statusToString(Status.Absent);
+        const missingLabel = statusToString(Status.Missing);
 
         return (
             <View style={styles.containerBackground}>
@@ -141,35 +133,22 @@ class ClassDetail extends React.Component<Props, State> {
                             {this.state.students.map(this.renderTableCell)}
                         </TableView>
                     </ScrollView>
-                    <View style={styles.dockedBottomButton} >
-                        <TouchableOpacity
-                            style={styles.submitClassButton}
-                            onPress={() => this.onPressSubmitClass()}
-                        >
-                            <Text style={styles.submitClassText}>
-                                {ui.SUBMIT_CLASS}
-                            </Text>
+                    <View style={styles.dockedBottomButton}>
+                        <TouchableOpacity style={styles.submitClassButton} onPress={() => this.onPressSubmitClass()}>
+                            <Text style={styles.submitClassText}>{ui.SUBMIT_CLASS}</Text>
                         </TouchableOpacity>
                     </View>
                 </ContentView>
 
-                <Dialog
-                    open={this.state.editStatusModalIsVisible}
-                    style={styles.centerContent}
-                >
-                    <View
-                        style={styles.dialogContainer}
-                    >
+                <Dialog open={this.state.editStatusModalIsVisible} style={styles.centerContent}>
+                    <View style={styles.dialogContainer}>
                         <FormControl component="fieldset">
-                            <FormLabel
-                                component="legend"
-                                style={styles.chooseStatusHeader}
-                            >
+                            <FormLabel component="legend" style={styles.chooseStatusHeader}>
                                 {ui.CHOOSE_STATUS}
                             </FormLabel>
 
-                            <RadioGroup 
-                                value={this.state.selectedStudentStatus} 
+                            <RadioGroup
+                                value={this.state.selectedStudentStatus}
                                 onChange={this.tappedRadioOptionInModal}
                             >
                                 <FormControlLabel
@@ -206,7 +185,9 @@ class ClassDetail extends React.Component<Props, State> {
                     alertMessage={ui.SUBMIT_CLASS_ALERT_MESSAGE}
                     open={this.state.showSubmitClassAlert}
                     onPressCancel={() => this.cancelSubmitClass()}
-                    onPressOK={() => this.confirmSubmitClass()}
+                    onPressAffirm={() => this.confirmSubmitClass()}
+                    affirmButtonLabel={ui.OK}
+                    cancelButtonLabel={ui.CANCEL}
                 />
             </View>
         );
@@ -226,7 +207,7 @@ class ClassDetail extends React.Component<Props, State> {
         this.setState({ showSubmitClassAlert: true });
     };
 
-    private saveClassStudentStatuses() {
+    private saveClassStudentStatuses(): void {
         const updatedStudents = [...this.state.students];
 
         for (const item of this.state.studentsWithUpdatedStatuses) {
@@ -257,22 +238,22 @@ class ClassDetail extends React.Component<Props, State> {
         const selectedStudent = this.state.selectedStudent!;
 
         const statuses = [...this.state.studentsWithUpdatedStatuses];
-        const updatedStudentIndex = this.state.studentsWithUpdatedStatuses
-                .findIndex(s => selectedStudent.userID === s.id);
+        const updatedStudentIndex = this.state.studentsWithUpdatedStatuses.findIndex(
+            s => selectedStudent.userID === s.id
+        );
 
-        statuses[updatedStudentIndex].status = StringToStatus(updatedStatus);
+        statuses[updatedStudentIndex].status = stringToStatus(updatedStatus);
 
         this.setState({
             editStatusModalIsVisible: false,
-            selectedStudentStatus: StatusToString(Status.Found),
+            selectedStudentStatus: statusToString(Status.Found),
             selectedStudent: undefined,
             studentsWithUpdatedStatuses: statuses
         });
     };
 
     private getStatusForStudent(student: Student): Status {
-        return this.state.studentsWithUpdatedStatuses
-                .find(s => s.id === student.userID)!.status;
+        return this.state.studentsWithUpdatedStatuses.find(s => s.id === student.userID)!.status;
     }
 
     private tappedRadioOptionInModal = (event: any) => {
@@ -284,7 +265,7 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     private renderTableCell = (student: Student): JSX.Element => {
-        let cellProps = this.buildTableCellProps(student);
+        const cellProps = this.buildTableCellProps(student);
 
         return (
             <ActionTableCell
@@ -296,19 +277,19 @@ class ClassDetail extends React.Component<Props, State> {
             />
         );
     };
-    
+
     private buildTableCellProps(student: Student): {} {
         const status = this.getStatusForStudent(student);
 
         switch (status) {
             case Status.Missing:
-                return { buttonLabel: ui.MISSING, buttonColor: Colors.MISSING_BUTTON};
+                return { buttonLabel: ui.MISSING, buttonColor: Colors.MISSING_BUTTON };
             case Status.Absent:
                 return { buttonLabel: ui.ABSENT, buttonColor: Colors.ABSENT_BUTTON };
             case Status.Found:
                 return { buttonLabel: ui.FOUND, buttonColor: Colors.FOUND_BUTTON };
             default:
-                throw new Error('CASE UNACCOUNTED FOR: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
+                throw new Error('Case unaccounted for: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
         }
     }
 }

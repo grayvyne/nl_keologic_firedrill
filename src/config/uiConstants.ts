@@ -25,5 +25,5 @@ export const ClassDetailStrings = {
     SUBMIT_CLASS_ALERT_MESSAGE: 'Are you finished updating students statuses?',
     MISSING: 'Missing',
     ABSENT: 'Absent',
-    FOUND: 'Found',
-}
+    FOUND: 'Found'
+};
