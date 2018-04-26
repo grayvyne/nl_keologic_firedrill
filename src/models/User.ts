@@ -27,16 +27,19 @@ export class User {
 
 export interface SchoolUserRecord extends UserRecord {
     readonly role: UserRole;
+    readonly schoolID: number;
 }
 
 @Validate
 export class SchoolUser extends User {
+    @Typeof('number') public readonly schoolID: number;
     @Typeof('number') private readonly role: UserRole;
 
     public constructor(record: SchoolUserRecord) {
         super(record);
 
         this.role = record.role;
+        this.schoolID = record.schoolID;
     }
 
     public getUserRole(): UserRole {

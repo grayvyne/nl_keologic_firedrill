@@ -56,14 +56,11 @@ export class FiredrillStore {
         const user = await ApplicationServices.getCurrentUser();
         this.currentUserID = user.userID;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
-        const schools = await SchoolServices.getSchools();
-        schools.forEach(school =>
-            Firebase.Refs.addActiveFiredrillForSchoolListener(school.schoolID, firedrill => {
-                if (null != firedrill && null == this.currentFiredrillID) {
-                    this.startFiredrill(school.schoolID);
-                }
-            })
-        );
+        Firebase.Refs.addActiveFiredrillForSchoolListener(user.schoolID, firedrill => {
+            if (null != firedrill && null == this.currentFiredrillID) {
+                this.startFiredrill(user.schoolID);
+            }
+        });
     }
 
     @action
