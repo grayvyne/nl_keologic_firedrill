@@ -106,7 +106,8 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
         shouldShowManage: firedrillStore.shouldShowManage,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
-        endFireDrill: () => firedrillStore.endFireDrill()
+        endFireDrill: () => firedrillStore.endFireDrill(),
+        firedrillElapsedTime: firedrillStore.firedrillElapsedTime
     };
 }
 

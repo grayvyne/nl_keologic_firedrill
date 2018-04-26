@@ -1,3 +1,4 @@
+import * as uuid from 'uuid';
 import * as moment from 'moment';
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
@@ -66,6 +67,7 @@ export class FiredrillStore {
     @action
     public async setup(): Promise<void> {
         const user = await ApplicationServices.getCurrentUser();
+        this.currentUser = user;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
         Firebase.Listeners.activeFiredrillForSchool(user.schoolID, firedrill => {
             if (null != firedrill && null == this.currentFiredrillID) {
@@ -93,18 +95,27 @@ export class FiredrillStore {
 
     public async initiateFiredrill(schoolID: number): Promise<void> {
         const school = await SchoolServices.getSchool();
-        Firebase.Refs.acitveFiredrillForSchool(schoolID).set({ startTime: Date.now() });
+        await this.createNewFiredrill(schoolID);
         return ApplicationServices.sendNotification(schoolID, `A firedrill is starting at ${school.name}`);
     }
 
     public async endFireDrill(): Promise<void> {
         const school = await SchoolServices.getSchool();
 
-        Firebase.Refs.acitveFiredrillForSchool(this.currentFiredrillID).set(null);
-        return ApplicationServices.sendNotification(
-            this.currentUser.schoolID,
+        await ApplicationServices.sendNotification(
+            this.currentFiredrillID,
             `The fire drill at ${school.name} has ended`
         );
+        return this.saveFinishedFiredrill();
+    }
+
+    public async cancelFiredrill(): Promise<void> {
+        const school = await SchoolServices.getSchool();
+        await ApplicationServices.sendNotification(
+            this.currentFiredrillID,
+            `The fire drill at ${school.name} has been cancelled`
+        );
+        return this.clearActiveFiredrill();
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {
@@ -123,8 +134,31 @@ export class FiredrillStore {
         return Firebase.Refs.studentFiredrillStatus(this.currentFiredrillID, studentID).update({ status });
     }
 
+    private createNewFiredrill(schoolID: number): Promise<void> {
+        return Firebase.Refs.activeFiredrillForSchool(schoolID).set({
+            startTime: Date.now(),
+            firedrillID: uuid()
+        });
+    }
+
+    private async saveFinishedFiredrill(): Promise<void> {
+        const firebaseData = await Firebase.Getters.activeFiredrillData(this.currentFiredrillID);
+        if (null == firebaseData) {
+            return;
+        }
+        await Firebase.Refs.finishedFiredrillForSchool(this.currentFiredrillID, firebaseData.firedrillID).set(
+            firebaseData
+        );
+        return this.clearActiveFiredrill();
+    }
+
+    private clearActiveFiredrill(): Promise<void> {
+        return Firebase.Refs.activeFiredrillForSchool(this.currentFiredrillID).set(null);
+    }
+
     @action
     private async startFiredrill(firedrillID: number): Promise<void> {
+        this._classes = new ObservableMap();
         this.currentFiredrillID = firedrillID;
         const classes = await SchoolServices.getClassesForSchool(firedrillID);
         classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
@@ -169,6 +203,7 @@ export class FiredrillStore {
         if (null != this.firedrillElapsedTimeTracker) {
             clearInterval(this.firedrillElapsedTimeTracker);
         }
+        this._classes = new ObservableMap();
     }
 }
 

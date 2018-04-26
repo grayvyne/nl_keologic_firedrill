@@ -34,9 +34,23 @@ export namespace Firebase {
         export function activeFiredrillForSchool(schoolID: number): firebase.database.Reference {
             return database.ref('ActiveFiredrills').child(schoolID.toString());
         }
+
+        export function finishedFiredrillForSchool(schoolID: number, firedrillID: string): firebase.database.Reference {
+            return database
+                .ref('FinishedFiredrills')
+                .child(schoolID.toString())
+                .child(firedrillID);
+        }
     }
 
     export namespace Getters {
+        export async function activeFiredrillData(schoolID: number): Promise<{ firedrillID: string } | null> {
+            const snapshot = await Refs.activeFiredrillForSchool(schoolID).once('value');
+            if (null == snapshot) {
+                return null;
+            }
+            return snapshot.val();
+        }
         export async function activeFiredrillStartTimeForSchool(schoolID: number): Promise<number | null> {
             const snapshot = await Refs.activeFiredrillForSchool(schoolID)
                 .child('startTime')
