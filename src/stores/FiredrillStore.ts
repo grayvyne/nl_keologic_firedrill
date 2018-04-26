@@ -74,9 +74,8 @@ export class FiredrillStore {
         if (this._classSearchTerm.length < 1) {
             return this.allClasses;
         }
-        return this.allClasses.filter(
-            aClass =>
-                aClass.gradeLevel.toString() === this._classSearchTerm || aClass.name.includes(this._classSearchTerm)
+        return this.allClasses.filter(aClass =>
+            (aClass.name + ' ' + aClass.gradeLevel).includes(this._classSearchTerm)
         );
     }
 
