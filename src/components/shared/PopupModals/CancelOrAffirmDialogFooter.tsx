@@ -14,10 +14,10 @@ export const CancelOrAffirmDialogFooter = (props: Props) => {
         <div>
             <Divider style={styles.divider} />
             <DialogActions style={styles.marginRight}>
-                <Button onClick={() => props.onPressCancel()} color="primary">
+                <Button onClick={props.onPressCancel} color="primary">
                     {props.cancelButtonLabel}
                 </Button>
-                <Button onClick={() => props.onPressAffirm()} color="primary">
+                <Button onClick={props.onPressAffirm} color="primary">
                     {props.affirmButtonLabel}
                 </Button>
             </DialogActions>

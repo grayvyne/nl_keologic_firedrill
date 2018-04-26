@@ -65,7 +65,7 @@ interface State {
     selectedStudent?: Student;
     showSubmitClassAlert: boolean;
     students: Student[];
-    studentsWithUpdatedStatuses: { id: number; status: Status }[];
+    updatedStudentStatusesByStudentId: Map<number, Status>;
 }
 
 @observer
@@ -78,15 +78,17 @@ class ClassDetail extends React.Component<Props, State> {
         );
 
         const studentClass = props.class!;
+        const studentStatusMapById: Map<number, Status> = new Map();
+        studentClass.students.forEach(student => {
+            studentStatusMapById.set(student.userID, student.status);
+        });
 
         this.state = {
             editStatusModalIsVisible: false,
             selectedStudentStatus: Status.Found,
             showSubmitClassAlert: false,
             students: studentClass.students,
-            studentsWithUpdatedStatuses: studentClass.students.map(student => {
-                return { id: student.userID, status: student.status };
-            })
+            updatedStudentStatusesByStudentId: studentStatusMapById
         };
     }
 
@@ -162,21 +164,21 @@ class ClassDetail extends React.Component<Props, State> {
     private saveClassStudentStatuses(): void {
         const updatedStudents = [...this.state.students];
 
-        for (const item of this.state.studentsWithUpdatedStatuses) {
-            switch (item.status) {
+        this.state.updatedStudentStatusesByStudentId.forEach((status, id) => {
+            switch (status) {
                 case Status.Missing:
-                    updatedStudents.find(s => s.userID === item.id)!.markAsMissing();
+                    updatedStudents.find(s => s.userID === id)!.markAsMissing();
                     break;
                 case Status.Found:
-                    updatedStudents.find(s => s.userID === item.id)!.markAsFound();
+                    updatedStudents.find(s => s.userID === id)!.markAsFound();
                     break;
                 case Status.Absent:
-                    updatedStudents.find(s => s.userID === item.id)!.markAsAbsent();
+                    updatedStudents.find(s => s.userID === id)!.markAsAbsent();
                     break;
                 default:
                     throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
             }
-        }
+        });
 
         this.props.saveMultipleStudentStatuses(updatedStudents);
     }
@@ -189,23 +191,25 @@ class ClassDetail extends React.Component<Props, State> {
         const updatedStatus = this.state.selectedStudentStatus;
         const selectedStudent = this.state.selectedStudent!;
 
-        const statuses = [...this.state.studentsWithUpdatedStatuses];
-        const updatedStudentIndex = this.state.studentsWithUpdatedStatuses.findIndex(
-            s => selectedStudent.userID === s.id
-        );
-
-        statuses[updatedStudentIndex].status = updatedStatus;
+        const map = this.state.updatedStudentStatusesByStudentId;
+        map.set(selectedStudent.userID, updatedStatus);
 
         this.setState({
             editStatusModalIsVisible: false,
             selectedStudentStatus: Status.Found,
             selectedStudent: undefined,
-            studentsWithUpdatedStatuses: statuses
+            updatedStudentStatusesByStudentId: map
         });
     };
 
     private getStatusForStudent(student: Student): Status {
-        return this.state.studentsWithUpdatedStatuses.find(s => s.id === student.userID)!.status;
+        const status = this.state.updatedStudentStatusesByStudentId.get(student.userID);
+        console.assert(
+            status !== undefined,
+            'Status was not found for user ID @getStatusForStudent in #ClassDetail.tsx'
+        );
+
+        return status!;
     }
 
     private onPressRadioOption = (event: any) => {
@@ -247,6 +251,10 @@ class ClassDetail extends React.Component<Props, State> {
 }
 
 function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
+    console.assert(
+        props.navigation.state.params != undefined,
+        'Navigation state paramaters are undefined @mapStoresToProps in #ClassDetails.tsx'
+    );
     return {
         class: firedrillStore.classes.get(props.navigation.state.params!.classID),
         saveMultipleStudentStatuses: (students: Student[]) => firedrillStore.saveMultipleStudentStatuses(students)
