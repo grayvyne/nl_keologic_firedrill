@@ -64,7 +64,12 @@ export class Search extends React.Component<Props, State> {
                 </AppBar>
 
                 <ContentView>
-                    <SearchBar />
+                    <SearchBar
+                        text={''}
+                        onChangeText={() => {
+                            return;
+                        }}
+                    />
                     <ScrollView>
                         <View>
                             <Text>TEST 123456</Text>

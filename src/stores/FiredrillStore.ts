@@ -60,6 +60,26 @@ export class FiredrillStore {
         return this.currentUser.getUserRole() === UserRole.Principal;
     }
 
+    @observable private _classSearchTerm = '';
+    @computed
+    public get classSearchTerm(): string {
+        return this._classSearchTerm;
+    }
+    @action
+    public setClassSearchTerm(term: string): void {
+        this._classSearchTerm = term;
+    }
+    @computed
+    public get matchingSearchClasses(): FiredrillClass[] {
+        if (this._classSearchTerm.length < 1) {
+            return this.allClasses;
+        }
+        return this.allClasses.filter(
+            aClass =>
+                aClass.gradeLevel.toString() === this._classSearchTerm || aClass.name.includes(this._classSearchTerm)
+        );
+    }
+
     public constructor() {
         this.setup();
     }

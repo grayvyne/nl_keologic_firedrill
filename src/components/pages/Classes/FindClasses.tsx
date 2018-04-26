@@ -7,6 +7,8 @@ import { ActionTableCell, SearchBar, TableView } from '../../shared';
 
 interface Props {
     classes: FiredrillClass[];
+    searchTerm: string;
+    onChangeSearchTerm(term: string): void;
     getClaimedByNameForClass(aClass: FiredrillClass): string;
     onPressClaim(classID: number): Promise<void>;
 }
@@ -15,7 +17,7 @@ class FindClasses extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <ScrollView>
-                <SearchBar />
+                <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
                 <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
             </ScrollView>
         );

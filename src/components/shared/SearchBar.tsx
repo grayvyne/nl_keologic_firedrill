@@ -7,12 +7,28 @@ namespace style {
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
 }
 
-export default class SearchBar extends React.Component {
+interface Props {
+    text: string;
+    onChangeText(text: string): void;
+}
+
+export default class SearchBar extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <Card style={style.cardStyle}>
-                <Input placeholder={'Search'} type={'search'} style={style.searchInputStyle} disableUnderline={true} />
+                <Input
+                    value={this.props.text}
+                    onChange={this.handleChangeText}
+                    placeholder={'Search'}
+                    type={'search'}
+                    style={style.searchInputStyle}
+                    disableUnderline={true}
+                />
             </Card>
         );
     }
+
+    private handleChangeText = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        this.props.onChangeText(event.target.value);
+    };
 }
