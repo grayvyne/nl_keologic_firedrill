@@ -12,6 +12,7 @@ import { Stores } from '../../stores';
 import ContentView from '../shared/ContentView';
 
 interface Props {
+    firedrillElapsedTime: string;
     shouldShowManage: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
     endFireDrill(): Promise<void>;
@@ -56,6 +57,7 @@ class Missing extends React.Component<Props, State> {
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
+                        <Text>{this.props.firedrillElapsedTime}</Text>
                         {this.props.shouldShowManage && (
                             <Button onClick={() => this.setState({ isManageModalOpen: true })}>Manage</Button>
                         )}
