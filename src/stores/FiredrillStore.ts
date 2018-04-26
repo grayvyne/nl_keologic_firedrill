@@ -65,10 +65,7 @@ export class FiredrillStore {
     public get classSearchTerm(): string {
         return this._classSearchTerm;
     }
-    @action
-    public setClassSearchTerm(term: string): void {
-        this._classSearchTerm = term;
-    }
+
     @computed
     public get matchingSearchClasses(): FiredrillClass[] {
         if (this._classSearchTerm.length < 1) {
@@ -76,6 +73,21 @@ export class FiredrillStore {
         }
         return this.allClasses.filter(aClass =>
             (aClass.name + ' ' + aClass.gradeLevel).includes(this._classSearchTerm)
+        );
+    }
+
+    @observable private _studentSearchTerm = '';
+    @computed
+    public get studentSearchTerm(): string {
+        return this._studentSearchTerm;
+    }
+    @computed
+    public get matchingSearchStudents(): Student[] {
+        if (this._studentSearchTerm.length < 1) {
+            return this.allStudents;
+        }
+        return this.allStudents.filter(student =>
+            (student.firstName + ' ' + student.lastName).includes(this._studentSearchTerm)
         );
     }
 
@@ -95,6 +107,16 @@ export class FiredrillStore {
                 this.stopFiredrill();
             }
         });
+    }
+
+    @action
+    public setClassSearchTerm(term: string): void {
+        this._classSearchTerm = term;
+    }
+
+    @action
+    public setStudentSearchTerm(term: string): void {
+        this._studentSearchTerm = term;
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {

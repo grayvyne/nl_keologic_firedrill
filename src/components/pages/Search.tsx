@@ -3,19 +3,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
-import ContentView from '../shared/ContentView';
-import SearchBar from '../shared/SearchBar';
 import { Colors } from '../../config/materialUiTheme';
+import { Status, Student } from '../../models/Student';
+import { Stores } from '../../stores';
+import { ActionTableCell, ContentView, SearchBar, TableView } from '../shared';
 
 interface State {
     index: number;
 }
 
 interface Props {
-    isVisible: boolean;
+    students: Student[];
+    searchTerm: string;
+    onChangeSearchTerm(term: string): void;
 }
 
 namespace styles {
@@ -27,7 +31,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
 }
 
-export class Search extends React.Component<Props, State> {
+class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
@@ -64,21 +68,48 @@ export class Search extends React.Component<Props, State> {
                 </AppBar>
 
                 <ContentView>
-                    <SearchBar
-                        text={''}
-                        onChangeText={() => {
-                            return;
-                        }}
-                    />
+                    <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
                     <ScrollView>
-                        <View>
-                            <Text>TEST 123456</Text>
-                        </View>
+                        <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
                     </ScrollView>
                 </ContentView>
             </View>
         );
     }
+
+    private renderTableCell = (student: Student): JSX.Element => {
+        let cellProps = this.buildTableCellProps(student.status);
+
+        return (
+            <ActionTableCell
+                key={student.userID}
+                cellData={{ id: student.userID, label: student.firstName + ' ' + student.lastName }}
+                buttonTextColor="white"
+                {...cellProps}
+            />
+        );
+    };
+
+    private buildTableCellProps(status: Status): {} {
+        switch (status) {
+            case Status.Missing:
+                return { buttonLabel: 'Missing', buttonColor: 'red' };
+            case Status.Absent:
+                return { buttonLabel: 'Absent', buttonColor: 'yellow' };
+            case Status.Found:
+                return { buttonLabel: 'Found', buttonColor: 'blue' };
+            default:
+                throw new Error('CASE UNACCOUNTED FOR: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
+        }
+    }
 }
 
-export default Search;
+function mapStoresToProps({ firedrillStore }: Stores): Props {
+    return {
+        students: firedrillStore.matchingSearchStudents,
+        searchTerm: firedrillStore.studentSearchTerm,
+        onChangeSearchTerm: term => firedrillStore.setStudentSearchTerm(term)
+    };
+}
+
+export default inject(mapStoresToProps)(Search);

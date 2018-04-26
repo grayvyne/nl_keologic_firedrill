@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
-import Missing from '../pages/Missing';
-import { Search } from '../pages/Search';
-import ClassesNavigator from './ClassesNavigator';
-import ChecklistNavigator from './ChecklistNavigator';
 import blueGrey from 'material-ui/colors/blueGrey';
-import { Routes } from '../../config/routes';
+import * as React from 'react';
 import { TextStyle } from 'react-native';
+import { TabBarBottom, TabNavigator } from 'react-navigation';
+import { Routes } from '../../config/routes';
+import Missing from '../pages/Missing';
+import Search from '../pages/Search';
+import ChecklistNavigator from './ChecklistNavigator';
+import ClassesNavigator from './ClassesNavigator';
 
 namespace styles {
     export const tabStyle = { height: 56 };
