@@ -252,7 +252,7 @@ class ClassDetail extends React.Component<Props, State> {
 
 function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
     console.assert(
-        props.navigation.state.params != undefined,
+        props.navigation.state.params !== undefined,
         'Navigation state paramaters are undefined @mapStoresToProps in #ClassDetails.tsx'
     );
     return {
