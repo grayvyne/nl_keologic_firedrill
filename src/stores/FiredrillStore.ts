@@ -1,6 +1,6 @@
-import * as uuid from 'uuid';
-import * as moment from 'moment';
 import { ObservableMap, action, computed, observable } from 'mobx';
+import * as moment from 'moment';
+import * as uuid from 'uuid';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { Status, Student } from '../models/Student';
@@ -89,7 +89,7 @@ export class FiredrillStore {
 
     public claimClass(classID: number): Promise<void> {
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
-            claimedByID: this.currentUser
+            claimedByID: this.currentUser.userID
         });
     }
 

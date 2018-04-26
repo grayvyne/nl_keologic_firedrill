@@ -17,12 +17,10 @@ const database = firebase.database();
 export namespace Firebase {
     export const Auth = firebase.auth();
     export namespace Refs {
-        function allStudentFiredrillStatuses(firedrillID: string): firebase.database.Reference {
-            return database.ref('StudentFiredrillStatus').child(firedrillID);
-        }
-
         export function studentFiredrillStatus(firedrillID: number, studentID: number): firebase.database.Reference {
-            return allStudentFiredrillStatuses(firedrillID.toString()).child(studentID.toString());
+            return activeFiredrillForSchool(firedrillID)
+                .child('StudentFiredrillStatus')
+                .child(studentID.toString());
         }
 
         export function classFiredrillData(schoolID: number, classID: number): firebase.database.Reference {
