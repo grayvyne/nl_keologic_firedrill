@@ -1,6 +1,7 @@
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
+import { School } from '../models/School';
 import { Status, Student } from '../models/Student';
 import { SchoolUser } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
@@ -9,6 +10,8 @@ import { SchoolServices } from '../services/SchoolServices';
 export class FiredrillStore {
     @observable private currentUserID: number;
     @observable private currentFiredrillID: number;
+
+    @observable private _school: School | null;
 
     @observable private _classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
     @computed
@@ -46,6 +49,14 @@ export class FiredrillStore {
         return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
     }
 
+    @computed
+    public get staff(): SchoolUser[] {
+        if (null == this._school) {
+            return [];
+        }
+        return this._school.getStaff();
+    }
+
     public constructor() {
         this.setup();
     }
@@ -65,7 +76,11 @@ export class FiredrillStore {
     @action
     public async startFiredrill(firedrillID: number): Promise<void> {
         this.currentFiredrillID = firedrillID;
-        const classes = await SchoolServices.getClassesForSchool(firedrillID);
+        const [classes, school] = await Promise.all([
+            SchoolServices.getClassesForSchool(firedrillID),
+            SchoolServices.getSchool()
+        ]);
+        this._school = school;
         classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
 
         this.allClasses.forEach(aClass => {
@@ -87,7 +102,7 @@ export class FiredrillStore {
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
-        const claimedByUser = [...this.teachers, ...this.allStudents].find(user => user.userID === aClass.claimedByID);
+        const claimedByUser = this.staff.find(user => user.userID === aClass.claimedByID);
         if (null == claimedByUser) {
             return '';
         }

@@ -8,7 +8,6 @@ import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { Status, Student } from '../../models/Student';
-import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
 import { ActionTableCell } from '../shared';
 import ContentView from '../shared/ContentView';
@@ -46,7 +45,6 @@ class Missing extends React.Component<Props> {
     };
 
     public render(): JSX.Element {
-        ApplicationServices.log('props', this.props);
         return (
             <View>
                 <AppBar position={'absolute'} style={styles.appBarStyle}>

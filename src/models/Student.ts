@@ -3,9 +3,9 @@ import { Typeof } from '../lib/NLValdiate';
 import { SchoolUser } from './User';
 
 export enum Status {
-    Missing,
-    Absent,
-    Found
+    Missing = 'Missing',
+    Absent = 'Absent',
+    Found = 'Found'
 }
 
 export class Student extends SchoolUser {
