@@ -22,7 +22,7 @@ export const ClassDetailStrings = {
     CANCEL: 'CANCEL',
     OK: 'OK',
     SUBMIT_CLASS_ALERT_TITLE: 'Submit Class?',
-    SUBMIT_CLASS_ALERT_MESSAGE: 'Are you finished updating students statuses?',
+    SUBMIT_CLASS_ALERT_MESSAGE: `Are you finished updating students' statuses?`,
     MISSING: 'Missing',
     ABSENT: 'Absent',
     FOUND: 'Found'
