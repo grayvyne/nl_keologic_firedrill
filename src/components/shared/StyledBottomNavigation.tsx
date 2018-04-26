@@ -1,13 +1,14 @@
 import { BottomNavigationAction, withStyles } from 'material-ui';
 import { BottomNavigationActionProps } from 'material-ui/BottomNavigation';
 import * as React from 'react';
+import { Colors } from '../../config/materialUiTheme';
 
 const styles = {
     root: {
         color: 'rgba(0, 0, 0, 0.3)'
     },
     selected: {
-        color: '#37474F'
+        color: Colors.SELECTED_TAB_TINT
     }
 };
 

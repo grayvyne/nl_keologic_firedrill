@@ -1,17 +1,5 @@
-import {
-    IconButton,
-    Toolbar,
-    Dialog,
-    RadioGroup,
-    Radio,
-    FormControlLabel,
-    FormControl,
-    FormLabel,
-    DialogActions,
-    Button,
-    Divider
-} from 'material-ui';
-import { ScrollView, View, TouchableOpacity, Text, Dimensions, ViewStyle, TextStyle } from 'react-native';
+import { IconButton, Toolbar } from 'material-ui';
+import { ScrollView, View, TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
@@ -24,10 +12,11 @@ import { inject, observer } from 'mobx-react';
 import { ActionTableCell } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties } from 'react';
-import { Status, statusToString, stringToStatus } from '../../models/Status';
-import { MaterialAlert } from '../shared/MaterialAlert';
+import { Status } from '../../models/Status';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
+import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
+import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 
 namespace styles {
     export const hideBoxShadow = { boxShadow: 'none' };
@@ -39,7 +28,7 @@ namespace styles {
         left: 0,
         width: '100%',
         height: 80,
-        backgroundColor: '#EEEEEE',
+        backgroundColor: Colors.POPOVER_DOCK_BG,
         justifyContent: 'center',
         alignItems: 'center'
     };
@@ -48,7 +37,7 @@ namespace styles {
     export const submitClassButton: ViewStyle = {
         height: 50,
         width: '75%',
-        backgroundColor: '#71BF83',
+        backgroundColor: Colors.SUBMIT_CLASS_BUTTON,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 3
@@ -59,22 +48,7 @@ namespace styles {
         fontWeight: 'bold',
         textAlign: 'center'
     };
-    export const centerContent = { justifyContent: 'center', alignItems: 'center' };
-    export const dialogContainer = {
-        width: Dimensions.get('window').width - 150,
-        backgroundColor: 'white',
-        paddingTop: 30
-    };
-    export const chooseStatusHeader: CSSProperties = {
-        fontWeight: 'bold',
-        fontSize: 16,
-        color: 'black',
-        marginBottom: 20,
-        marginTop: 20,
-        marginLeft: 20
-    };
-    export const radioButton = { marginLeft: 20, marginRight: 20 };
-    export const divider = { marginTop: 20 };
+
     export const buttonTextColor = 'white';
 }
 
@@ -87,7 +61,7 @@ interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {
 
 interface State {
     editStatusModalIsVisible: boolean;
-    selectedStudentStatus: string;
+    selectedStudentStatus: Status;
     selectedStudent?: Student;
     showSubmitClassAlert: boolean;
     students: Student[];
@@ -96,21 +70,27 @@ interface State {
 
 @observer
 class ClassDetail extends React.Component<Props, State> {
-    public state: State = {
-        editStatusModalIsVisible: false,
-        selectedStudentStatus: statusToString(Status.Found),
-        showSubmitClassAlert: false,
-        students: this.props.class!.students,
-        studentsWithUpdatedStatuses: this.props.class!.students.map(val => {
-            return { id: val.userID, status: val.status };
-        })
-    };
+    constructor(props: Props) {
+        super(props);
+        console.assert(
+            props.class !== undefined,
+            'Class detail was passed in an undefined class in props @constructor in ClassDetail.tsx'
+        );
 
-    public render(): JSX.Element {
-        const foundLabel = statusToString(Status.Found);
-        const absentLabel = statusToString(Status.Absent);
-        const missingLabel = statusToString(Status.Missing);
+        const studentClass = props.class!;
 
+        this.state = {
+            editStatusModalIsVisible: false,
+            selectedStudentStatus: Status.Found,
+            showSubmitClassAlert: false,
+            students: studentClass.students,
+            studentsWithUpdatedStatuses: studentClass.students.map(student => {
+                return { id: student.userID, status: student.status };
+            })
+        };
+    }
+
+    public render(): JSX.Element | null {
         return (
             <View style={styles.containerBackground}>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
@@ -140,45 +120,17 @@ class ClassDetail extends React.Component<Props, State> {
                     </View>
                 </ContentView>
 
-                <Dialog open={this.state.editStatusModalIsVisible} style={styles.centerContent}>
-                    <View style={styles.dialogContainer}>
-                        <FormControl component="fieldset">
-                            <FormLabel component="legend" style={styles.chooseStatusHeader}>
-                                {ui.CHOOSE_STATUS}
-                            </FormLabel>
-
-                            <RadioGroup
-                                value={this.state.selectedStudentStatus}
-                                onChange={this.tappedRadioOptionInModal}
-                            >
-                                <FormControlLabel
-                                    value={foundLabel}
-                                    control={<Radio style={styles.radioButton} />}
-                                    label={foundLabel}
-                                />
-                                <FormControlLabel
-                                    value={absentLabel}
-                                    control={<Radio style={styles.radioButton} />}
-                                    label={absentLabel}
-                                />
-                                <FormControlLabel
-                                    value={missingLabel}
-                                    control={<Radio style={styles.radioButton} />}
-                                    label={missingLabel}
-                                />
-                            </RadioGroup>
-                            <Divider style={styles.divider} />
-                            <DialogActions>
-                                <Button onClick={this.cancelUpdateStudentStatus} color="primary">
-                                    {ui.CANCEL}
-                                </Button>
-                                <Button onClick={this.updateStudentStatus} color="primary">
-                                    {ui.OK}
-                                </Button>
-                            </DialogActions>
-                        </FormControl>
-                    </View>
-                </Dialog>
+                <MaterialRadioInputList
+                    open={this.state.editStatusModalIsVisible}
+                    modalHeader={ui.CHOOSE_STATUS}
+                    currentlySelectedRadioOptionValue={this.state.selectedStudentStatus}
+                    radioOptions={[Status.Found, Status.Absent, Status.Missing]}
+                    onPressRadioOption={this.onPressRadioOption}
+                    onPressCancel={() => this.cancelUpdateStudentStatus()}
+                    onPressAffirm={() => this.updateStudentStatus()}
+                    cancelButtonLabel={ui.CANCEL}
+                    affirmButtonLabel={ui.OK}
+                />
 
                 <MaterialAlert
                     alertTitle={ui.SUBMIT_CLASS_ALERT_TITLE}
@@ -242,11 +194,11 @@ class ClassDetail extends React.Component<Props, State> {
             s => selectedStudent.userID === s.id
         );
 
-        statuses[updatedStudentIndex].status = stringToStatus(updatedStatus);
+        statuses[updatedStudentIndex].status = updatedStatus;
 
         this.setState({
             editStatusModalIsVisible: false,
-            selectedStudentStatus: statusToString(Status.Found),
+            selectedStudentStatus: Status.Found,
             selectedStudent: undefined,
             studentsWithUpdatedStatuses: statuses
         });
@@ -256,7 +208,7 @@ class ClassDetail extends React.Component<Props, State> {
         return this.state.studentsWithUpdatedStatuses.find(s => s.id === student.userID)!.status;
     }
 
-    private tappedRadioOptionInModal = (event: any) => {
+    private onPressRadioOption = (event: any) => {
         this.setState({ selectedStudentStatus: event.target.value });
     };
 
