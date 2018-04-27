@@ -17,6 +17,7 @@ interface Props {
     students: Student[];
     totalStudentsCount: number;
     foundStudentsCount: number;
+    firedrillElapsedTime: string;
 }
 
 namespace styles {
@@ -52,6 +53,7 @@ class Missing extends React.Component<Props> {
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
+                        <Text>{this.props.firedrillElapsedTime}</Text>
                     </Toolbar>
                 </AppBar>
                 <ContentView>
@@ -76,7 +78,8 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
         students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
         totalStudentsCount: firedrillStore.allStudentsCount,
-        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount
+        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
+        firedrillElapsedTime: firedrillStore.firedrillElapsedTime
     };
 }
 
