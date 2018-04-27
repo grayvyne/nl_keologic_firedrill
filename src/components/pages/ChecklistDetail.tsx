@@ -1,14 +1,21 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
-import { IconButton, Toolbar } from 'material-ui';
+import { Button, IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import { ViewStyle, View, Text } from 'react-native';
 import { CSSProperties } from 'react';
+import { View, ViewStyle } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { Stores } from '../../stores';
+import { StatefulChecklistItem } from '../../stores/ChecklistStore';
+import { ContentView } from '../shared';
 
-interface Props {
-    isVisible: boolean;
+interface StoreProps {
+    checklistItems: StatefulChecklistItem[];
+    setChecklistItemStatus(listName: string, key: string, completed: boolean): void;
 }
+
+interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
     export const viewStyle: ViewStyle = {
@@ -21,10 +28,11 @@ namespace styles {
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-export class ChecklistDetail extends React.Component<Props & NavigationScreenProps> {
+@observer
+class ChecklistDetail extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <View style={styles.viewStyle}>
+            <ContentView>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
                     <Toolbar style={{ alignItems: 'stretch' }}>
                         <IconButton
@@ -38,13 +46,32 @@ export class ChecklistDetail extends React.Component<Props & NavigationScreenPro
                     </Toolbar>
                 </AppBar>
                 <View>
-                    <Text>Test One</Text>
-                    <Text>Test Two</Text>
-                    <Text>Test Three</Text>
+                    {this.props.checklistItems.map(item => (
+                        <Button
+                            onClick={() =>
+                                this.props.setChecklistItemStatus(
+                                    this.props.navigation.state.routeName,
+                                    item.key,
+                                    !item.completed
+                                )
+                            }
+                            key={item.key}
+                        >
+                            {item.value + ' ' + item.completed}
+                        </Button>
+                    ))}
                 </View>
-            </View>
+            </ContentView>
         );
     }
 }
 
-export default ChecklistDetail;
+function mapStoresToProps({ checklistStore }: Stores, props: Props): StoreProps {
+    return {
+        checklistItems: checklistStore.checklists[props.navigation.state.routeName],
+        setChecklistItemStatus: (listName, key, completed) =>
+            checklistStore.setChecklistItemStatus(listName, key, completed)
+    };
+}
+
+export default inject(mapStoresToProps)(ChecklistDetail);

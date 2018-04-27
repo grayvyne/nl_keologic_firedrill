@@ -6,7 +6,7 @@ import './App.css';
 import { RootTabNav } from './components/navigators/RootTabNav';
 import { ApplicationServices } from './services/ApplicationServices';
 import { SchoolServices } from './services/SchoolServices';
-import { FiredrillStore, PlatformBridge } from './stores';
+import { FiredrillStore, PlatformBridge, ChecklistStore } from './stores';
 import { theme } from './config/materialUiTheme';
 
 namespace styles {
@@ -31,6 +31,7 @@ ApplicationServices.init(bridge);
 SchoolServices.init(bridge);
 
 const firedrillStore = new FiredrillStore();
+const checklistStore = new ChecklistStore();
 
 // TEMP DEV UI ELEMENT
 const Counter = observer(() => (
@@ -46,7 +47,7 @@ class App extends React.Component {
     public render(): JSX.Element {
         return (
             <MuiThemeProvider theme={theme}>
-                <Provider firedrillStore={firedrillStore}>
+                <Provider firedrillStore={firedrillStore} checklistStore={checklistStore}>
                     <View style={styles.appContainer}>
                         <RootTabNav />
                         <Counter />

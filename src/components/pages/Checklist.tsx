@@ -1,17 +1,23 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
+import { inject } from 'mobx-react';
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ViewStyle, Text } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { Stores } from '../../stores';
+import { TableCell, TableView } from '../shared';
 import ContentView from '../shared/ContentView';
 
 interface State {
     index: number;
 }
 
-interface Props {
-    isVisible: boolean;
+interface StoreProps {
+    checklists: string[];
 }
+
+interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
     export const toolbar = { alignItems: 'stretch' };
@@ -25,7 +31,7 @@ namespace styles {
     export const hideBoxShadow = { boxShadow: 'none' };
 }
 
-export class Checklist extends React.Component<Props, State> {
+class Checklist extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.state = {
@@ -47,10 +53,20 @@ export class Checklist extends React.Component<Props, State> {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <View style={styles.viewStyle} />
+                <TableView>
+                    {this.props.checklists.map(checklistName => (
+                        <TableCell onClick={() => this.props.navigation.navigate(checklistName)} key={checklistName}>
+                            <Text>{checklistName}</Text>
+                        </TableCell>
+                    ))}
+                </TableView>
             </ContentView>
         );
     }
 }
 
-export default Checklist;
+function mapStoresToProps({ checklistStore }: Stores, props: Props): StoreProps {
+    return { checklists: Object.keys(checklistStore.checklists) };
+}
+
+export default inject(mapStoresToProps)(Checklist);

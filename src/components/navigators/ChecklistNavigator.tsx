@@ -2,20 +2,12 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import blueGrey from 'material-ui/colors/blueGrey';
 import * as React from 'react';
 import { NavigationTabScreenOptions, StackNavigator } from 'react-navigation';
+import { Colors } from '../../config/materialUiTheme';
+import { Stores } from '../../stores';
+import ChecklistDetail from '../pages/ChecklistDetail';
+import { inject } from 'mobx-react';
 import { Routes } from '../../config/routes';
 import Checklist from '../pages/Checklist';
-import ChecklistDetail from '../pages/ChecklistDetail';
-import { Colors } from '../../config/materialUiTheme';
-
-const Nav = StackNavigator(
-    {
-        [Routes.Checklist]: Checklist,
-        [Routes.ChecklistDetail]: ChecklistDetail
-    },
-    {
-        headerMode: 'none'
-    }
-);
 
 namespace styles {
     export const iconStyle = {
@@ -24,7 +16,11 @@ namespace styles {
     };
 }
 
-export default class ClassesNavigator extends React.Component {
+interface Props {
+    checklists: string[];
+}
+
+class ChecklistNavigator extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             const iconStyle = (isFocused: boolean) => {
@@ -38,7 +34,32 @@ export default class ClassesNavigator extends React.Component {
         }
     };
 
+    private navigator = StackNavigator(
+        this.props.checklists.reduce((routes, checklist) => ({ ...routes, [checklist]: ChecklistDetail }), {
+            [Routes.Checklist]: Checklist
+        }),
+        {
+            headerMode: 'none'
+        }
+    );
+
+    componentWillReceiveProps(nextProps: Props) {
+        this.navigator = StackNavigator(
+            nextProps.checklists.reduce((routes, checklist) => ({ ...routes, [checklist]: ChecklistDetail }), {}),
+            {
+                headerMode: 'none'
+            }
+        );
+    }
+
     public render(): JSX.Element {
-        return <Nav />;
+        const Navigator = this.navigator;
+        return <Navigator />;
     }
 }
+
+function mapStoresToProps({ checklistStore }: Stores): Props {
+    return { checklists: Object.keys(checklistStore.checklists) };
+}
+
+export default inject(mapStoresToProps)(ChecklistNavigator);
