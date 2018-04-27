@@ -8,10 +8,9 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { ActionTableCell, ContentView, SearchBar, TableView } from '../shared';
+import { ContentView, SearchBar, StudentTableCell, TableView } from '../shared';
 
 interface State {
     index: number;
@@ -79,30 +78,16 @@ class Search extends React.Component<Props, State> {
     }
 
     private renderTableCell = (student: Student): JSX.Element => {
-        let cellProps = this.buildTableCellProps(student.status);
-
         return (
-            <ActionTableCell
-                key={student.userID}
-                cellData={{ id: student.userID, label: student.firstName + ' ' + student.lastName }}
-                buttonTextColor="white"
-                {...cellProps}
+            <StudentTableCell
+                student={student}
+                status={student.status}
+                onClick={() => {
+                    return;
+                }}
             />
         );
     };
-
-    private buildTableCellProps(status: Status): {} {
-        switch (status) {
-            case Status.Missing:
-                return { buttonLabel: 'Missing', buttonColor: 'red' };
-            case Status.Absent:
-                return { buttonLabel: 'Absent', buttonColor: 'yellow' };
-            case Status.Found:
-                return { buttonLabel: 'Found', buttonColor: 'blue' };
-            default:
-                throw new Error('CASE UNACCOUNTED FOR: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
-        }
-    }
 }
 
 function mapStoresToProps({ firedrillStore }: Stores): Props {
