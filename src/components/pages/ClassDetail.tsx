@@ -54,7 +54,7 @@ namespace styles {
 
 interface StoreProps {
     class: FiredrillClass | undefined;
-    saveMultipleStudentStatuses: (students: Student[]) => void;
+    saveStudentsStatuses: (students: Student[]) => void;
 }
 
 interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
@@ -187,7 +187,7 @@ class ClassDetail extends React.Component<Props, State> {
             }
         });
 
-        this.props.saveMultipleStudentStatuses(updatedStudents);
+        this.props.saveStudentsStatuses(updatedStudents);
     }
 
     private cancelUpdateStudentStatus = () => {
@@ -271,7 +271,7 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
     );
     return {
         class: firedrillStore.classes.get(props.navigation.state.params!.classID),
-        saveMultipleStudentStatuses: (students: Student[]) => firedrillStore.saveMultipleStudentStatuses(students)
+        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students)
     };
 }
 

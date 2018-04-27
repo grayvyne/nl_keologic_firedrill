@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@material-ui/icons": "^1.0.0-beta.42",
+        "@types/moment": "^2.13.0",
         "@types/react-router-dom": "^4.2.6",
         "autoprefixer": "7.1.6",
         "babel-jest": "^22.1.0",
@@ -23,6 +24,7 @@
         "material-ui": "^1.0.0-beta.41",
         "mobx": "^4.2.0",
         "mobx-react": "^5.0.0",
+        "moment": "^2.22.1",
         "object-assign": "4.1.1",
         "postcss-flexbugs-fixes": "3.2.0",
         "postcss-loader": "2.0.8",
