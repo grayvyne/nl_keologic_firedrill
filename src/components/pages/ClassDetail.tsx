@@ -11,7 +11,7 @@ import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
 import { ActionTableCell } from '../shared';
 import { Student } from '../../models/Student';
-import { CSSProperties } from 'react';
+import { CSSProperties, ChangeEvent } from 'react';
 import { Status } from '../../models/Status';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
@@ -165,15 +165,22 @@ class ClassDetail extends React.Component<Props, State> {
         const updatedStudents = [...this.state.students];
 
         this.state.updatedStudentStatusesByStudentId.forEach((status, id) => {
+            const studentToUpdate = updatedStudents.find(s => s.userID === id);
+            if (studentToUpdate === undefined) {
+                throw Error(
+                    'this.state.students: Student[] does not contain a reference to this.updatedStudentStatusesByStudentId()'
+                );
+            }
+
             switch (status) {
                 case Status.Missing:
-                    updatedStudents.find(s => s.userID === id)!.markAsMissing();
+                    studentToUpdate.markAsMissing();
                     break;
                 case Status.Found:
-                    updatedStudents.find(s => s.userID === id)!.markAsFound();
+                    studentToUpdate.markAsFound();
                     break;
                 case Status.Absent:
-                    updatedStudents.find(s => s.userID === id)!.markAsAbsent();
+                    studentToUpdate.markAsAbsent();
                     break;
                 default:
                     throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
@@ -209,11 +216,18 @@ class ClassDetail extends React.Component<Props, State> {
             'Status was not found for user ID @getStatusForStudent in #ClassDetail.tsx'
         );
 
-        return status!;
+        return status || Status.Found;
     }
 
-    private onPressRadioOption = (event: any) => {
-        this.setState({ selectedStudentStatus: event.target.value });
+    private onPressRadioOption = (event: ChangeEvent<HTMLInputElement>) => {
+        const valueString = event.target.value;
+        const status = Status[valueString];
+        console.assert(
+            status !== undefined,
+            `event.target.value: "${valueString}" from @onPressRadioOption() in #ClassDetail.tsx doesn't match the Status enum and returned undefined`
+        );
+
+        this.setState({ selectedStudentStatus: status });
     };
 
     private showEditStudentStatusModal = (student: Student) => {
