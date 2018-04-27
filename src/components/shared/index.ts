@@ -6,6 +6,7 @@ import StyledBottomNavigation from './StyledBottomNavigation';
 import TableCell from './TableCell';
 import TableHeader from './TableHeader';
 import TableView from './TableView';
+import StudentTableCell from './StudentTableCell';
 
 export {
     ActionTableCell,
@@ -15,5 +16,6 @@ export {
     StyledBottomNavigation,
     TableCell,
     TableHeader,
-    TableView
+    TableView,
+    StudentTableCell
 };

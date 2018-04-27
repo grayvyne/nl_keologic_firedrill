@@ -9,7 +9,7 @@ import TableView from '../shared/TableView';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
-import { ActionTableCell } from '../shared';
+import { StudentTableCell } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties, ChangeEvent } from 'react';
 import { Status } from '../../models/Status';
@@ -235,33 +235,14 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     private renderTableCell = (student: Student): JSX.Element => {
-        const cellProps = this.buildTableCellProps(student);
-
         return (
-            <ActionTableCell
-                key={student.userID}
-                cellData={{ id: student.userID, label: student.firstName + ' ' + student.lastName }}
-                buttonTextColor={styles.buttonTextColor}
-                {...cellProps}
+            <StudentTableCell
+                student={student}
+                status={this.getStatusForStudent(student)}
                 onClick={() => this.showEditStudentStatusModal(student)}
             />
         );
     };
-
-    private buildTableCellProps(student: Student): {} {
-        const status = this.getStatusForStudent(student);
-
-        switch (status) {
-            case Status.Missing:
-                return { buttonLabel: ui.MISSING, buttonColor: Colors.MISSING_BUTTON };
-            case Status.Absent:
-                return { buttonLabel: ui.ABSENT, buttonColor: Colors.ABSENT_BUTTON };
-            case Status.Found:
-                return { buttonLabel: ui.FOUND, buttonColor: Colors.FOUND_BUTTON };
-            default:
-                throw new Error('Case unaccounted for: `' + status + '`, @buildTableCellProps #ClassDetail.tsx');
-        }
-    }
 }
 
 function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
