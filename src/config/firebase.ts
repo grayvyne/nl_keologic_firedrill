@@ -23,8 +23,8 @@ const FINISHED_FIREDRILLS_NODE_NAME = 'FinishedFiredrills';
 export namespace Firebase {
     export const Auth = firebase.auth();
     export namespace Refs {
-        export function studentFiredrillStatus(firedrillID: number, studentID: number): firebase.database.Reference {
-            return activeFiredrillForSchool(firedrillID)
+        export function studentFiredrillStatus(schoolID: number, studentID: number): firebase.database.Reference {
+            return activeFiredrillForSchool(schoolID)
                 .child(STUDENT_STATUS_NODE_NAME)
                 .child(studentID.toString());
         }

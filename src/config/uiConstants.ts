@@ -17,3 +17,10 @@ export const FindClassesStrings = {
     CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
     UNCLAIMED_CLASS: 'Claim'
 };
+
+export const ManageFiredrillStrings = {
+    START_FIREDRILL: 'Start Fire Drill',
+    CANCEL_FIREDRILL: 'Cancel Fire Drill',
+    FINISH_FIREDRILL: 'End Fire Drill',
+    CLOSE: 'Cancel'
+};

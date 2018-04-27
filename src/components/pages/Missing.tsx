@@ -7,6 +7,7 @@ import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
+import { ManageFiredrillStrings } from '../../config/uiConstants';
 import { Status, Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ActionTableCell } from '../shared';
@@ -84,10 +85,16 @@ class Missing extends React.Component<Props, State> {
                 {this.props.shouldShowManage && (
                     <Modal open={this.state.isManageModalOpen}>
                         <View>
-                            <Button onClick={this.handleStartFireDrillClick}>Start Fire Drill</Button>
-                            <Button onClick={this.handleCancelFireDrillClick}>Cancel Fire Drill</Button>
-                            <Button onClick={this.handleEndFireDrillClick}>End Fire Drill</Button>
-                            <Button onClick={this.closeManageModal}>Cancel</Button>
+                            <Button onClick={this.handleStartFireDrillClick}>
+                                {ManageFiredrillStrings.START_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleCancelFireDrillClick}>
+                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleEndFireDrillClick}>
+                                {ManageFiredrillStrings.FINISH_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.closeManageModal}>{ManageFiredrillStrings.CLOSE}</Button>
                         </View>
                     </Modal>
                 )}
