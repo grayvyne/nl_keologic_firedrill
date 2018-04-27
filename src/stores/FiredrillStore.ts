@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import { ObservableMap, action, computed, observable } from 'mobx';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
+import { School } from '../models/School';
 import { Status, Student } from '../models/Student';
 import { SchoolUser } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
@@ -10,6 +11,8 @@ import { SchoolServices } from '../services/SchoolServices';
 export class FiredrillStore {
     @observable private currentUserID: number;
     @observable private currentFiredrillID: number;
+
+    @observable private _school: School | null;
 
     @observable private _classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
     @computed
@@ -22,11 +25,11 @@ export class FiredrillStore {
     }
     @computed
     public get unclaimedClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => null == c.claimedByID);
+        return this.allClasses.filter(c => null == c.claimedByUserID);
     }
     @computed
     public get myClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => c.claimedByID === this.currentUserID);
+        return this.allClasses.filter(c => c.claimedByUserID === this.currentUserID);
     }
 
     @computed
@@ -45,6 +48,14 @@ export class FiredrillStore {
     @computed
     public get teachers(): SchoolUser[] {
         return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
+    }
+
+    @computed
+    public get staff(): SchoolUser[] {
+        if (null == this._school) {
+            return [];
+        }
+        return this._school.getStaff();
     }
 
     private firedrillElapsedTimeTracker: NodeJS.Timer | undefined = undefined;
@@ -73,7 +84,7 @@ export class FiredrillStore {
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
-        const claimedByUser = [...this.teachers, ...this.allStudents].find(user => user.userID === aClass.claimedByID);
+        const claimedByUser = this.staff.find(user => user.userID === aClass.claimedByUserID);
         if (null == claimedByUser) {
             return '';
         }
@@ -85,6 +96,10 @@ export class FiredrillStore {
         return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
             claimedByID: this.currentUserID
         });
+    }
+
+    public async saveStudentsStatuses(students: Student[]): Promise<void> {
+        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {
@@ -106,7 +121,11 @@ export class FiredrillStore {
     @action
     private async startFiredrill(firedrillID: number): Promise<void> {
         this.currentFiredrillID = firedrillID;
-        const classes = await SchoolServices.getClassesForSchool(firedrillID);
+        const [classes, school] = await Promise.all([
+            SchoolServices.getClassesForSchool(firedrillID),
+            SchoolServices.getSchool()
+        ]);
+        this._school = school;
         classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
 
         this.addFiredrillDataListeners(firedrillID);

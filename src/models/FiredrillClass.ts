@@ -13,7 +13,7 @@ export interface ClassRecord {
 
 export class FiredrillClass extends Class {
     @computed
-    public get claimedByID(): number | null {
+    public get claimedByUserID(): number | null {
         return this._claimedByID;
     }
 
