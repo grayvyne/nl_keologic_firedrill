@@ -2,13 +2,14 @@ import { ObservableMap, action, computed, observable } from 'mobx';
 import * as moment from 'moment';
 import * as uuid from 'uuid';
 import { Firebase } from '../config/firebase';
+import { ManageFiredrillStrings } from '../config/uiConstants';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { School } from '../models/School';
+import { Status } from '../models/Status';
 import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
-import { Status } from '../models/Status';
 
 export class FiredrillStore {
     @observable private currentUser: SchoolUser;
@@ -115,7 +116,7 @@ export class FiredrillStore {
     public async initiateFiredrill(schoolID: number): Promise<void> {
         const school = await SchoolServices.getSchool();
         await this.createNewFiredrill(schoolID);
-        return ApplicationServices.sendNotification(schoolID, `A firedrill is starting at ${school.name}`);
+        return ApplicationServices.sendNotification(schoolID, ManageFiredrillStrings.START_NOTIFICATION(school.name));
     }
 
     public async endFireDrill(): Promise<void> {
@@ -123,7 +124,7 @@ export class FiredrillStore {
 
         await ApplicationServices.sendNotification(
             this.activeFiredrillSchoolID,
-            `The fire drill at ${school.name} has ended`
+            ManageFiredrillStrings.END_NOTIFICATION(school.name)
         );
         return this.saveFinishedFiredrill();
     }
@@ -132,7 +133,7 @@ export class FiredrillStore {
         const school = await SchoolServices.getSchool();
         await ApplicationServices.sendNotification(
             this.activeFiredrillSchoolID,
-            `The fire drill at ${school.name} has been cancelled`
+            ManageFiredrillStrings.CANCEL_NOTIFICATION(school.name)
         );
         return this.clearActiveFiredrill();
     }
