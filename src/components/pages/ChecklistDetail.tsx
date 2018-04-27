@@ -12,7 +12,8 @@ import { ContentView } from '../shared';
 
 interface StoreProps {
     checklistItems: StatefulChecklistItem[];
-    setChecklistItemStatus(listName: string, key: string, completed: boolean): void;
+    setChecklistItemStatus(key: string, completed: boolean): void;
+    clearChecklistStatus(): void;
 }
 
 interface Props extends StoreProps, NavigationScreenProps {}
@@ -43,6 +44,7 @@ class ChecklistDetail extends React.Component<Props> {
                         >
                             <BackIcon />
                         </IconButton>
+                        <Button onClick={this.props.clearChecklistStatus}>Clear</Button>
                     </Toolbar>
                 </AppBar>
                 <View>
@@ -57,16 +59,16 @@ class ChecklistDetail extends React.Component<Props> {
     }
 
     private handleChecklistItemPress(item: StatefulChecklistItem): () => void {
-        const { routeName } = this.props.navigation.state;
-        return () => this.props.setChecklistItemStatus(routeName, item.key, false === item.completed);
+        return () => this.props.setChecklistItemStatus(item.key, false === item.completed);
     }
 }
 
 function mapStoresToProps({ checklistStore }: Stores, props: Props): StoreProps {
+    const { routeName } = props.navigation.state;
     return {
-        checklistItems: checklistStore.checklists[props.navigation.state.routeName],
-        setChecklistItemStatus: (listName, key, completed) =>
-            checklistStore.setChecklistItemStatus(listName, key, completed)
+        checklistItems: checklistStore.checklists[routeName],
+        setChecklistItemStatus: (key, completed) => checklistStore.setChecklistItemStatus(routeName, key, completed),
+        clearChecklistStatus: () => checklistStore.clearChecklistStatus(routeName)
     };
 }
 

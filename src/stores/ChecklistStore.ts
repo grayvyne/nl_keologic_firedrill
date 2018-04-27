@@ -65,6 +65,16 @@ export class ChecklistStore {
         selectedItem.completed = completed;
     }
 
+    @action
+    public clearChecklistStatus(listName: string) {
+        localStorage.setItem(getChecklistStorageKey(listName), '{}');
+        const checklist = this._checklists[listName];
+        if (null == checklist) {
+            throw new Error(`No checklist with name ${listName}`);
+        }
+        checklist.map(item => (item.completed = false));
+    }
+
     private updateChecklistFromStorage = (name: string): void => {
         const recordedStatuses: {
             [key: string]: boolean;
@@ -78,6 +88,7 @@ export class ChecklistStore {
         });
     };
 }
+
 function getChecklistFromStorage(name: string): { [key: string]: boolean } {
     return JSON.parse(localStorage.getItem(getChecklistStorageKey(name)) || '{}');
 }
@@ -87,6 +98,7 @@ function saveChecklistItemStatus(listName: string, key: string, completed: boole
     recordedStatuses[key] = completed;
     localStorage.setItem(getChecklistStorageKey(listName), JSON.stringify(recordedStatuses));
 }
+
 function getChecklistStorageKey(listName: string): string {
     return 'checklist-' + listName;
 }
