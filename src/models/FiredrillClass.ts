@@ -1,7 +1,8 @@
 import { action, computed, observable } from 'mobx';
 import { Class, GradeLevel } from './Class';
-import { Status, Student } from './Student';
+import { Student } from './Student';
 import { SchoolUserRecord } from './User';
+import { Status } from './Status';
 
 export interface ClassRecord {
     readonly classID: number;
@@ -13,7 +14,7 @@ export interface ClassRecord {
 
 export class FiredrillClass extends Class {
     @computed
-    public get claimedByID(): number | null {
+    public get claimedByUserID(): number | null {
         return this._claimedByID;
     }
 

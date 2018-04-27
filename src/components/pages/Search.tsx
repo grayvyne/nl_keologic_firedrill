@@ -8,7 +8,8 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { Status, Student } from '../../models/Student';
+import { Status } from '../../models/Status';
+import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ActionTableCell, ContentView, SearchBar, TableView } from '../shared';
 

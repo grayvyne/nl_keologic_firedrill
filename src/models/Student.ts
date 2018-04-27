@@ -1,12 +1,7 @@
 import { computed, observable } from 'mobx';
 import { Typeof } from '../lib/NLValdiate';
+import { Status } from './Status';
 import { SchoolUser } from './User';
-
-export enum Status {
-    Missing = 'Missing',
-    Absent = 'Absent',
-    Found = 'Found'
-}
 
 export class Student extends SchoolUser {
     @Typeof('number')

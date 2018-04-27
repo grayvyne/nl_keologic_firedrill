@@ -39,7 +39,7 @@ class FindClasses extends React.Component<Props> {
             onClick: this.handlePressClaim(singleClass.classID)
         };
 
-        const cellProps = singleClass.claimedByID ? claimedProps : unclaimedProps;
+        const cellProps = singleClass.claimedByUserID ? claimedProps : unclaimedProps;
 
         return cellProps;
     }

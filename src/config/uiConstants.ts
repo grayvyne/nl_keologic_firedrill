@@ -17,3 +17,22 @@ export const FindClassesStrings = {
     CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
     UNCLAIMED_CLASS: 'Claim'
 };
+
+export const ClassDetailStrings = {
+    SUBMIT_CLASS: 'SUBMIT CLASS',
+    CHOOSE_STATUS: 'Choose Status',
+    CANCEL: 'CANCEL',
+    OK: 'OK',
+    SUBMIT_CLASS_ALERT_TITLE: 'Submit Class?',
+    SUBMIT_CLASS_ALERT_MESSAGE: `Are you finished updating students' statuses?`,
+    MISSING: 'Missing',
+    ABSENT: 'Absent',
+    FOUND: 'Found'
+};
+
+export const ManageFiredrillStrings = {
+    START_FIREDRILL: 'Start Fire Drill',
+    CANCEL_FIREDRILL: 'Cancel Fire Drill',
+    FINISH_FIREDRILL: 'End Fire Drill',
+    CLOSE: 'Cancel'
+};

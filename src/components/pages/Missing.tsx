@@ -1,17 +1,24 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { Button, IconButton, Toolbar, Modal } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
+import { AppBar, Button, IconButton, Modal, Toolbar } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
+import { ManageFiredrillStrings } from '../../config/uiConstants';
+import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
+import { ActionTableCell } from '../shared';
 import ContentView from '../shared/ContentView';
+import TableView from '../shared/TableView';
+import { Status } from '../../models/Status';
 
 interface Props {
+    students: Student[];
+    totalStudentsCount: number;
+    foundStudentsCount: number;
     firedrillElapsedTime: string;
     shouldShowManage: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
@@ -35,7 +42,7 @@ namespace styles {
 
 class Missing extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
-        tabBarIcon: ({ focused, tintColor }) => {
+        tabBarIcon: ({ focused }) => {
             return (
                 <PersonIcon
                     style={{
@@ -65,18 +72,30 @@ class Missing extends React.Component<Props, State> {
                 </AppBar>
                 <ContentView>
                     <ScrollView>
-                        <View>
-                            <Text>Test Three</Text>
-                        </View>
+                        <Text>{`${this.props.foundStudentsCount}/${this.props.totalStudentsCount}`}</Text>
+                        <TableView>
+                            {this.props.students.map(student => (
+                                <ActionTableCell
+                                    key={student.userID}
+                                    cellData={{ id: student.userID, label: student.firstName }}
+                                />
+                            ))}
+                        </TableView>
                     </ScrollView>
                 </ContentView>
                 {this.props.shouldShowManage && (
                     <Modal open={this.state.isManageModalOpen}>
                         <View>
-                            <Button onClick={this.handleStartFireDrillClick}>Start Fire Drill</Button>
-                            <Button onClick={this.handleCancelFireDrillClick}>Cancel Fire Drill</Button>
-                            <Button onClick={this.handleEndFireDrillClick}>End Fire Drill</Button>
-                            <Button onClick={this.closeManageModal}>Cancel</Button>
+                            <Button onClick={this.handleStartFireDrillClick}>
+                                {ManageFiredrillStrings.START_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleCancelFireDrillClick}>
+                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleEndFireDrillClick}>
+                                {ManageFiredrillStrings.FINISH_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.closeManageModal}>{ManageFiredrillStrings.CLOSE}</Button>
                         </View>
                     </Modal>
                 )}
@@ -104,10 +123,13 @@ class Missing extends React.Component<Props, State> {
 
 function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
+        students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
+        totalStudentsCount: firedrillStore.allStudentsCount,
+        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
+        firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
         shouldShowManage: firedrillStore.shouldShowManage,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
-        endFireDrill: () => firedrillStore.endFireDrill(),
-        firedrillElapsedTime: firedrillStore.firedrillElapsedTime
+        endFireDrill: () => firedrillStore.endFireDrill()
     };
 }
 
