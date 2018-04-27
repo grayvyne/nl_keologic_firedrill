@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
-import { Missing } from '../pages/Missing';
+import Missing from '../pages/Missing';
 import { Search } from '../pages/Search';
 import ClassesNavigator from './ClassesNavigator';
 import ChecklistNavigator from './ChecklistNavigator';

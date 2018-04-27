@@ -3,14 +3,16 @@ import PersonIcon from '@material-ui/icons/Person';
 import { IconButton, Toolbar } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { inject } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
-import ContentView from '../shared/ContentView';
 import { Colors } from '../../config/materialUiTheme';
+import { Stores } from '../../stores';
+import ContentView from '../shared/ContentView';
 
 interface Props {
-    isVisible: boolean;
+    firedrillElapsedTime: string;
 }
 
 namespace styles {
@@ -24,7 +26,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-export class Missing extends React.Component<Props> {
+class Missing extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
             return (
@@ -46,6 +48,7 @@ export class Missing extends React.Component<Props> {
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
+                        <Text>{this.props.firedrillElapsedTime}</Text>
                     </Toolbar>
                 </AppBar>
                 <ContentView>
@@ -60,4 +63,8 @@ export class Missing extends React.Component<Props> {
     }
 }
 
-export default Missing;
+function mapStoresToProps({ firedrillStore }: Stores): Props {
+    return { firedrillElapsedTime: firedrillStore.firedrillElapsedTime };
+}
+
+export default inject(mapStoresToProps)(Missing);
