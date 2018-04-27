@@ -14,11 +14,16 @@ firebase.initializeApp(config);
 
 const database = firebase.database();
 
+const ACTIVE_FIREDRILLS_NODE_NAME = 'ActiveFiredrills';
+const STUDENT_STATUS_NODE_NAME = 'StudentFiredrillStatus';
+const CLASSES_NODE_NAME = 'Classes';
+const FIREDRILL_START_TIME_NODE_NAME = 'startTime';
+
 export namespace Firebase {
     export const Auth = firebase.auth();
     export namespace Refs {
         function allStudentFiredrillStatuses(firedrillID: string): firebase.database.Reference {
-            return database.ref('StudentFiredrillStatus').child(firedrillID);
+            return database.ref(STUDENT_STATUS_NODE_NAME).child(firedrillID);
         }
 
         export function studentFiredrillStatus(firedrillID: number, studentID: number): firebase.database.Reference {
@@ -27,19 +32,19 @@ export namespace Firebase {
 
         export function classFiredrillData(schoolID: number, classID: number): firebase.database.Reference {
             return activeFiredrillForSchool(schoolID)
-                .child('Classes')
+                .child(CLASSES_NODE_NAME)
                 .child(classID.toString());
         }
 
         export function activeFiredrillForSchool(schoolID: number): firebase.database.Reference {
-            return database.ref('ActiveFiredrills').child(schoolID.toString());
+            return database.ref(ACTIVE_FIREDRILLS_NODE_NAME).child(schoolID.toString());
         }
     }
 
     export namespace Getters {
         export async function activeFiredrillStartTimeForSchool(schoolID: number): Promise<number | null> {
             const snapshot = await Refs.activeFiredrillForSchool(schoolID)
-                .child('startTime')
+                .child(FIREDRILL_START_TIME_NODE_NAME)
                 .once('value');
             if (null == snapshot) {
                 return null;
