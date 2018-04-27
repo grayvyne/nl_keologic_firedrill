@@ -8,11 +8,12 @@ import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings } from '../../config/uiConstants';
-import { Status, Student } from '../../models/Student';
+import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ActionTableCell } from '../shared';
 import ContentView from '../shared/ContentView';
 import TableView from '../shared/TableView';
+import { Status } from '../../models/Status';
 
 interface Props {
     students: Student[];

@@ -1,7 +1,8 @@
 import { action, computed, observable } from 'mobx';
 import { Class, GradeLevel } from './Class';
-import { Status, Student } from './Student';
+import { Student } from './Student';
 import { SchoolUserRecord } from './User';
+import { Status } from './Status';
 
 export interface ClassRecord {
     readonly classID: number;

@@ -4,10 +4,11 @@ import * as uuid from 'uuid';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
 import { School } from '../models/School';
-import { Status, Student } from '../models/Student';
+import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
+import { Status } from '../models/Status';
 
 export class FiredrillStore {
     @observable private currentUser: SchoolUser;
