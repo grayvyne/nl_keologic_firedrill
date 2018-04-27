@@ -6,6 +6,14 @@ export enum UserRole {
     Principal
 }
 
+export namespace UserRole {
+    export function allRoles(): UserRole[] {
+        return Object.keys(UserRole)
+            .map(key => UserRole[key])
+            .filter(role => 'number' === typeof role);
+    }
+}
+
 export interface UserRecord {
     readonly userID: number;
     readonly firstName: string;

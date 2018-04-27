@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import * as uuid from 'uuid';
 import { Firebase } from '../config/firebase';
 import { FiredrillClass } from '../models/FiredrillClass';
+import { School } from '../models/School';
 import { Status, Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
@@ -10,7 +11,16 @@ import { SchoolServices } from '../services/SchoolServices';
 
 export class FiredrillStore {
     @observable private currentUser: SchoolUser;
-    @observable private currentFiredrillID: number;
+    @observable private currentFiredrillID: number | null = null;
+    @computed
+    public get activeFiredrillID(): number {
+        if (null == this.currentFiredrillID) {
+            throw new Error('No firedrill is currently active');
+        }
+        return this.currentFiredrillID;
+    }
+
+    @observable private _school: School | null;
 
     @observable private _classes: ObservableMap<number, FiredrillClass> = new ObservableMap();
     @computed
@@ -23,11 +33,11 @@ export class FiredrillStore {
     }
     @computed
     public get unclaimedClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => null == c.claimedByID);
+        return this.allClasses.filter(c => null == c.claimedByUserID);
     }
     @computed
     public get myClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => c.claimedByID === this.currentUser.userID);
+        return this.allClasses.filter(c => c.claimedByUserID === this.currentUser.userID);
     }
 
     @computed
@@ -46,6 +56,14 @@ export class FiredrillStore {
     @computed
     public get teachers(): SchoolUser[] {
         return this.allClasses.reduce<SchoolUser[]>((a, c) => a.concat([...c.getTeachers()]), []);
+    }
+
+    @computed
+    public get staff(): SchoolUser[] {
+        if (null == this._school) {
+            return [];
+        }
+        return this._school.getStaff();
     }
 
     private firedrillElapsedTimeTracker: NodeJS.Timer | undefined = undefined;
@@ -79,7 +97,7 @@ export class FiredrillStore {
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
-        const claimedByUser = [...this.teachers, ...this.allStudents].find(user => user.userID === aClass.claimedByID);
+        const claimedByUser = this.staff.find(user => user.userID === aClass.claimedByUserID);
         if (null == claimedByUser) {
             return '';
         }
@@ -88,7 +106,7 @@ export class FiredrillStore {
     }
 
     public claimClass(classID: number): Promise<void> {
-        return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
+        return Firebase.Refs.classFiredrillData(this.activeFiredrillID, classID).update({
             claimedByID: this.currentUser.userID
         });
     }
@@ -103,7 +121,7 @@ export class FiredrillStore {
         const school = await SchoolServices.getSchool();
 
         await ApplicationServices.sendNotification(
-            this.currentFiredrillID,
+            this.activeFiredrillID,
             `The fire drill at ${school.name} has ended`
         );
         return this.saveFinishedFiredrill();
@@ -112,10 +130,14 @@ export class FiredrillStore {
     public async cancelFiredrill(): Promise<void> {
         const school = await SchoolServices.getSchool();
         await ApplicationServices.sendNotification(
-            this.currentFiredrillID,
+            this.activeFiredrillID,
             `The fire drill at ${school.name} has been cancelled`
         );
         return this.clearActiveFiredrill();
+    }
+
+    public async saveStudentsStatuses(students: Student[]): Promise<void> {
+        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
     }
 
     public markStudentAsMissiong(studentID: number): Promise<void> {
@@ -131,7 +153,7 @@ export class FiredrillStore {
     }
 
     private saveStudentStatus(studentID: number, status: Status): Promise<void> {
-        return Firebase.Refs.studentFiredrillStatus(this.currentFiredrillID, studentID).update({ status });
+        return Firebase.Refs.studentFiredrillStatus(this.activeFiredrillID, studentID).update({ status });
     }
 
     private createNewFiredrill(schoolID: number): Promise<void> {
@@ -142,25 +164,29 @@ export class FiredrillStore {
     }
 
     private async saveFinishedFiredrill(): Promise<void> {
-        const firebaseData = await Firebase.Getters.activeFiredrillData(this.currentFiredrillID);
+        const firebaseData = await Firebase.Getters.activeFiredrillData(this.activeFiredrillID);
         if (null == firebaseData) {
             return;
         }
-        await Firebase.Refs.finishedFiredrillForSchool(this.currentFiredrillID, firebaseData.firedrillID).set(
+        await Firebase.Refs.finishedFiredrillForSchool(this.activeFiredrillID, firebaseData.firedrillID).set(
             firebaseData
         );
         return this.clearActiveFiredrill();
     }
 
     private clearActiveFiredrill(): Promise<void> {
-        return Firebase.Refs.activeFiredrillForSchool(this.currentFiredrillID).set(null);
+        return Firebase.Refs.activeFiredrillForSchool(this.activeFiredrillID).set(null);
     }
 
     @action
     private async startFiredrill(firedrillID: number): Promise<void> {
         this._classes = new ObservableMap();
         this.currentFiredrillID = firedrillID;
-        const classes = await SchoolServices.getClassesForSchool(firedrillID);
+        const [classes, school] = await Promise.all([
+            SchoolServices.getClassesForSchool(firedrillID),
+            SchoolServices.getSchool()
+        ]);
+        this._school = school;
         classes.map(c => new FiredrillClass(c)).forEach(c => this._classes.set(c.classID, c));
 
         this.addFiredrillDataListeners(firedrillID);
@@ -184,7 +210,7 @@ export class FiredrillStore {
     @action
     private trackFiredrillElapsedTime() {
         this.firedrillElapsedTimeTracker = setInterval(async () => {
-            const startTime = await Firebase.Getters.activeFiredrillStartTimeForSchool(this.currentFiredrillID);
+            const startTime = await Firebase.Getters.activeFiredrillStartTimeForSchool(this.activeFiredrillID);
             if (null == startTime) {
                 return;
             }
@@ -195,15 +221,16 @@ export class FiredrillStore {
     @action
     private stopFiredrill(): void {
         this.allClasses.forEach(aClass => {
-            Firebase.Refs.classFiredrillData(this.currentFiredrillID, aClass.classID).off();
+            Firebase.Refs.classFiredrillData(this.activeFiredrillID, aClass.classID).off();
             aClass.students.forEach(student =>
-                Firebase.Refs.studentFiredrillStatus(this.currentFiredrillID, student.userID).off()
+                Firebase.Refs.studentFiredrillStatus(this.activeFiredrillID, student.userID).off()
             );
         });
         if (null != this.firedrillElapsedTimeTracker) {
             clearInterval(this.firedrillElapsedTimeTracker);
         }
         this._classes = new ObservableMap();
+        this.currentFiredrillID = null;
     }
 }
 

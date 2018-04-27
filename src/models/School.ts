@@ -46,13 +46,12 @@ export class School {
         );
     }
 
-    public getFaculty(): SchoolUser[] {
-        const faculty = this.usersByRole.get(UserRole.Faculty);
-        const principals = this.usersByRole.get(UserRole.Principal);
-        if (null == faculty || null == principals) {
-            throw new Error('usersByRole did not contain an array for faculty or principal');
-        }
-        return [...faculty, ...principals];
+    public getStaff(): SchoolUser[] {
+        const staffRoles = UserRole.allRoles().filter(role => role !== UserRole.Student);
+        const usersForStaffRoles = staffRoles
+            .map(role => this.usersByRole.get(role))
+            .filter(users => users !== undefined);
+        return usersForStaffRoles.reduce<SchoolUser[]>((staff, users) => [...staff, ...users!], []);
     }
 
     public getStudents(): SchoolUser[] {
@@ -64,7 +63,7 @@ export class School {
     }
 
     public getCommunity(): SchoolUser[] {
-        return [...this.getFaculty(), ...this.getStudents()];
+        return [...this.getStaff(), ...this.getStudents()];
     }
 
     public getClasses(): Class[] {
