@@ -1,13 +1,13 @@
 import CheckIcon from '@material-ui/icons/CheckCircle';
 import blueGrey from 'material-ui/colors/blueGrey';
+import { inject } from 'mobx-react';
 import * as React from 'react';
 import { NavigationTabScreenOptions, StackNavigator } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { Stores } from '../../stores';
-import ChecklistDetail from '../pages/ChecklistDetail';
-import { inject } from 'mobx-react';
 import { Routes } from '../../config/routes';
+import { Stores } from '../../stores';
 import Checklist from '../pages/Checklist';
+import ChecklistDetail from '../pages/ChecklistDetail';
 
 namespace styles {
     export const iconStyle = {
@@ -23,38 +23,35 @@ interface Props {
 class ChecklistNavigator extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
-            const iconStyle = (isFocused: boolean) => {
-                return {
-                    ...styles.iconStyle,
-                    color: focused ? blueGrey[800] : Colors.DISABLED_TAB_ICON
-                };
+            const iconStyle = {
+                ...styles.iconStyle,
+                color: focused ? blueGrey[800] : Colors.DISABLED_TAB_ICON
             };
 
-            return <CheckIcon style={iconStyle(focused)} />;
+            return <CheckIcon style={iconStyle} />;
         }
     };
 
-    private navigator = StackNavigator(
-        this.props.checklists.reduce((routes, checklist) => ({ ...routes, [checklist]: ChecklistDetail }), {
-            [Routes.Checklist]: Checklist
-        }),
-        {
-            headerMode: 'none'
-        }
-    );
+    private navigator = this.buildNavigator(this.props);
 
-    componentWillReceiveProps(nextProps: Props) {
-        this.navigator = StackNavigator(
-            nextProps.checklists.reduce((routes, checklist) => ({ ...routes, [checklist]: ChecklistDetail }), {}),
-            {
-                headerMode: 'none'
-            }
-        );
+    public componentWillReceiveProps(nextProps: Props): void {
+        this.navigator = this.buildNavigator(nextProps);
     }
 
     public render(): JSX.Element {
         const Navigator = this.navigator;
         return <Navigator />;
+    }
+
+    private buildNavigator(props: Props) {
+        return StackNavigator(
+            props.checklists.reduce((routes, checklist) => ({ ...routes, [checklist]: ChecklistDetail }), {
+                [Routes.Checklist]: Checklist
+            }),
+            {
+                headerMode: 'none'
+            }
+        );
     }
 }
 

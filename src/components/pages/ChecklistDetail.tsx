@@ -47,22 +47,18 @@ class ChecklistDetail extends React.Component<Props> {
                 </AppBar>
                 <View>
                     {this.props.checklistItems.map(item => (
-                        <Button
-                            onClick={() =>
-                                this.props.setChecklistItemStatus(
-                                    this.props.navigation.state.routeName,
-                                    item.key,
-                                    !item.completed
-                                )
-                            }
-                            key={item.key}
-                        >
+                        <Button onClick={this.handleChecklistItemPress(item)} key={item.key}>
                             {item.value + ' ' + item.completed}
                         </Button>
                     ))}
                 </View>
             </ContentView>
         );
+    }
+
+    private handleChecklistItemPress(item: StatefulChecklistItem): () => void {
+        const { routeName } = this.props.navigation.state;
+        return () => this.props.setChecklistItemStatus(routeName, item.key, false === item.completed);
     }
 }
 
