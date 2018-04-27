@@ -18,16 +18,15 @@ const ACTIVE_FIREDRILLS_NODE_NAME = 'ActiveFiredrills';
 const STUDENT_STATUS_NODE_NAME = 'StudentFiredrillStatus';
 const CLASSES_NODE_NAME = 'Classes';
 const FIREDRILL_START_TIME_NODE_NAME = 'startTime';
+const FINISHED_FIREDRILLS_NODE_NAME = 'FinishedFiredrills';
 
 export namespace Firebase {
     export const Auth = firebase.auth();
     export namespace Refs {
-        function allStudentFiredrillStatuses(firedrillID: string): firebase.database.Reference {
-            return database.ref(STUDENT_STATUS_NODE_NAME).child(firedrillID);
-        }
-
-        export function studentFiredrillStatus(firedrillID: number, studentID: number): firebase.database.Reference {
-            return allStudentFiredrillStatuses(firedrillID.toString()).child(studentID.toString());
+        export function studentFiredrillStatus(schoolID: number, studentID: number): firebase.database.Reference {
+            return activeFiredrillForSchool(schoolID)
+                .child(STUDENT_STATUS_NODE_NAME)
+                .child(studentID.toString());
         }
 
         export function classFiredrillData(schoolID: number, classID: number): firebase.database.Reference {
@@ -39,9 +38,23 @@ export namespace Firebase {
         export function activeFiredrillForSchool(schoolID: number): firebase.database.Reference {
             return database.ref(ACTIVE_FIREDRILLS_NODE_NAME).child(schoolID.toString());
         }
+
+        export function finishedFiredrillForSchool(schoolID: number, firedrillID: string): firebase.database.Reference {
+            return database
+                .ref(FINISHED_FIREDRILLS_NODE_NAME)
+                .child(schoolID.toString())
+                .child(firedrillID);
+        }
     }
 
     export namespace Getters {
+        export async function activeFiredrillData(schoolID: number): Promise<{ firedrillID: string } | null> {
+            const snapshot = await Refs.activeFiredrillForSchool(schoolID).once('value');
+            if (null == snapshot) {
+                return null;
+            }
+            return snapshot.val();
+        }
         export async function activeFiredrillStartTimeForSchool(schoolID: number): Promise<number | null> {
             const snapshot = await Refs.activeFiredrillForSchool(schoolID)
                 .child(FIREDRILL_START_TIME_NODE_NAME)
