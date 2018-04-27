@@ -24,11 +24,11 @@ export class FiredrillStore {
     }
     @computed
     public get unclaimedClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => null == c.claimedByID);
+        return this.allClasses.filter(c => null == c.claimedByUserID);
     }
     @computed
     public get myClasses(): FiredrillClass[] {
-        return this.allClasses.filter(c => c.claimedByID === this.currentUserID);
+        return this.allClasses.filter(c => c.claimedByUserID === this.currentUserID);
     }
 
     @computed
@@ -102,7 +102,7 @@ export class FiredrillStore {
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
-        const claimedByUser = this.staff.find(user => user.userID === aClass.claimedByID);
+        const claimedByUser = this.staff.find(user => user.userID === aClass.claimedByUserID);
         if (null == claimedByUser) {
             return '';
         }
@@ -116,7 +116,7 @@ export class FiredrillStore {
         });
     }
 
-    public async saveMultipleStudentStatuses(students: Student[]): Promise<void> {
+    public async saveStudentsStatuses(students: Student[]): Promise<void> {
         await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
     }
 
