@@ -4,6 +4,7 @@ import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import RightArrow from '../../assets/RightArrow';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
+import { getGradeTitleFromGradeLevel } from '../../models/Class';
 
 namespace style {
     export const labelContainer: ViewStyle = {
@@ -53,7 +54,7 @@ export default class ClassesTableCell extends React.Component<Props> {
                         <Text style={style.labelText}>{singleClass.name}</Text>
                     </View>
                     <View>
-                        <Text style={style.subLabelText}>Grade {singleClass.gradeLevel}</Text>
+                        <Text style={style.subLabelText}>{getGradeTitleFromGradeLevel(singleClass.gradeLevel)}</Text>
                     </View>
                 </View>
 

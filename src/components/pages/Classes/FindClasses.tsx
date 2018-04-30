@@ -4,6 +4,7 @@ import { Colors } from '../../../config/materialUiTheme';
 import { FindClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ActionTableCell, SearchBar, TableView } from '../../shared';
+import { getGradeTitleFromGradeLevel } from '../../../models/Class';
 
 interface Props {
     classes: FiredrillClass[];
@@ -30,7 +31,8 @@ class FindClasses extends React.Component<Props> {
     private buildCellPropsForClass(singleClass: FiredrillClass) {
         const claimedProps = {
             buttonLabel: ui.CLAIMED_CLASS(this.props.getClaimedByNameForClass(singleClass)),
-            buttonColor: Colors.CLAIMED_CLASS_BUTTON
+            buttonColor: Colors.CLAIMED_CLASS_BUTTON,
+            overrideFontSize: true
         };
 
         const unclaimedProps = {
@@ -50,7 +52,7 @@ class FindClasses extends React.Component<Props> {
                 cellData={{
                     id: singleClass.classID,
                     label: singleClass.name,
-                    subLabel: singleClass.gradeLevel.toString()
+                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
                 }}
                 key={singleClass.classID}
                 buttonTextColor={Colors.CLASS_BUTTON_TEXT}

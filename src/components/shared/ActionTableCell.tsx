@@ -9,6 +9,7 @@ interface Props {
     buttonTextColor?: string;
     cellData: ActionTableCellData;
     onClick?: () => void;
+    overrideFontSize?: boolean;
 }
 
 type ActionTableCellData = {
@@ -32,7 +33,8 @@ namespace styles {
     export const subLabel: TextStyle = {
         textAlign: 'left',
         fontWeight: '300',
-        color: 'grey'
+        color: 'rgba(0,0,0,0.54)',
+        fontSize: 14
     };
     export const button: React.CSSProperties = {
         borderRadius: 2,
@@ -42,6 +44,8 @@ namespace styles {
 
 export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
+        const overrideFontSize = this.props.overrideFontSize ? { fontSize: 10, lineHeight: 11 } : {};
+
         return (
             <TableCell>
                 <View style={styles.labelContainer}>
@@ -60,7 +64,7 @@ export default class ActionTableCell extends React.Component<Props> {
                         }}
                         onClick={this.props.onClick}
                     >
-                        {this.props.buttonLabel}
+                        <Text style={overrideFontSize}>{this.props.buttonLabel}</Text>
                     </Button>
                 </View>
             </TableCell>
