@@ -99,6 +99,12 @@ export class FiredrillStore {
         });
     }
 
+    public unclaimClass(classID: number): Promise<void> {
+        return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
+            claimedByID: null
+        });
+    }
+
     public async saveStudentsStatuses(students: Student[]): Promise<void> {
         await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
     }

@@ -17,6 +17,7 @@ import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
 import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
+import { getGradeTitleFromGradeLevel } from '../../models/Class';
 
 namespace styles {
     export const hideBoxShadow = { boxShadow: 'none' };
@@ -55,6 +56,7 @@ namespace styles {
 interface StoreProps {
     class: FiredrillClass | undefined;
     saveStudentsStatuses: (students: Student[]) => void;
+    unclaimClass: () => void;
 }
 
 interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
@@ -66,6 +68,7 @@ interface State {
     showSubmitClassAlert: boolean;
     students: Student[];
     updatedStudentStatusesByStudentId: Map<number, Status>;
+    showUnclaimClassAlert: boolean;
 }
 
 @observer
@@ -88,11 +91,17 @@ class ClassDetail extends React.Component<Props, State> {
             selectedStudentStatus: Status.Found,
             showSubmitClassAlert: false,
             students: studentClass.students,
-            updatedStudentStatusesByStudentId: studentStatusMapById
+            updatedStudentStatusesByStudentId: studentStatusMapById,
+            showUnclaimClassAlert: false
         };
     }
 
     public render(): JSX.Element | null {
+        const currentClass = this.props.class;
+        if (currentClass === undefined) {
+            return null;
+        }
+
         return (
             <View style={styles.containerBackground}>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
@@ -107,8 +116,39 @@ class ClassDetail extends React.Component<Props, State> {
                         >
                             <BackIcon />
                         </IconButton>
+                        <View style={{ flex: 1 }} />
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 14,
+                                left: 0,
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    textAlign: 'center',
+                                    fontSize: 15,
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
+                            </Text>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 10 }}>
+                                {currentClass.getTeachers()[0].lastName}
+                            </Text>
+                        </View>
+
+                        <View style={{ height: '100%', width: 100, alignSelf: 'center', marginRight: -10 }}>
+                            <TouchableOpacity onPress={() => this.showUnclaimClassAlert()}>
+                                <Text style={{ textAlign: 'center', fontSize: 14 }}>{'UNCLAIM'}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </Toolbar>
                 </AppBar>
+
                 <ContentView>
                     <ScrollView>
                         <TableView style={styles.tableViewContainer}>
@@ -143,8 +183,32 @@ class ClassDetail extends React.Component<Props, State> {
                     affirmButtonLabel={ui.OK}
                     cancelButtonLabel={ui.CANCEL}
                 />
+
+                <MaterialAlert
+                    alertTitle={'Unclaim class?'}
+                    alertMessage={'Are you sure you want to unclaim this class?'}
+                    open={this.state.showUnclaimClassAlert}
+                    onPressCancel={() => this.cancelUnclaimClass()}
+                    onPressAffirm={() => this.confirmUnclaimClass()}
+                    affirmButtonLabel={ui.OK}
+                    cancelButtonLabel={ui.CANCEL}
+                />
             </View>
         );
+    }
+
+    private showUnclaimClassAlert() {
+        this.setState({ showUnclaimClassAlert: true });
+    }
+
+    private cancelUnclaimClass() {
+        this.setState({ showUnclaimClassAlert: false });
+    }
+
+    private confirmUnclaimClass() {
+        this.props.unclaimClass();
+        this.setState({ showUnclaimClassAlert: false });
+        this.props.navigation.goBack();
     }
 
     private cancelSubmitClass = () => {
@@ -269,9 +333,13 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
         props.navigation.state.params !== undefined,
         'Navigation state paramaters are undefined @mapStoresToProps in #ClassDetails.tsx'
     );
+
+    const classID = props.navigation.state.params!.classID;
+
     return {
-        class: firedrillStore.classes.get(props.navigation.state.params!.classID),
-        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students)
+        class: firedrillStore.classes.get(classID),
+        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students),
+        unclaimClass: () => firedrillStore.unclaimClass(classID)
     };
 }
 

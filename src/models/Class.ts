@@ -17,6 +17,15 @@ export enum GradeLevel {
     Twelth
 }
 
+export function getGradeTitleFromGradeLevel(gradeLevel: number) {
+    switch (gradeLevel) {
+        case 0:
+            return 'Kindergarden';
+        default:
+            return 'Grade ' + gradeLevel;
+    }
+}
+
 export interface ClassRecord {
     readonly classID: number;
     readonly name: string | undefined;
