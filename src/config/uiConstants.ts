@@ -39,3 +39,8 @@ export const ManageFiredrillStrings = {
     CANCEL_NOTIFICATION: (name: string) => `The fire drill at ${name} has been cancelled`,
     END_NOTIFICATION: (name: string) => `The fire drill at ${name} has ended`
 };
+
+export const MyClassesStrings = {
+    NO_CLASSES_WARNING: `You've not claimed any classes yet.`,
+    FIND_A_CLASS: 'FIND A CLASS'
+};

@@ -107,7 +107,11 @@ export class Classes extends React.Component<Props, State> {
                     onChangeIndex={this.handleChange}
                     style={styles.swipeableViewStyle}
                 >
-                    <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
+                    <MyClasses
+                        classes={this.props.myClasses}
+                        onClickClass={this.handlePressGoToClass}
+                        onClickFindClass={this.handlePressGoToFindClass}
+                    />
                     <FindClasses
                         getClaimedByNameForClass={this.props.getClaimedByNameForClass}
                         classes={this.props.matchingSearchClasses}
@@ -120,6 +124,10 @@ export class Classes extends React.Component<Props, State> {
             </ContentView>
         );
     }
+
+    private handlePressGoToFindClass = () => {
+        this.setState({ index: 1 });
+    };
 
     private handlePressClaim = (classID: number): Promise<void> => {
         return this.props.claimClass(classID);

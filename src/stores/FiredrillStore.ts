@@ -150,6 +150,12 @@ export class FiredrillStore {
         });
     }
 
+    public unclaimClass(classID: number): Promise<void> {
+        return Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, classID).update({
+            claimedByID: null
+        });
+    }
+
     public async initiateFiredrill(schoolID: number): Promise<void> {
         const school = await SchoolServices.getSchool();
         await this.createNewFiredrill(schoolID);
@@ -173,12 +179,6 @@ export class FiredrillStore {
             ManageFiredrillStrings.CANCEL_NOTIFICATION(school.name)
         );
         return this.clearActiveFiredrill();
-    }
-
-    public unclaimClass(classID: number): Promise<void> {
-        return Firebase.Refs.classFiredrillData(this.currentFiredrillID, classID).update({
-            claimedByID: null
-        });
     }
 
     public async saveStudentsStatuses(students: Student[]): Promise<void> {

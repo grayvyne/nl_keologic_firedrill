@@ -37,5 +37,6 @@ export const Colors = {
     FOUND_BUTTON: appGreen,
     POPOVER_DOCK_BG: appLightGrey,
     SUBMIT_CLASS_BUTTON: appGreen,
-    SELECTED_TAB_TINT: '#37474F'
+    SELECTED_TAB_TINT: '#37474F',
+    FIND_A_CLASS: appGreen
 };
