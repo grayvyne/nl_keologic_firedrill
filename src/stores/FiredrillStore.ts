@@ -91,9 +91,7 @@ export class FiredrillStore {
         if (this._classSearchTerm.length < 1) {
             return this.allClasses;
         }
-        return this.allClasses.filter(aClass =>
-            (aClass.name + ' ' + aClass.gradeLevel).includes(this._classSearchTerm)
-        );
+        return this.allClasses.filter(aClass => aClass.searchableText.includes(this._classSearchTerm));
     }
 
     @observable private _studentSearchTerm = '';
@@ -106,9 +104,7 @@ export class FiredrillStore {
         if (this._studentSearchTerm.length < 1) {
             return this.allStudents;
         }
-        return this.allStudents.filter(student =>
-            (student.firstName + ' ' + student.lastName).includes(this._studentSearchTerm)
-        );
+        return this.allStudents.filter(student => student.searchableText.includes(this._studentSearchTerm));
     }
 
     public constructor() {
