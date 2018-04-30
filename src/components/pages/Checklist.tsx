@@ -8,6 +8,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import { Stores } from '../../stores';
 import { TableCell, TableView, Toolbar } from '../shared';
 import ContentView from '../shared/ContentView';
+import { ApplicationServices } from '../../services/ApplicationServices';
 import { ChecklistStrings } from '../../config/uiConstants';
 
 interface State {
@@ -47,8 +48,13 @@ class Checklist extends React.Component<Props, State> {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
                     <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Menu"
+                            style={styles.iconButton}
+                            onClick={ApplicationServices.togglePluginMenu}
+                        >
                             <AppsIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" style={{ flex: 1 }}>
