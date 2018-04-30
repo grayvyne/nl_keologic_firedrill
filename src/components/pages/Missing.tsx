@@ -1,6 +1,6 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { Button, IconButton, LinearProgress, Modal, Typography } from 'material-ui';
+import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
@@ -11,9 +11,8 @@ import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { AppBar, StudentTableCell } from '../shared';
-import ContentView from '../shared/ContentView';
-import TableView from '../shared/TableView';
+import { AppBar, ContentView, StudentTableCell, TableView } from '../shared';
+import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 
 interface Props {
     students: Student[];
@@ -21,6 +20,7 @@ interface Props {
     foundStudentsCount: number;
     firedrillElapsedTime: string;
     shouldShowManage: boolean;
+    isFiredrillInProgress: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
     endFireDrill(): Promise<void>;
 }
@@ -48,6 +48,7 @@ namespace styles {
     export const missingBarContainer: ViewStyle = { justifyContent: 'center', alignItems: 'center' };
     export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
     export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
+    export const manageButton: React.CSSProperties = { margin: 20 };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -116,20 +117,40 @@ class Missing extends React.Component<Props, State> {
                     </ScrollView>
                 </ContentView>
                 {this.props.shouldShowManage && (
-                    <Modal open={this.state.isManageModalOpen}>
-                        <View>
-                            <Button onClick={this.handleStartFireDrillClick}>
+                    <SharedDialogContainer open={this.state.isManageModalOpen}>
+                        <View style={{ flex: 1, alignSelf: 'stretch', padding: 10 }}>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="secondary"
+                                onClick={this.handleStartFireDrillClick}
+                                disabled={this.props.isFiredrillInProgress}
+                            >
                                 {ManageFiredrillStrings.START_FIREDRILL}
                             </Button>
-                            <Button onClick={this.handleCancelFireDrillClick}>
-                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
-                            </Button>
-                            <Button onClick={this.handleEndFireDrillClick}>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="primary"
+                                onClick={this.handleEndFireDrillClick}
+                                disabled={false === this.props.isFiredrillInProgress}
+                            >
                                 {ManageFiredrillStrings.FINISH_FIREDRILL}
                             </Button>
-                            <Button onClick={this.closeManageModal}>{ManageFiredrillStrings.CLOSE}</Button>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="primary"
+                                onClick={this.handleCancelFireDrillClick}
+                                disabled={false === this.props.isFiredrillInProgress}
+                            >
+                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
+                            </Button>
+                            <Button style={styles.manageButton} onClick={this.closeManageModal}>
+                                {ManageFiredrillStrings.CLOSE}
+                            </Button>
                         </View>
-                    </Modal>
+                    </SharedDialogContainer>
                 )}
             </View>
         );
@@ -160,6 +181,7 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
         firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
         shouldShowManage: firedrillStore.shouldShowManage,
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
         endFireDrill: () => firedrillStore.endFireDrill()
     };
