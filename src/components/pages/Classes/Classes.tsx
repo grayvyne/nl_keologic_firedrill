@@ -15,7 +15,6 @@ import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
 import { View } from 'react-native';
-import { red } from 'material-ui/colors';
 
 export type SingleClass = {
     id: number;

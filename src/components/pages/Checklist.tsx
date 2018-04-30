@@ -2,13 +2,13 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { IconButton, Typography } from 'material-ui';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
-import { Stores } from '../../stores';
-import { TableCell, TableView, AppBar } from '../shared';
-import ContentView from '../shared/ContentView';
-import { ApplicationServices } from '../../services/ApplicationServices';
 import { ChecklistStrings } from '../../config/uiConstants';
+import { ApplicationServices } from '../../services/ApplicationServices';
+import { Stores } from '../../stores';
+import { AppBar, TableCell, TableView } from '../shared';
+import ContentView from '../shared/ContentView';
 
 interface State {
     index: number;
@@ -60,7 +60,7 @@ class Checklist extends React.Component<Props, State> {
                                 onClick={() => this.props.navigation.navigate(checklistName)}
                                 key={checklistName}
                             >
-                                <Text>{checklistName}</Text>
+                                <Typography variant="body1">{checklistName}</Typography>
                             </TableCell>
                         ))}
                     </TableView>
