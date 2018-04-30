@@ -31,6 +31,9 @@ interface StoreProps {
     myClasses: FiredrillClass[];
     classes: FiredrillClass[];
     unclaimedClasses: FiredrillClass[];
+    matchingSearchClasses: FiredrillClass[];
+    searchTerm: string;
+    onChangeSearchTerm(term: string): void;
     getClaimedByNameForClass(aClass: FiredrillClass): string;
     claimClass(classID: number): Promise<void>;
 }
@@ -107,8 +110,10 @@ export class Classes extends React.Component<Props, State> {
                     <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
                     <FindClasses
                         getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                        classes={this.props.classes}
+                        classes={this.props.matchingSearchClasses}
                         onPressClaim={this.handlePressClaim}
+                        searchTerm={this.props.searchTerm}
+                        onChangeSearchTerm={this.props.onChangeSearchTerm}
                     />
                     <UnclaimedClasses classes={this.props.unclaimedClasses} />
                 </SwipeableViews>
@@ -131,7 +136,10 @@ function mapStoresToProps({ firedrillStore }: Stores, _props: Props): StoreProps
         classes: firedrillStore.allClasses,
         unclaimedClasses: firedrillStore.unclaimedClasses,
         claimClass: classID => firedrillStore.claimClass(classID),
-        getClaimedByNameForClass: (aClass: FiredrillClass) => firedrillStore.getClaimedByNameForClass(aClass)
+        getClaimedByNameForClass: (aClass: FiredrillClass) => firedrillStore.getClaimedByNameForClass(aClass),
+        onChangeSearchTerm: term => firedrillStore.setClassSearchTerm(term),
+        matchingSearchClasses: firedrillStore.matchingSearchClasses,
+        searchTerm: firedrillStore.classSearchTerm
     };
 }
 

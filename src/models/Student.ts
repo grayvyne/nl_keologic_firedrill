@@ -18,6 +18,10 @@ export class Student extends SchoolUser {
         return this._status === Status.Missing;
     }
 
+    public get searchableText(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
+
     public markAsFound(): void {
         this._status = Status.Found;
     }

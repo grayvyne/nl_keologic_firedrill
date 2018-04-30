@@ -80,6 +80,33 @@ export class FiredrillStore {
         return this.currentUser.getUserRole() === UserRole.Principal;
     }
 
+    @observable private _classSearchTerm = '';
+    @computed
+    public get classSearchTerm(): string {
+        return this._classSearchTerm;
+    }
+
+    @computed
+    public get matchingSearchClasses(): FiredrillClass[] {
+        if (this._classSearchTerm.length < 1) {
+            return this.allClasses;
+        }
+        return this.allClasses.filter(aClass => aClass.searchableText.includes(this._classSearchTerm));
+    }
+
+    @observable private _studentSearchTerm = '';
+    @computed
+    public get studentSearchTerm(): string {
+        return this._studentSearchTerm;
+    }
+    @computed
+    public get matchingSearchStudents(): Student[] {
+        if (this._studentSearchTerm.length < 1) {
+            return this.allStudents;
+        }
+        return this.allStudents.filter(student => student.searchableText.includes(this._studentSearchTerm));
+    }
+
     public constructor() {
         this.setup();
     }
@@ -96,6 +123,16 @@ export class FiredrillStore {
                 this.stopFiredrill();
             }
         });
+    }
+
+    @action
+    public setClassSearchTerm(term: string): void {
+        this._classSearchTerm = term;
+    }
+
+    @action
+    public setStudentSearchTerm(term: string): void {
+        this._studentSearchTerm = term;
     }
 
     public getClaimedByNameForClass(aClass: FiredrillClass): string {
