@@ -54,9 +54,18 @@ class ChecklistDetail extends React.Component<Props> {
                 </AppBar>
                 <View>
                     {this.props.checklistItems.map(item => (
-                        <Button onClick={this.handleChecklistItemPress(item)} key={item.key}>
-                            {item.value + ' ' + item.completed}
-                        </Button>
+                        <TableCell onClick={this.handleChecklistItemPress(item)} key={item.key}>
+                            <View style={{ flex: 1 }}>
+                                <Text
+                                    style={{
+                                        textDecorationLine: item.completed ? 'line-through' : 'none'
+                                    }}
+                                >
+                                    {item.value}
+                                </Text>
+                            </View>
+                            <Checkbox checked={item.completed} />
+                        </TableCell>
                     ))}
                 </View>
             </ContentView>
