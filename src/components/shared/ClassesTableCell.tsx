@@ -4,6 +4,7 @@ import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import RightArrow from '../../assets/RightArrow';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
+import { observer } from 'mobx-react';
 
 namespace style {
     export const labelContainer: ViewStyle = {
@@ -43,6 +44,7 @@ interface Props {
     onClick: () => void;
 }
 
+@observer
 export default class ClassesTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const { singleClass } = this.props;

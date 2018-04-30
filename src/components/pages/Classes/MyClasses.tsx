@@ -1,7 +1,8 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { TableView, ClassesTableCell, ContentView } from '../../shared';
 import { FiredrillClass } from '../../../models/FiredrillClass';
+import { ClassesTableCell, ContentView, TableView } from '../../shared';
 
 interface Props {
     classes: FiredrillClass[];
@@ -28,4 +29,4 @@ function MyClasses(props: Props) {
     );
 }
 
-export default MyClasses;
+export default observer(MyClasses);
