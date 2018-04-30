@@ -1,14 +1,14 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
-import { Button, IconButton, Toolbar } from 'material-ui';
+import { Button, IconButton, Typography, Checkbox } from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, Text } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Stores } from '../../stores';
 import { StatefulChecklistItem } from '../../stores/ChecklistStore';
-import { ContentView } from '../shared';
+import { ContentView, TableCell, Toolbar } from '../shared';
 
 interface StoreProps {
     checklistItems: StatefulChecklistItem[];
@@ -35,7 +35,7 @@ class ChecklistDetail extends React.Component<Props> {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar style={{ alignItems: 'stretch' }}>
+                    <Toolbar>
                         <IconButton
                             color="inherit"
                             aria-label="Menu"
@@ -44,7 +44,12 @@ class ChecklistDetail extends React.Component<Props> {
                         >
                             <BackIcon />
                         </IconButton>
-                        <Button onClick={this.props.clearChecklistStatus}>Clear</Button>
+                        <Typography variant="title" color="inherit" style={{ flex: 1 }}>
+                            {this.props.navigation.state.routeName}
+                        </Typography>
+                        <Button color="inherit" onClick={this.props.clearChecklistStatus}>
+                            Clear
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 <View>

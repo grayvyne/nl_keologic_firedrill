@@ -1,4 +1,4 @@
-import { IconButton, Toolbar } from 'material-ui';
+import { IconButton } from 'material-ui';
 import { ScrollView, View, TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import AppBar from 'material-ui/AppBar';
@@ -9,7 +9,7 @@ import TableView from '../shared/TableView';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
-import { StudentTableCell } from '../shared';
+import { StudentTableCell, Toolbar } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties, ChangeEvent } from 'react';
 import { Status } from '../../models/Status';
@@ -33,7 +33,6 @@ namespace styles {
         alignItems: 'center'
     };
     export const containerBackground = { backgroundColor: 'white' };
-    export const stretchItems = { alignItems: 'stretch' };
     export const submitClassButton: ViewStyle = {
         height: 50,
         width: '75%',
@@ -96,7 +95,7 @@ class ClassDetail extends React.Component<Props, State> {
         return (
             <View style={styles.containerBackground}>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar style={styles.stretchItems}>
+                    <Toolbar>
                         <IconButton
                             color="inherit"
                             aria-label="Menu"

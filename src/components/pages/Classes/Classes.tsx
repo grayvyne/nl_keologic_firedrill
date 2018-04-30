@@ -1,6 +1,6 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import CheckIcon from '@material-ui/icons/CheckCircle';
-import { AppBar, Badge, IconButton, Tab, Tabs, Toolbar } from 'material-ui';
+import { AppBar, Badge, IconButton, Tab, Tabs } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
@@ -10,7 +10,7 @@ import { Routes } from '../../../config/routes';
 import { ClassTabStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
-import ContentView from '../../shared/ContentView';
+import { ContentView, Toolbar } from '../../shared';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
@@ -42,7 +42,6 @@ interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
     export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
-    export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tabsStyle: React.CSSProperties = { height: '100%' };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
@@ -69,7 +68,7 @@ export class Classes extends React.Component<Props, State> {
         return (
             <ContentView>
                 <AppBar position={'fixed'} style={styles.appBarStyle}>
-                    <Toolbar style={styles.toolBarStyle}>
+                    <Toolbar>
                         <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
                             <AppsIcon />
                         </IconButton>
