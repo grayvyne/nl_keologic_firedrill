@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Colors } from '../../config/materialUiTheme';
+import { ClassDetailStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import ActionTableCell from './ActionTableCell';
 
 interface Props {
@@ -32,11 +32,11 @@ export default class StudentTableCell extends React.Component<Props> {
     private buildTableCellProps(status: Status): {} {
         switch (status) {
             case Status.Missing:
-                return { buttonLabel: ui.MISSING, buttonColor: Colors.MISSING_BUTTON };
+                return { buttonLabel: ClassDetailStrings.MISSING, buttonColor: Colors.MISSING_BUTTON };
             case Status.Absent:
-                return { buttonLabel: ui.ABSENT, buttonColor: Colors.ABSENT_BUTTON };
+                return { buttonLabel: ClassDetailStrings.ABSENT, buttonColor: Colors.ABSENT_BUTTON };
             case Status.Found:
-                return { buttonLabel: ui.FOUND, buttonColor: Colors.FOUND_BUTTON };
+                return { buttonLabel: ClassDetailStrings.FOUND, buttonColor: Colors.FOUND_BUTTON };
             default:
                 throw new Error('Case unaccounted for: `' + status + '`, @buildTableCellProps #StudentTableCell.tsx');
         }
