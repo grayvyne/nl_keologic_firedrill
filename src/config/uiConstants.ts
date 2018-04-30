@@ -43,3 +43,7 @@ export const ManageFiredrillStrings = {
 export const ChecklistStrings = {
     TITLE: 'Checklists'
 };
+
+export const MissingStrings = {
+    MISSING_STUDENTS_COUNT: (found: number, total: number) => `${found} / ${total} Students Found`
+};

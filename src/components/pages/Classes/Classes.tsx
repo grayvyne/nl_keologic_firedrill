@@ -15,6 +15,7 @@ import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
 import { View } from 'react-native';
+import { red } from 'material-ui/colors';
 
 export type SingleClass = {
     id: number;
@@ -86,7 +87,7 @@ export class Classes extends React.Component<Props, State> {
                                 <span>
                                     <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
                                     <Badge
-                                        color="secondary"
+                                        color="error"
                                         badgeContent={this.props.unclaimedClasses.length}
                                         children={<span />}
                                         style={styles.unclaimedTabBadgeStyle}

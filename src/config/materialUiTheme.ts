@@ -1,8 +1,12 @@
+import { red } from 'material-ui/colors';
 import blueGrey from 'material-ui/colors/blueGrey';
 import lightBlue from 'material-ui/colors/lightBlue';
-import orange from 'material-ui/colors/orange';
-import red from 'material-ui/colors/red';
 import { createMuiTheme } from 'material-ui/styles';
+
+const appGreen = '#51C37D';
+const appBlue = '#02A9F4';
+const appRed = '#FF5252';
+const appLightGrey = '#EEEEEE';
 
 export const theme = createMuiTheme({
     palette: {
@@ -13,19 +17,29 @@ export const theme = createMuiTheme({
             contrastText: '#fff'
         },
         secondary: {
-            light: blueGrey[800],
-            main: red[400],
+            light: 'rgba(94,215,141,1)',
+            main: appGreen,
             dark: blueGrey[800],
             contrastText: '#fff'
         },
-        error: orange
+        error: {
+            main: red[400]
+        }
+    },
+    typography: {
+        title: {
+            fontWeight: 500
+        },
+        subheading: {
+            fontWeight: 'normal'
+        },
+        body1: {
+            fontSize: 16,
+            fontWeight: 'normal',
+            color: 'rgba(0,0,0,0.87)'
+        }
     }
 });
-
-const appGreen = '#71BF83';
-const appBlue = '#49A8EE';
-const appRed = '#EC5F59';
-const appLightGrey = '#EEEEEE';
 
 export const Colors = {
     DISABLED_TAB_ICON: 'rgba(0, 0, 0, 0.26)',
@@ -37,5 +51,6 @@ export const Colors = {
     FOUND_BUTTON: appGreen,
     POPOVER_DOCK_BG: appLightGrey,
     SUBMIT_CLASS_BUTTON: appGreen,
-    SELECTED_TAB_TINT: '#37474F'
+    SELECTED_TAB_TINT: '#37474F',
+    BACKGROUND: 'white'
 };
