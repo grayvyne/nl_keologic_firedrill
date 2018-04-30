@@ -4,7 +4,7 @@ import * as React from 'react';
 
 namespace styles {
     export const hideBoxShadow = { boxShadow: 'none', borderColor: 'red', borderWidth: 2 };
-    export const toolbar = { paddingRight: 0, justifyContent: 'space-between', borderColor: 'red', borderWidth: 2 };
+    export const toolbar = { paddingRight: 0, justifyContent: 'space-between' };
 }
 
 interface Props extends AppBarProps {
