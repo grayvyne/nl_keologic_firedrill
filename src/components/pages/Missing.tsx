@@ -47,7 +47,7 @@ namespace styles {
     };
     export const missingBarContainer: ViewStyle = { justifyContent: 'center', alignItems: 'center' };
     export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
-    export const missingText: React.CSSProperties = { justifyContent: 'center', alignItems: 'center' };
+    export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
 }
 
 class Missing extends React.Component<Props, State> {
