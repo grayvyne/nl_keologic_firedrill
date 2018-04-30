@@ -4,7 +4,7 @@ import Input from 'material-ui/Input';
 import SearchIcon from '../../assets/SearchIcon';
 import CancelIcon from '../../assets/CancelIcon';
 
-namespace style {
+namespace styles {
     export const cardStyle: React.CSSProperties = {
         margin: 10,
         padding: 5,
@@ -14,6 +14,10 @@ namespace style {
         alignItems: 'center'
     };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
+
+    export const searchIconContainer = { marginLeft: 10, marginRight: 20, marginTop: 3 };
+
+    export const cancelIconContainer = { marginRight: 10, marginTop: 3 };
 }
 
 interface Props {
@@ -24,8 +28,8 @@ interface Props {
 export default class SearchBar extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <Card style={style.cardStyle}>
-                <div style={{ marginLeft: 10, marginRight: 20, marginTop: 3 }}>
+            <Card style={styles.cardStyle}>
+                <div style={styles.searchIconContainer}>
                     <SearchIcon width={30} height={30} />
                 </div>
                 <Input
@@ -33,12 +37,12 @@ export default class SearchBar extends React.Component<Props> {
                     onChange={this.handleChangeText}
                     placeholder={'Search'}
                     type={'search'}
-                    style={style.searchInputStyle}
+                    style={styles.searchInputStyle}
                     disableUnderline={true}
                 />
 
                 {this.props.text !== '' && (
-                    <div onClick={() => this.props.onChangeText('')} style={{ marginRight: 10, marginTop: 3 }}>
+                    <div onClick={() => this.props.onChangeText('')} style={styles.cancelIconContainer}>
                         <CancelIcon width={20} height={20} />
                     </div>
                 )}

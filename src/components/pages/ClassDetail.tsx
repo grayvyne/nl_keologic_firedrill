@@ -51,6 +51,27 @@ namespace styles {
     };
 
     export const buttonTextColor = 'white';
+
+    export const navBarTitleContainer: ViewStyle = {
+        position: 'absolute',
+        top: 14,
+        left: 0,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
+
+    export const navBarTitle: TextStyle = {
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: 'bold'
+    };
+
+    export const navBarSubTitle: TextStyle = { textAlign: 'center', fontWeight: 'bold', fontSize: 10 };
+
+    export const unclaimClassButton: ViewStyle = { height: '100%', width: 100, alignSelf: 'center', marginRight: -10 };
+
+    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 14 };
 }
 
 interface StoreProps {
@@ -117,33 +138,16 @@ class ClassDetail extends React.Component<Props, State> {
                             <BackIcon />
                         </IconButton>
                         <View style={{ flex: 1 }} />
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: 14,
-                                left: 0,
-                                width: '100%',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    textAlign: 'center',
-                                    fontSize: 15,
-                                    fontWeight: 'bold'
-                                }}
-                            >
+                        <View style={styles.navBarTitleContainer}>
+                            <Text style={styles.navBarTitle}>
                                 {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
                             </Text>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 10 }}>
-                                {currentClass.getTeachers()[0].lastName}
-                            </Text>
+                            <Text style={styles.navBarSubTitle}>{currentClass.getTeachers()[0].lastName}</Text>
                         </View>
 
-                        <View style={{ height: '100%', width: 100, alignSelf: 'center', marginRight: -10 }}>
+                        <View style={styles.unclaimClassButton}>
                             <TouchableOpacity onPress={() => this.showUnclaimClassAlert()}>
-                                <Text style={{ textAlign: 'center', fontSize: 14 }}>{'UNCLAIM'}</Text>
+                                <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
                             </TouchableOpacity>
                         </View>
                     </Toolbar>
@@ -185,8 +189,8 @@ class ClassDetail extends React.Component<Props, State> {
                 />
 
                 <MaterialAlert
-                    alertTitle={'Unclaim class?'}
-                    alertMessage={'Are you sure you want to unclaim this class?'}
+                    alertTitle={ui.UNLCAIM_CLASS_ALERT}
+                    alertMessage={ui.UNCLAIM_CLASS_MESSAGE}
                     open={this.state.showUnclaimClassAlert}
                     onPressCancel={() => this.cancelUnclaimClass()}
                     onPressAffirm={() => this.confirmUnclaimClass()}

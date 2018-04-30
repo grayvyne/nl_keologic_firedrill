@@ -27,7 +27,10 @@ export const ClassDetailStrings = {
     SUBMIT_CLASS_ALERT_MESSAGE: `Are you finished updating students' statuses?`,
     MISSING: 'Missing',
     ABSENT: 'Absent',
-    FOUND: 'Found'
+    FOUND: 'Found',
+    UNCLAIM: 'UNCLAIM',
+    UNLCAIM_CLASS_ALERT: 'Unclaim class?',
+    UNCLAIM_CLASS_MESSAGE: 'Are you sure you want to unclaim this class?'
 };
 
 export const ManageFiredrillStrings = {

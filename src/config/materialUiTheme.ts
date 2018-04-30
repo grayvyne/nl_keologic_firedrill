@@ -39,5 +39,6 @@ export const Colors = {
     SUBMIT_CLASS_BUTTON: appGreen,
     SELECTED_TAB_TINT: '#37474F',
     FIND_A_CLASS: appGreen,
-    CLAIM_CLASS_BUTTON: appGreen
+    CLAIM_CLASS_BUTTON: appGreen,
+    SUBTEXT_GREY: 'rgba(0,0,0,0.54)'
 };
