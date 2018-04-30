@@ -4,14 +4,14 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, View, ViewStyle } from 'react-native';
+import { ScrollView, View, ViewStyle, Text } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, StudentTableCell, TableView } from '../shared';
+import { AppBar, ContentView, StudentTableCell, TableView, TableHeader } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 
 interface Props {
@@ -49,6 +49,8 @@ namespace styles {
     export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
     export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
     export const manageButton: React.CSSProperties = { margin: 20 };
+    export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
+    export const headerRight: ViewStyle = { marginRight: 25 };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -102,6 +104,14 @@ class Missing extends React.Component<Props, State> {
                     </View>
                     <ScrollView>
                         <TableView>
+                            <TableHeader>
+                                <View style={styles.headerLeft}>
+                                    <Text>{MissingStrings.HEADING_NAME}</Text>
+                                </View>
+                                <View style={styles.headerRight}>
+                                    <Text>{MissingStrings.HEADING_STATUS}</Text>
+                                </View>
+                            </TableHeader>
                             {this.props.students.map(student => (
                                 <StudentTableCell
                                     key={student.userID}
