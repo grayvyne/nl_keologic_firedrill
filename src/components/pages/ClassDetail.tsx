@@ -1,7 +1,6 @@
 import { IconButton } from 'material-ui';
 import { ScrollView, View, TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
-import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import ContentView from '../shared/ContentView';
@@ -9,7 +8,7 @@ import TableView from '../shared/TableView';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
-import { StudentTableCell, Toolbar } from '../shared';
+import { StudentTableCell, AppBar } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties, ChangeEvent } from 'react';
 import { Status } from '../../models/Status';
@@ -19,7 +18,6 @@ import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInput
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 
 namespace styles {
-    export const hideBoxShadow = { boxShadow: 'none' };
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tableViewContainer = { paddingBottom: 150 };
     export const dockedBottomButton: ViewStyle = {
@@ -94,19 +92,17 @@ class ClassDetail extends React.Component<Props, State> {
     public render(): JSX.Element | null {
         return (
             <View style={styles.containerBackground}>
-                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButton}
-                            onClick={() => {
-                                this.props.navigation.goBack();
-                            }}
-                        >
-                            <BackIcon />
-                        </IconButton>
-                    </Toolbar>
+                <AppBar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButton}
+                        onClick={() => {
+                            this.props.navigation.goBack();
+                        }}
+                    >
+                        <BackIcon />
+                    </IconButton>
                 </AppBar>
                 <ContentView>
                     <ScrollView>

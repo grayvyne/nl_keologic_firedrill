@@ -6,7 +6,7 @@ import StyledBottomNavigation from './StyledBottomNavigation';
 import TableCell from './TableCell';
 import TableHeader from './TableHeader';
 import TableView from './TableView';
-import Toolbar from './Toolbar';
+import AppBar from './AppBar';
 import StudentTableCell from './StudentTableCell';
 
 export {
@@ -18,6 +18,6 @@ export {
     TableCell,
     TableHeader,
     TableView,
-    Toolbar,
+    AppBar,
     StudentTableCell
 };

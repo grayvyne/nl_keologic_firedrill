@@ -1,14 +1,13 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
 import { Button, IconButton, Typography, Checkbox } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { View, ViewStyle, Text } from 'react-native';
+import { View, ViewStyle, Text, ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Stores } from '../../stores';
 import { StatefulChecklistItem } from '../../stores/ChecklistStore';
-import { ContentView, TableCell, Toolbar } from '../shared';
+import { ContentView, TableCell, AppBar } from '../shared';
 
 interface StoreProps {
     checklistItems: StatefulChecklistItem[];
@@ -25,50 +24,50 @@ namespace styles {
         flexGrow: 1,
         height: '100%'
     };
-    export const hideBoxShadow = { boxShadow: 'none' };
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const expand = { flex: 1 };
 }
 
 @observer
 class ChecklistDetail extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <ContentView>
-                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButton}
-                            onClick={() => this.props.navigation.goBack()}
-                        >
-                            <BackIcon />
-                        </IconButton>
-                        <Typography variant="title" color="inherit" style={{ flex: 1 }}>
-                            {this.props.navigation.state.routeName}
-                        </Typography>
-                        <Button color="inherit" onClick={this.props.clearChecklistStatus}>
-                            Clear
-                        </Button>
-                    </Toolbar>
+            <View>
+                <AppBar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButton}
+                        onClick={() => this.props.navigation.goBack()}
+                    >
+                        <BackIcon />
+                    </IconButton>
+                    <Typography variant="title" color="inherit" style={styles.expand}>
+                        {this.props.navigation.state.routeName}
+                    </Typography>
+                    <Button color="inherit" onClick={this.props.clearChecklistStatus}>
+                        Clear
+                    </Button>
                 </AppBar>
-                <View>
-                    {this.props.checklistItems.map(item => (
-                        <TableCell onClick={this.handleChecklistItemPress(item)} key={item.key}>
-                            <View style={{ flex: 1 }}>
-                                <Text
-                                    style={{
-                                        textDecorationLine: item.completed ? 'line-through' : 'none'
-                                    }}
-                                >
-                                    {item.value}
-                                </Text>
-                            </View>
-                            <Checkbox checked={item.completed} />
-                        </TableCell>
-                    ))}
-                </View>
-            </ContentView>
+                <ContentView>
+                    <ScrollView>
+                        {this.props.checklistItems.map(item => (
+                            <TableCell onClick={this.handleChecklistItemPress(item)} key={item.key}>
+                                <View style={styles.expand}>
+                                    <Text
+                                        style={{
+                                            textDecorationLine: item.completed ? 'line-through' : 'none'
+                                        }}
+                                    >
+                                        {item.value}
+                                    </Text>
+                                </View>
+                                <Checkbox checked={item.completed} />
+                            </TableCell>
+                        ))}
+                    </ScrollView>
+                </ContentView>
+            </View>
         );
     }
 
