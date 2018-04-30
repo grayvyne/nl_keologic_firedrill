@@ -1,3 +1,5 @@
+export const pluginName = 'Firedrill';
+
 export const ClassTabStrings = {
     YOUR_CLASSES: 'Your Classes',
     FIND_CLASSES: 'Find Classes',
@@ -26,4 +28,14 @@ export const ClassDetailStrings = {
     MISSING: 'Missing',
     ABSENT: 'Absent',
     FOUND: 'Found'
+};
+
+export const ManageFiredrillStrings = {
+    START_FIREDRILL: 'Start Fire Drill',
+    CANCEL_FIREDRILL: 'Cancel Fire Drill',
+    FINISH_FIREDRILL: 'End Fire Drill',
+    CLOSE: 'Cancel',
+    START_NOTIFICATION: (name: string) => `A firedrill is starting at ${name}`,
+    CANCEL_NOTIFICATION: (name: string) => `The fire drill at ${name} has been cancelled`,
+    END_NOTIFICATION: (name: string) => `The fire drill at ${name} has ended`
 };

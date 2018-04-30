@@ -28,6 +28,10 @@ export class FiredrillClass extends Class {
         return this._students.filter(s => s.status === Status.Found).length;
     }
 
+    public get searchableText(): string {
+        return this.name + ' ' + this.gradeLevel;
+    }
+
     @observable private _claimedByID: number | null;
 
     @observable private _students: Student[];

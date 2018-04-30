@@ -1,12 +1,13 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { AppBar, IconButton, Toolbar } from 'material-ui';
+import { AppBar, Button, IconButton, Modal, Toolbar } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
+import { ManageFiredrillStrings } from '../../config/uiConstants';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ActionTableCell } from '../shared';
@@ -19,6 +20,13 @@ interface Props {
     totalStudentsCount: number;
     foundStudentsCount: number;
     firedrillElapsedTime: string;
+    shouldShowManage: boolean;
+    initiateFireDrill(schoolID: number): Promise<void>;
+    endFireDrill(): Promise<void>;
+}
+
+interface State {
+    isManageModalOpen: boolean;
 }
 
 namespace styles {
@@ -32,7 +40,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
 }
 
-class Missing extends React.Component<Props> {
+class Missing extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused }) => {
             return (
@@ -46,6 +54,8 @@ class Missing extends React.Component<Props> {
         }
     };
 
+    public state = { isManageModalOpen: false };
+
     public render(): JSX.Element {
         return (
             <View>
@@ -55,6 +65,9 @@ class Missing extends React.Component<Props> {
                             <AppsIcon />
                         </IconButton>
                         <Text>{this.props.firedrillElapsedTime}</Text>
+                        {this.props.shouldShowManage && (
+                            <Button onClick={() => this.setState({ isManageModalOpen: true })}>Manage</Button>
+                        )}
                     </Toolbar>
                 </AppBar>
                 <ContentView>
@@ -70,9 +83,42 @@ class Missing extends React.Component<Props> {
                         </TableView>
                     </ScrollView>
                 </ContentView>
+                {this.props.shouldShowManage && (
+                    <Modal open={this.state.isManageModalOpen}>
+                        <View>
+                            <Button onClick={this.handleStartFireDrillClick}>
+                                {ManageFiredrillStrings.START_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleCancelFireDrillClick}>
+                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.handleEndFireDrillClick}>
+                                {ManageFiredrillStrings.FINISH_FIREDRILL}
+                            </Button>
+                            <Button onClick={this.closeManageModal}>{ManageFiredrillStrings.CLOSE}</Button>
+                        </View>
+                    </Modal>
+                )}
             </View>
         );
     }
+
+    private closeManageModal = () => this.setState({ isManageModalOpen: false });
+
+    private handleStartFireDrillClick = () => {
+        this.props.initiateFireDrill(1);
+        this.closeManageModal();
+    };
+
+    private handleCancelFireDrillClick = () => {
+        this.props.endFireDrill();
+        this.closeManageModal();
+    };
+
+    private handleEndFireDrillClick = () => {
+        this.props.endFireDrill();
+        this.closeManageModal();
+    };
 }
 
 function mapStoresToProps({ firedrillStore }: Stores): Props {
@@ -80,7 +126,10 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
         totalStudentsCount: firedrillStore.allStudentsCount,
         foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
-        firedrillElapsedTime: firedrillStore.firedrillElapsedTime
+        firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
+        shouldShowManage: firedrillStore.shouldShowManage,
+        initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
+        endFireDrill: () => firedrillStore.endFireDrill()
     };
 }
 
