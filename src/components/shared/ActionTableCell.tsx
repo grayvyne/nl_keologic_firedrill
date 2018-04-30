@@ -9,6 +9,7 @@ interface Props {
     buttonTextColor?: string;
     cellData: ActionTableCellData;
     onClick?: () => void;
+    isDisabled?: boolean;
 }
 
 type ActionTableCellData = {
@@ -59,6 +60,7 @@ export default class ActionTableCell extends React.Component<Props> {
                             }
                         }}
                         onClick={this.props.onClick}
+                        disabled={this.props.isDisabled}
                     >
                         {this.props.buttonLabel}
                     </Button>

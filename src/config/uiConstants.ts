@@ -1,9 +1,13 @@
 export const pluginName = 'Firedrill';
 
-export const ClassTabStrings = {
+export const ClassesStrings = {
     YOUR_CLASSES: 'Your Classes',
     FIND_CLASSES: 'Find Classes',
-    UNCLAIMED: 'Unclaimed'
+    UNCLAIMED: 'Unclaimed',
+    CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
+    UNCLAIMED_CLASS: 'Claim',
+    UNCLAIMED_HEADING_NAME: 'Class',
+    UNCLAIMED_HEADING_STATUS: 'Status'
 };
 
 export const RootTabLabels = {
@@ -45,5 +49,7 @@ export const ChecklistStrings = {
 };
 
 export const MissingStrings = {
-    MISSING_STUDENTS_COUNT: (found: number, total: number) => `${found} / ${total} Students Found`
+    MISSING_STUDENTS_COUNT: (found: number, total: number) => `${found} / ${total} Students Found`,
+    HEADING_NAME: 'Name',
+    HEADING_STATUS: 'Status'
 };

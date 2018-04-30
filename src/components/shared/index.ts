@@ -8,8 +8,10 @@ import TableHeader from './TableHeader';
 import TableView from './TableView';
 import AppBar from './AppBar';
 import StudentTableCell from './StudentTableCell';
+import ClaimableClassTableCell from './ClaimableClassTableCell';
 
 export {
+    ClaimableClassTableCell,
     ActionTableCell,
     ClassesTableCell,
     ContentView,
