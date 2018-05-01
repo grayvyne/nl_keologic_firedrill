@@ -11,10 +11,8 @@ import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
-import { SearchTabStrings as ui } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
-import { ChangeEvent } from 'react';
-import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
+import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 
 interface State {
     index: number;
@@ -87,50 +85,17 @@ class Search extends React.Component<Props, State> {
                     </ScrollView>
                 </ContentView>
 
-                <MaterialRadioInputList
+                <UpdateStudentStatusModal
+                    selectedStudent={this.state.selectedStudent}
+                    updateStudentMap={this.markStudentAs}
                     open={this.state.editStatusModalIsVisible}
-                    modalHeader={ui.CHOOSE_STATUS}
-                    currentlySelectedRadioOptionValue={this.state.selectedStudentStatus}
-                    radioOptions={[Status.Found, Status.Absent, Status.Missing]}
-                    onPressRadioOption={this.onPressRadioOption}
-                    onPressCancel={() => this.cancelUpdateStudentStatus()}
-                    onPressAffirm={() => this.updateStudentStatus()}
-                    cancelButtonLabel={ui.CANCEL}
-                    affirmButtonLabel={ui.OK}
+                    close={() => this.setState({ editStatusModalIsVisible: false })}
                 />
             </View>
         );
     }
 
-    private onPressRadioOption = (event: ChangeEvent<HTMLInputElement>) => {
-        const valueString = event.target.value;
-        const status = Status[valueString];
-        console.assert(
-            status !== undefined,
-            `event.target.value: "${valueString}" from @onPressRadioOption() in #ClassDetail.tsx doesn't match the Status enum and returned undefined`
-        );
-
-        this.setState({ selectedStudentStatus: status });
-    };
-
-    private cancelUpdateStudentStatus = () => {
-        this.setState({ editStatusModalIsVisible: false });
-    };
-
-    private updateStudentStatus = () => {
-        const updatedStatus = this.state.selectedStudentStatus;
-        const selectedStudent = this.state.selectedStudent!;
-
-        this.markStudentAs(updatedStatus, selectedStudent);
-
-        this.setState({
-            editStatusModalIsVisible: false,
-            selectedStudentStatus: Status.Found,
-            selectedStudent: undefined
-        });
-    };
-
-    private markStudentAs = (status: Status, student: Student) => {
+    private markStudentAs = (student: Student, status: Status) => {
         switch (status) {
             case Status.Missing:
                 this.props.markStudentMissing(student.userID);
@@ -144,6 +109,8 @@ class Search extends React.Component<Props, State> {
             default:
                 throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
         }
+
+        this.setState({ editStatusModalIsVisible: false });
     };
 
     private renderTableCell = (student: Student): JSX.Element => {

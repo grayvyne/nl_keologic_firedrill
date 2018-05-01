@@ -3,6 +3,7 @@ import { Colors } from '../../config/materialUiTheme';
 import { ClassesStrings } from '../../config/uiConstants';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import ActionTableCell from './ActionTableCell';
+import { getGradeTitleFromGradeLevel } from '../../models/Class';
 
 interface Props {
     claimedByName: string;
@@ -18,7 +19,7 @@ export default class ClaimableClassTableCell extends React.Component<Props> {
                 cellData={{
                     id: singleClass.classID,
                     label: singleClass.name,
-                    subLabel: singleClass.gradeLevel.toString()
+                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
                 }}
                 key={singleClass.classID}
                 buttonTextColor={Colors.CLASS_BUTTON_TEXT}
@@ -38,7 +39,8 @@ export default class ClaimableClassTableCell extends React.Component<Props> {
         }
         return {
             buttonLabel: ClassesStrings.CLAIMED_CLASS(this.props.claimedByName),
-            buttonColor: Colors.CLAIMED_CLASS_BUTTON
+            buttonColor: Colors.CLAIMED_CLASS_BUTTON,
+            useSmallFont: true
         };
     }
 }

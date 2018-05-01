@@ -9,6 +9,8 @@ import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
 import { AppBar, TableCell, TableView } from '../shared';
 import ContentView from '../shared/ContentView';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import { Colors } from '../../config/materialUiTheme';
 
 interface State {
     index: number;
@@ -23,6 +25,14 @@ interface Props extends StoreProps, NavigationScreenProps {}
 namespace styles {
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const expand = { flex: 1 };
+    export const playArrow: React.CSSProperties = {
+        height: 15,
+        width: 15,
+        position: 'absolute',
+        top: 25,
+        right: 15,
+        fill: Colors.ICON_GREY
+    };
 }
 
 class Checklist extends React.Component<Props, State> {
@@ -59,8 +69,10 @@ class Checklist extends React.Component<Props, State> {
                             <TableCell
                                 onClick={() => this.props.navigation.navigate(checklistName)}
                                 key={checklistName}
+                                style={{ flexDirection: 'row' }}
                             >
                                 <Typography variant="body1">{checklistName}</Typography>
+                                <PlayArrow style={styles.playArrow} />
                             </TableCell>
                         ))}
                     </TableView>
