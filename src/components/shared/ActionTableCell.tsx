@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from 'material-ui';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import TableCell from '../shared/TableCell';
+import { Colors } from '../../config/materialUiTheme';
 
 interface Props {
     buttonLabel?: string;
@@ -33,7 +34,7 @@ namespace styles {
     export const subLabel: TextStyle = {
         textAlign: 'left',
         fontWeight: '300',
-        color: 'rgba(0,0,0,0.54)',
+        color: Colors.SUBTEXT_GREY,
         fontSize: 14
     };
     export const button: React.CSSProperties = {
