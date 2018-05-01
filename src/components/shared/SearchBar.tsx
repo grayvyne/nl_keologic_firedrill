@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Card from 'material-ui/Card';
 import Input from 'material-ui/Input';
-import SearchIcon from '../../assets/SearchIcon';
-import CancelIcon from '../../assets/CancelIcon';
+import CancelIcon from '@material-ui/icons/Cancel';
+import SearchIcon from '@material-ui/icons/Search';
+import { IconButton } from 'material-ui';
 
 namespace styles {
     export const cardStyle: React.CSSProperties = {
@@ -14,10 +15,6 @@ namespace styles {
         alignItems: 'center'
     };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
-
-    export const searchIconContainer = { marginLeft: 10, marginRight: 20, marginTop: 3 };
-
-    export const cancelIconContainer = { marginRight: 10, marginTop: 3 };
 }
 
 interface Props {
@@ -29,9 +26,15 @@ export default class SearchBar extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <Card style={styles.cardStyle}>
-                <div style={styles.searchIconContainer}>
-                    <SearchIcon width={30} height={30} />
-                </div>
+                <SearchIcon
+                    style={{
+                        fill: '#757575',
+                        width: 30,
+                        height: 30,
+                        marginLeft: 10,
+                        marginRight: 20
+                    }}
+                />
                 <Input
                     value={this.props.text}
                     onChange={this.handleChangeText}
@@ -42,9 +45,15 @@ export default class SearchBar extends React.Component<Props> {
                 />
 
                 {this.props.text !== '' && (
-                    <div onClick={() => this.props.onChangeText('')} style={styles.cancelIconContainer}>
-                        <CancelIcon width={20} height={20} />
-                    </div>
+                    <IconButton onClick={() => this.props.onChangeText('')}>
+                        <CancelIcon
+                            style={{
+                                fill: '#9E9E9E',
+                                width: 20,
+                                height: 20
+                            }}
+                        />
+                    </IconButton>
                 )}
             </Card>
         );

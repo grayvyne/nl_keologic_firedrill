@@ -18,6 +18,7 @@ import { Colors } from '../../config/materialUiTheme';
 import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
+import { Button } from 'material-ui';
 
 namespace styles {
     export const hideBoxShadow = { boxShadow: 'none' };
@@ -71,7 +72,7 @@ namespace styles {
 
     export const unclaimClassButton: ViewStyle = { height: '100%', width: 100, alignSelf: 'center', marginRight: -10 };
 
-    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 14 };
+    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 12, color: 'white' };
 }
 
 interface StoreProps {
@@ -89,7 +90,6 @@ interface State {
     showSubmitClassAlert: boolean;
     students: Student[];
     updatedStudentStatusesByStudentId: Map<number, Status>;
-    showUnclaimClassAlert: boolean;
 }
 
 @observer
@@ -112,8 +112,7 @@ class ClassDetail extends React.Component<Props, State> {
             selectedStudentStatus: Status.Found,
             showSubmitClassAlert: false,
             students: studentClass.students,
-            updatedStudentStatusesByStudentId: studentStatusMapById,
-            showUnclaimClassAlert: false
+            updatedStudentStatusesByStudentId: studentStatusMapById
         };
     }
 
@@ -146,9 +145,9 @@ class ClassDetail extends React.Component<Props, State> {
                         </View>
 
                         <View style={styles.unclaimClassButton}>
-                            <TouchableOpacity onPress={() => this.showUnclaimClassAlert()}>
+                            <Button onClick={() => this.unclaimClass()}>
                                 <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
-                            </TouchableOpacity>
+                            </Button>
                         </View>
                     </Toolbar>
                 </AppBar>
@@ -187,31 +186,12 @@ class ClassDetail extends React.Component<Props, State> {
                     affirmButtonLabel={ui.OK}
                     cancelButtonLabel={ui.CANCEL}
                 />
-
-                <MaterialAlert
-                    alertTitle={ui.UNLCAIM_CLASS_ALERT}
-                    alertMessage={ui.UNCLAIM_CLASS_MESSAGE}
-                    open={this.state.showUnclaimClassAlert}
-                    onPressCancel={() => this.cancelUnclaimClass()}
-                    onPressAffirm={() => this.confirmUnclaimClass()}
-                    affirmButtonLabel={ui.OK}
-                    cancelButtonLabel={ui.CANCEL}
-                />
             </View>
         );
     }
 
-    private showUnclaimClassAlert() {
-        this.setState({ showUnclaimClassAlert: true });
-    }
-
-    private cancelUnclaimClass() {
-        this.setState({ showUnclaimClassAlert: false });
-    }
-
-    private confirmUnclaimClass() {
+    private unclaimClass() {
         this.props.unclaimClass();
-        this.setState({ showUnclaimClassAlert: false });
         this.props.navigation.goBack();
     }
 

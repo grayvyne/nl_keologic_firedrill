@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { ScrollView, TouchableOpacity, Text, View, ViewStyle, TextStyle } from 'react-native';
+import { ScrollView, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { TableView, ClassesTableCell } from '../../shared';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Colors } from '../../../config/materialUiTheme';
 import { MyClassesStrings as ui } from '../../../config/uiConstants';
+import { Button } from 'material-ui';
 
 interface Props {
     classes: FiredrillClass[];
@@ -45,11 +46,11 @@ function MyClasses(props: Props) {
         return (
             <View style={styles.fullScreen}>
                 <Text style={styles.noClassesText}>{ui.NO_CLASSES_WARNING}</Text>
-                <TouchableOpacity onPress={() => props.onClickFindClass()}>
+                <Button onClick={props.onClickFindClass}>
                     <View style={styles.findAClassButton}>
                         <Text style={styles.findAClassButtonText}>{ui.FIND_A_CLASS}</Text>
                     </View>
-                </TouchableOpacity>
+                </Button>
             </View>
         );
     }

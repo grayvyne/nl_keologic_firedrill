@@ -1,7 +1,7 @@
 import teal from 'material-ui/colors/teal';
 import * as React from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
-import RightArrow from '../../assets/RightArrow';
+import PlayArrow from '@material-ui/icons/PlayArrow';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
@@ -62,7 +62,15 @@ export default class ClassesTableCell extends React.Component<Props> {
                     {singleClass.foundStudents}/{singleClass.totalStudents}
                 </Text>
                 <View style={style.rightArrowContainer}>
-                    <RightArrow height={10} width={6} />
+                    <PlayArrow
+                        style={{
+                            height: 15,
+                            width: 15,
+                            position: 'absolute',
+                            top: -3,
+                            fill: '#757575'
+                        }}
+                    />
                 </View>
             </TableCell>
         );
