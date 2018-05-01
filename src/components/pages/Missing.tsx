@@ -84,7 +84,14 @@ class Missing extends React.Component<Props, State> {
                         <AppsIcon />
                     </IconButton>
                     <View style={styles.titleContainer} pointerEvents="none">
-                        <Typography variant="title" color="inherit">
+                        <Typography
+                            variant={
+                                this.props.firedrillElapsedTime === ManageFiredrillStrings.NO_FIREDRILL_ACTIVE
+                                    ? 'caption'
+                                    : 'title'
+                            }
+                            color="inherit"
+                        >
                             {this.props.firedrillElapsedTime}
                         </Typography>
                     </View>

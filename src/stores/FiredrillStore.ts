@@ -72,6 +72,9 @@ export class FiredrillStore {
     @observable private _firedrillElapsedTime: string = '0:00';
     @computed
     public get firedrillElapsedTime(): string {
+        if (false === this.isFiredrillInProgress) {
+            return ManageFiredrillStrings.NO_FIREDRILL_ACTIVE;
+        }
         return this._firedrillElapsedTime;
     }
 
