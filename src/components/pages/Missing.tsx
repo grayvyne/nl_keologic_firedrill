@@ -1,16 +1,16 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { AppBar, Button, IconButton, Modal, Toolbar } from 'material-ui';
+import { Button, IconButton, Modal, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings } from '../../config/uiConstants';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { ActionTableCell } from '../shared';
+import { ActionTableCell, AppBar } from '../shared';
 import ContentView from '../shared/ContentView';
 import TableView from '../shared/TableView';
 import { Status } from '../../models/Status';
@@ -34,10 +34,17 @@ namespace styles {
         height: 26,
         width: 26
     };
-    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
-    export const toolbarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
+    export const titleContainer: ViewStyle = {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -54,21 +61,25 @@ class Missing extends React.Component<Props, State> {
         }
     };
 
-    public state = { isManageModalOpen: false };
+    public state: State = { isManageModalOpen: false };
 
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar position={'absolute'} style={styles.appBarStyle}>
-                    <Toolbar style={styles.toolbarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
-                            <AppsIcon />
-                        </IconButton>
-                        <Text>{this.props.firedrillElapsedTime}</Text>
-                        {this.props.shouldShowManage && (
-                            <Button onClick={() => this.setState({ isManageModalOpen: true })}>Manage</Button>
-                        )}
-                    </Toolbar>
+                <AppBar>
+                    <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                        <AppsIcon />
+                    </IconButton>
+                    <View style={styles.titleContainer}>
+                        <Typography variant="title" color="inherit">
+                            {this.props.firedrillElapsedTime}
+                        </Typography>
+                    </View>
+                    {this.props.shouldShowManage && (
+                        <Button color="inherit" onClick={() => this.setState({ isManageModalOpen: true })}>
+                            Manage
+                        </Button>
+                    )}
                 </AppBar>
                 <ContentView>
                     <ScrollView>

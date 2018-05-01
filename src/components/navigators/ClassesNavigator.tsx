@@ -13,7 +13,8 @@ const Nav = StackNavigator(
         [Routes.ClassDetail]: ClassDetail
     },
     {
-        headerMode: 'none'
+        headerMode: 'none',
+        navigationOptions: { header: null }
     }
 );
 

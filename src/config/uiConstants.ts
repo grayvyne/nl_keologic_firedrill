@@ -39,3 +39,7 @@ export const ManageFiredrillStrings = {
     CANCEL_NOTIFICATION: (name: string) => `The fire drill at ${name} has been cancelled`,
     END_NOTIFICATION: (name: string) => `The fire drill at ${name} has ended`
 };
+
+export const ChecklistStrings = {
+    TITLE: 'Checklists'
+};
