@@ -27,7 +27,10 @@ export const ClassDetailStrings = {
     SUBMIT_CLASS_ALERT_MESSAGE: `Are you finished updating students' statuses?`,
     MISSING: 'Missing',
     ABSENT: 'Absent',
-    FOUND: 'Found'
+    FOUND: 'Found',
+    UNCLAIM: 'UNCLAIM',
+    UNLCAIM_CLASS_ALERT: 'Unclaim class?',
+    UNCLAIM_CLASS_MESSAGE: 'Are you sure you want to unclaim this class?'
 };
 
 export const ManageFiredrillStrings = {
@@ -38,6 +41,11 @@ export const ManageFiredrillStrings = {
     START_NOTIFICATION: (name: string) => `A firedrill is starting at ${name}`,
     CANCEL_NOTIFICATION: (name: string) => `The fire drill at ${name} has been cancelled`,
     END_NOTIFICATION: (name: string) => `The fire drill at ${name} has ended`
+};
+
+export const MyClassesStrings = {
+    NO_CLASSES_WARNING: `You've not claimed any classes yet.`,
+    FIND_A_CLASS: 'FIND A CLASS'
 };
 
 export const ChecklistStrings = {

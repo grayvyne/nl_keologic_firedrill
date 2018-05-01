@@ -3,6 +3,8 @@ import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ActionTableCell, TableHeader, TableView, ContentView } from '../../shared';
 import { FindClassesStrings as ui } from '../../../config/uiConstants';
+import { getGradeTitleFromGradeLevel } from '../../../models/Class';
+import { Colors } from '../../../config/materialUiTheme';
 
 interface Props {
     classes: FiredrillClass[];
@@ -32,11 +34,11 @@ function UnclaimedClasses(props: Props) {
                                 cellData={{
                                     id: singleClass.classID,
                                     label: singleClass.name,
-                                    subLabel: singleClass.gradeLevel.toString()
+                                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
                                 }}
                                 key={singleClass.classID}
                                 buttonLabel={ui.UNCLAIMED_CLASS}
-                                buttonColor={'red'}
+                                buttonColor={Colors.CLAIM_CLASS_BUTTON}
                                 buttonTextColor={'white'}
                             />
                         );

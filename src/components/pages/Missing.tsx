@@ -14,6 +14,7 @@ import { ActionTableCell, AppBar } from '../shared';
 import ContentView from '../shared/ContentView';
 import TableView from '../shared/TableView';
 import { Status } from '../../models/Status';
+import { ApplicationServices } from '../../services/ApplicationServices';
 
 interface Props {
     students: Student[];
@@ -66,11 +67,16 @@ class Missing extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar>
-                    <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                <AppBar position={'absolute'}>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButtonStyle}
+                    >
                         <AppsIcon />
                     </IconButton>
-                    <View style={styles.titleContainer}>
+                    <View style={styles.titleContainer} pointerEvents="none">
                         <Typography variant="title" color="inherit">
                             {this.props.firedrillElapsedTime}
                         </Typography>

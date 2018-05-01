@@ -6,6 +6,7 @@
         "@material-ui/icons": "^1.0.0-beta.42",
         "@types/moment": "^2.13.0",
         "@types/react-router-dom": "^4.2.6",
+        "@types/uuid": "^3.4.3",
         "autoprefixer": "7.1.6",
         "babel-jest": "^22.1.0",
         "babel-loader": "^7.1.2",
