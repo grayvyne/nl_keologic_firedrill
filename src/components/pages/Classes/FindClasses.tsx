@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { Colors } from '../../../config/materialUiTheme';
 import { FindClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
+import { getGradeTitleFromGradeLevel } from '../../../models/Class';
 import { ActionTableCell, SearchBar, TableView, ContentView } from '../../shared';
 
 interface Props {
@@ -32,7 +33,8 @@ class FindClasses extends React.Component<Props> {
     private buildCellPropsForClass(singleClass: FiredrillClass) {
         const claimedProps = {
             buttonLabel: ui.CLAIMED_CLASS(this.props.getClaimedByNameForClass(singleClass)),
-            buttonColor: Colors.CLAIMED_CLASS_BUTTON
+            buttonColor: Colors.CLAIMED_CLASS_BUTTON,
+            useSmallFont: true
         };
 
         const unclaimedProps = {
@@ -52,7 +54,7 @@ class FindClasses extends React.Component<Props> {
                 cellData={{
                     id: singleClass.classID,
                     label: singleClass.name,
-                    subLabel: singleClass.gradeLevel.toString()
+                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
                 }}
                 key={singleClass.classID}
                 buttonTextColor={Colors.CLASS_BUTTON_TEXT}

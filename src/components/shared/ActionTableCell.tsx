@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from 'material-ui';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 import TableCell from '../shared/TableCell';
+import { Colors } from '../../config/materialUiTheme';
 
 interface Props {
     buttonLabel?: string;
@@ -9,6 +10,7 @@ interface Props {
     buttonTextColor?: string;
     cellData: ActionTableCellData;
     onClick?: () => void;
+    useSmallFont?: boolean;
 }
 
 type ActionTableCellData = {
@@ -32,7 +34,8 @@ namespace styles {
     export const subLabel: TextStyle = {
         textAlign: 'left',
         fontWeight: '300',
-        color: 'grey'
+        color: Colors.SUBTEXT_GREY,
+        fontSize: 14
     };
     export const button: React.CSSProperties = {
         borderRadius: 2,
@@ -42,6 +45,8 @@ namespace styles {
 
 export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
+        const userSmallFont = this.props.useSmallFont ? { fontSize: 10, lineHeight: 11 } : {};
+
         return (
             <TableCell>
                 <View style={styles.labelContainer}>
@@ -60,7 +65,7 @@ export default class ActionTableCell extends React.Component<Props> {
                         }}
                         onClick={this.props.onClick}
                     >
-                        {this.props.buttonLabel}
+                        <Text style={userSmallFont}>{this.props.buttonLabel}</Text>
                     </Button>
                 </View>
             </TableCell>

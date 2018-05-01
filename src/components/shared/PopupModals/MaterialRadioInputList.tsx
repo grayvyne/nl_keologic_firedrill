@@ -42,7 +42,12 @@ export class MaterialRadioInputList extends React.Component<Props> {
                         })}
                     </RadioGroup>
 
-                    <CancelOrAffirmDialogFooter {...this.props} />
+                    <CancelOrAffirmDialogFooter
+                        onPressAffirm={this.props.onPressAffirm}
+                        onPressCancel={this.props.onPressCancel}
+                        affirmButtonLabel={this.props.affirmButtonLabel}
+                        cancelButtonLabel={this.props.cancelButtonLabel}
+                    />
                 </FormControl>
             </SharedDialogContainer>
         );

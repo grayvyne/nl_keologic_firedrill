@@ -40,12 +40,12 @@ class Checklist extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar>
+                <AppBar position={'fixed'}>
                     <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
                         color="inherit"
                         aria-label="Menu"
                         style={styles.iconButton}
-                        onClick={ApplicationServices.togglePluginMenu}
                     >
                         <AppsIcon />
                     </IconButton>

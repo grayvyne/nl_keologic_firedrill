@@ -1,9 +1,11 @@
 import teal from 'material-ui/colors/teal';
 import * as React from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
-import RightArrow from '../../assets/RightArrow';
+import PlayArrow from '@material-ui/icons/PlayArrow';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
+import { getGradeTitleFromGradeLevel } from '../../models/Class';
+import { Colors } from '../../config/materialUiTheme';
 import { observer } from 'mobx-react';
 
 namespace style {
@@ -37,6 +39,13 @@ namespace style {
         marginRight: 0,
         marginTop: -4
     };
+    export const playArrow: React.CSSProperties = {
+        height: 15,
+        width: 15,
+        position: 'absolute',
+        top: -3,
+        fill: Colors.ICON_GREY
+    };
 }
 
 interface Props {
@@ -55,7 +64,7 @@ export default class ClassesTableCell extends React.Component<Props> {
                         <Text style={style.labelText}>{singleClass.name}</Text>
                     </View>
                     <View>
-                        <Text style={style.subLabelText}>Grade {singleClass.gradeLevel}</Text>
+                        <Text style={style.subLabelText}>{getGradeTitleFromGradeLevel(singleClass.gradeLevel)}</Text>
                     </View>
                 </View>
 
@@ -63,7 +72,7 @@ export default class ClassesTableCell extends React.Component<Props> {
                     {singleClass.foundStudents}/{singleClass.totalStudents}
                 </Text>
                 <View style={style.rightArrowContainer}>
-                    <RightArrow height={10} width={6} />
+                    <PlayArrow style={style.playArrow} />
                 </View>
             </TableCell>
         );

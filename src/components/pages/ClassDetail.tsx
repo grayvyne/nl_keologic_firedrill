@@ -16,6 +16,8 @@ import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
 import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
+import { getGradeTitleFromGradeLevel } from '../../models/Class';
+import { Button } from 'material-ui';
 
 namespace styles {
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
@@ -47,11 +49,33 @@ namespace styles {
     };
 
     export const buttonTextColor = 'white';
+
+    export const navBarTitleContainer: ViewStyle = {
+        position: 'absolute',
+        top: 14,
+        left: 0,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
+
+    export const navBarTitle: TextStyle = {
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: 'bold'
+    };
+
+    export const navBarSubTitle: TextStyle = { textAlign: 'center', fontWeight: 'bold', fontSize: 10 };
+
+    export const unclaimClassButton: ViewStyle = { height: '100%', width: 100, alignSelf: 'center', marginRight: -10 };
+
+    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 12, color: 'white' };
 }
 
 interface StoreProps {
     class: FiredrillClass | undefined;
     saveStudentsStatuses: (students: Student[]) => void;
+    unclaimClass: () => void;
 }
 
 interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
@@ -90,9 +114,14 @@ class ClassDetail extends React.Component<Props, State> {
     }
 
     public render(): JSX.Element | null {
+        const currentClass = this.props.class;
+        if (currentClass === undefined) {
+            return null;
+        }
+
         return (
             <View style={styles.containerBackground}>
-                <AppBar>
+                <AppBar position={'fixed'}>
                     <IconButton
                         color="inherit"
                         aria-label="Menu"
@@ -103,7 +132,19 @@ class ClassDetail extends React.Component<Props, State> {
                     >
                         <BackIcon />
                     </IconButton>
+                    <View style={{ flex: 1 }} />
+                    <View style={styles.navBarTitleContainer}>
+                        <Text style={styles.navBarTitle}>{getGradeTitleFromGradeLevel(currentClass.gradeLevel)}</Text>
+                        <Text style={styles.navBarSubTitle}>{currentClass.getTeachers()[0].lastName}</Text>
+                    </View>
+
+                    <View style={styles.unclaimClassButton}>
+                        <Button onClick={() => this.unclaimClass()}>
+                            <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
+                        </Button>
+                    </View>
                 </AppBar>
+
                 <ContentView>
                     <ScrollView>
                         <TableView style={styles.tableViewContainer}>
@@ -140,6 +181,11 @@ class ClassDetail extends React.Component<Props, State> {
                 />
             </View>
         );
+    }
+
+    private unclaimClass() {
+        this.props.unclaimClass();
+        this.props.navigation.goBack();
     }
 
     private cancelSubmitClass = () => {
@@ -245,9 +291,13 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
         props.navigation.state.params !== undefined,
         'Navigation state paramaters are undefined @mapStoresToProps in #ClassDetails.tsx'
     );
+
+    const classID = props.navigation.state.params!.classID;
+
     return {
-        class: firedrillStore.classes.get(props.navigation.state.params!.classID),
-        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students)
+        class: firedrillStore.classes.get(classID),
+        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students),
+        unclaimClass: () => firedrillStore.unclaimClass(classID)
     };
 }
 
