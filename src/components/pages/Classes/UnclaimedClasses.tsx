@@ -1,52 +1,36 @@
 import * as React from 'react';
 import { ScrollView, Text, View, ViewStyle } from 'react-native';
-import { FiredrillClass } from '../../../models/FiredrillClass';
-import { ActionTableCell, TableHeader, TableView, ContentView } from '../../shared';
-import { FindClassesStrings as ui } from '../../../config/uiConstants';
-import { getGradeTitleFromGradeLevel } from '../../../models/Class';
-import { Colors } from '../../../config/materialUiTheme';
+import { ContentView, TableHeader, TableView } from '../../shared';
+import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
+import { ClassesStrings } from '../../../config/uiConstants';
 
-interface Props {
-    classes: FiredrillClass[];
-}
+interface Props extends AbstractClaimableClassesPageProps {}
 
 namespace style {
     export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
     export const headerRight: ViewStyle = { marginRight: 25 };
 }
 
-function UnclaimedClasses(props: Props) {
-    return (
-        <ContentView>
-            <ScrollView>
-                <TableView>
-                    <TableHeader>
-                        <View style={style.headerLeft}>
-                            <Text>Class</Text>
-                        </View>
-                        <View style={style.headerRight}>
-                            <Text>Status</Text>
-                        </View>
-                    </TableHeader>
-                    {props.classes.map(singleClass => {
-                        return (
-                            <ActionTableCell
-                                cellData={{
-                                    id: singleClass.classID,
-                                    label: singleClass.name,
-                                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
-                                }}
-                                key={singleClass.classID}
-                                buttonLabel={ui.UNCLAIMED_CLASS}
-                                buttonColor={Colors.CLAIM_CLASS_BUTTON}
-                                buttonTextColor={'white'}
-                            />
-                        );
-                    })}
-                </TableView>
-            </ScrollView>
-        </ContentView>
-    );
+class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
+    public render(): JSX.Element {
+        return (
+            <ContentView>
+                <ScrollView>
+                    <TableView>
+                        <TableHeader>
+                            <View style={style.headerLeft}>
+                                <Text>{ClassesStrings.UNCLAIMED_HEADING_NAME}</Text>
+                            </View>
+                            <View style={style.headerRight}>
+                                <Text>{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Text>
+                            </View>
+                        </TableHeader>
+                        {this.props.classes.map(this.renderTableCell)}
+                    </TableView>
+                </ScrollView>
+            </ContentView>
+        );
+    }
 }
 
 export default UnclaimedClasses;

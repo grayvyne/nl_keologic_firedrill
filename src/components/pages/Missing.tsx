@@ -1,20 +1,19 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { Button, IconButton, LinearProgress, Modal, Typography } from 'material-ui';
+import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, View, ViewStyle } from 'react-native';
+import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { Stores } from '../../stores';
-import { AppBar, StudentTableCell } from '../shared';
-import ContentView from '../shared/ContentView';
-import TableView from '../shared/TableView';
 import { ApplicationServices } from '../../services/ApplicationServices';
+import { Stores } from '../../stores';
+import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
+import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 
 interface Props {
     students: Student[];
@@ -22,6 +21,7 @@ interface Props {
     foundStudentsCount: number;
     firedrillElapsedTime: string;
     shouldShowManage: boolean;
+    isFiredrillInProgress: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
     endFireDrill(): Promise<void>;
 }
@@ -48,7 +48,11 @@ namespace styles {
     };
     export const missingBarContainer: ViewStyle = { justifyContent: 'center', alignItems: 'center' };
     export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
-    export const missingText: React.CSSProperties = { justifyContent: 'center', alignItems: 'center' };
+    export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
+    export const manageButton: React.CSSProperties = { margin: 20 };
+    export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
+    export const headerRight: ViewStyle = { marginRight: 25 };
+    export const manageButtonContainer: ViewStyle = { flex: 1, alignSelf: 'stretch', padding: 10 };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -107,6 +111,14 @@ class Missing extends React.Component<Props, State> {
                     </View>
                     <ScrollView>
                         <TableView>
+                            <TableHeader>
+                                <View style={styles.headerLeft}>
+                                    <Text>{MissingStrings.HEADING_NAME}</Text>
+                                </View>
+                                <View style={styles.headerRight}>
+                                    <Text>{MissingStrings.HEADING_STATUS}</Text>
+                                </View>
+                            </TableHeader>
                             {this.props.students.map(student => (
                                 <StudentTableCell
                                     key={student.userID}
@@ -122,20 +134,40 @@ class Missing extends React.Component<Props, State> {
                     </ScrollView>
                 </ContentView>
                 {this.props.shouldShowManage && (
-                    <Modal open={this.state.isManageModalOpen}>
-                        <View>
-                            <Button onClick={this.handleStartFireDrillClick}>
+                    <SharedDialogContainer open={this.state.isManageModalOpen}>
+                        <View style={styles.manageButtonContainer}>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="secondary"
+                                onClick={this.handleStartFireDrillClick}
+                                disabled={this.props.isFiredrillInProgress}
+                            >
                                 {ManageFiredrillStrings.START_FIREDRILL}
                             </Button>
-                            <Button onClick={this.handleCancelFireDrillClick}>
-                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
-                            </Button>
-                            <Button onClick={this.handleEndFireDrillClick}>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="primary"
+                                onClick={this.handleEndFireDrillClick}
+                                disabled={false === this.props.isFiredrillInProgress}
+                            >
                                 {ManageFiredrillStrings.FINISH_FIREDRILL}
                             </Button>
-                            <Button onClick={this.closeManageModal}>{ManageFiredrillStrings.CLOSE}</Button>
+                            <Button
+                                style={styles.manageButton}
+                                variant="raised"
+                                color="primary"
+                                onClick={this.handleCancelFireDrillClick}
+                                disabled={false === this.props.isFiredrillInProgress}
+                            >
+                                {ManageFiredrillStrings.CANCEL_FIREDRILL}
+                            </Button>
+                            <Button style={styles.manageButton} onClick={this.closeManageModal}>
+                                {ManageFiredrillStrings.CLOSE}
+                            </Button>
                         </View>
-                    </Modal>
+                    </SharedDialogContainer>
                 )}
             </View>
         );
@@ -166,6 +198,7 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
         firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
         shouldShowManage: firedrillStore.shouldShowManage,
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
         endFireDrill: () => firedrillStore.endFireDrill()
     };

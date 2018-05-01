@@ -80,6 +80,11 @@ export class FiredrillStore {
         return this.currentUser.getUserRole() === UserRole.Principal;
     }
 
+    @computed
+    public get isFiredrillInProgress(): boolean {
+        return this.currentFiredrillSchoolID != null;
+    }
+
     @observable private _classSearchTerm = '';
     @computed
     public get classSearchTerm(): string {
