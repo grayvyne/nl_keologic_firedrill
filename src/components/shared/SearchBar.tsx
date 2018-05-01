@@ -4,6 +4,7 @@ import Input from 'material-ui/Input';
 import CancelIcon from '@material-ui/icons/Cancel';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from 'material-ui';
+import { Colors } from '../../config/materialUiTheme';
 
 namespace styles {
     export const cardStyle: React.CSSProperties = {
@@ -28,7 +29,7 @@ export default class SearchBar extends React.Component<Props> {
             <Card style={styles.cardStyle}>
                 <SearchIcon
                     style={{
-                        fill: '#757575',
+                        fill: Colors.ICON_GREY,
                         width: 30,
                         height: 30,
                         marginLeft: 10,
@@ -48,7 +49,7 @@ export default class SearchBar extends React.Component<Props> {
                     <IconButton onClick={() => this.props.onChangeText('')}>
                         <CancelIcon
                             style={{
-                                fill: '#9E9E9E',
+                                fill: Colors.SEARCH_CANCEL_BUTTON,
                                 width: 20,
                                 height: 20
                             }}

@@ -5,6 +5,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
+import { Colors } from '../../config/materialUiTheme';
 
 namespace style {
     export const labelContainer: ViewStyle = {
@@ -68,7 +69,7 @@ export default class ClassesTableCell extends React.Component<Props> {
                             width: 15,
                             position: 'absolute',
                             top: -3,
-                            fill: '#757575'
+                            fill: Colors.ICON_GREY
                         }}
                     />
                 </View>
