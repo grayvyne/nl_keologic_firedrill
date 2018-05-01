@@ -25,10 +25,14 @@ export enum SchoolServiceMessageType {
 
 type PlatformBridgeMessageType = ApplicationServiceMessageType | SchoolServiceMessageType;
 
+interface PlatformError {
+    error: string;
+}
+
 interface BridgeMessage<T> {
     id: number;
     type: PlatformBridgeMessageType;
-    data?: T;
+    data?: T | PlatformError;
 }
 
 export class PlatformBridge {
@@ -50,13 +54,11 @@ export class PlatformBridge {
             this.isReadyToSend = true;
 
             await this.checkIfPluginMode();
-            console.log('checked if in plugin mode');
             this.flushQueue();
         }, 1000);
     }
 
     public callOverBridge<T>(type: PlatformBridgeMessageType, data?: object): Promise<T> {
-        console.log('Sending Bridge Message:', type, data);
         const messageID = this.lastSentMessageID;
         this.lastSentMessageID++;
         this.sendWebViewMessage({ type, data, id: messageID });
@@ -66,8 +68,11 @@ export class PlatformBridge {
                 const messageData: BridgeMessage<T> = JSON.parse(message.data);
                 if (messageData.type === type && messageData.id === messageID) {
                     this.responseCount++;
-                    console.log('Received Bridge Message:', type, data);
-                    resolve(messageData.data);
+                    if (isNotPlatformError(messageData.data)) {
+                        resolve(messageData.data);
+                    } else {
+                        reject(messageData.data.error);
+                    }
                     document.removeEventListener('message', handler);
                 }
             };
@@ -125,4 +130,8 @@ export class PlatformBridge {
             this.sendWebViewMessage(this.queuedMessages.pop()!);
         }
     }
+}
+
+function isNotPlatformError<T>(messageData: T | PlatformError): messageData is T {
+    return null == messageData || undefined === (messageData as PlatformError).error;
 }
