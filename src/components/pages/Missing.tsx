@@ -4,14 +4,15 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, View, ViewStyle, Text } from 'react-native';
+import { ScrollView, Text, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
+import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, StudentTableCell, TableView, TableHeader } from '../shared';
+import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 
 interface Props {
@@ -72,11 +73,16 @@ class Missing extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar>
-                    <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                <AppBar position={'absolute'}>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButtonStyle}
+                    >
                         <AppsIcon />
                     </IconButton>
-                    <View style={styles.titleContainer}>
+                    <View style={styles.titleContainer} pointerEvents="none">
                         <Typography variant="title" color="inherit">
                             {this.props.firedrillElapsedTime}
                         </Typography>

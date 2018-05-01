@@ -78,6 +78,7 @@ export class FiredrillStore {
     @computed
     public get shouldShowManage(): boolean {
         return this.currentUser.getUserRole() === UserRole.Principal;
+    }
 
     @computed
     public get isFiredrillInProgress(): boolean {
@@ -151,6 +152,12 @@ export class FiredrillStore {
     public claimClass(classID: number): Promise<void> {
         return Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, classID).update({
             claimedByID: this.currentUser.userID
+        });
+    }
+
+    public unclaimClass(classID: number): Promise<void> {
+        return Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, classID).update({
+            claimedByID: null
         });
     }
 

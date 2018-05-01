@@ -52,5 +52,11 @@ export const Colors = {
     POPOVER_DOCK_BG: appLightGrey,
     SUBMIT_CLASS_BUTTON: appGreen,
     SELECTED_TAB_TINT: '#37474F',
+    FIND_A_CLASS: appGreen,
+    CLAIM_CLASS_BUTTON: appGreen,
+    SUBTEXT_GREY: 'rgba(0,0,0,0.54)',
+    ICON_GREY: '#757575',
+    SEARCH_CANCEL_BUTTON: '#9E9E9E',
+    TABLE_CELL_GREY: '#EEEEEE',
     BACKGROUND: 'white'
 };

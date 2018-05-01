@@ -10,11 +10,12 @@ import { Routes } from '../../../config/routes';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
-import { AppBar } from '../../shared';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
+import { ApplicationServices } from '../../../services/ApplicationServices';
 import { View } from 'react-native';
+import AppBar from '../../shared/AppBar';
 
 export type SingleClass = {
     id: number;
@@ -68,7 +69,12 @@ export class Classes extends React.Component<Props, State> {
         return (
             <View>
                 <AppBar>
-                    <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButtonStyle}
+                    >
                         <AppsIcon />
                     </IconButton>
                     <Tabs
@@ -104,7 +110,11 @@ export class Classes extends React.Component<Props, State> {
                     onChangeIndex={this.handleChange}
                     style={styles.swipeableViewStyle}
                 >
-                    <MyClasses classes={this.props.myClasses} onClickClass={this.handlePressGoToClass} />
+                    <MyClasses
+                        classes={this.props.myClasses}
+                        onClickClass={this.handlePressGoToClass}
+                        onClickFindClass={this.handlePressGoToFindClass}
+                    />
                     <FindClasses
                         getClaimedByNameForClass={this.props.getClaimedByNameForClass}
                         classes={this.props.matchingSearchClasses}
@@ -121,6 +131,10 @@ export class Classes extends React.Component<Props, State> {
             </View>
         );
     }
+
+    private handlePressGoToFindClass = () => {
+        this.setState({ index: 1 });
+    };
 
     private handlePressClaim = (classID: number): Promise<void> => {
         return this.props.claimClass(classID);

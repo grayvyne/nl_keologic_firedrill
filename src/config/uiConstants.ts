@@ -31,7 +31,10 @@ export const ClassDetailStrings = {
     SUBMIT_CLASS_ALERT_MESSAGE: `Are you finished updating students' statuses?`,
     MISSING: 'Missing',
     ABSENT: 'Absent',
-    FOUND: 'Found'
+    FOUND: 'Found',
+    UNCLAIM: 'UNCLAIM',
+    UNLCAIM_CLASS_ALERT: 'Unclaim class?',
+    UNCLAIM_CLASS_MESSAGE: 'Are you sure you want to unclaim this class?'
 };
 
 export const ManageFiredrillStrings = {
@@ -44,8 +47,19 @@ export const ManageFiredrillStrings = {
     END_NOTIFICATION: (name: string) => `The fire drill at ${name} has ended`
 };
 
+export const MyClassesStrings = {
+    NO_CLASSES_WARNING: `You've not claimed any classes yet.`,
+    FIND_A_CLASS: 'FIND A CLASS'
+};
+
 export const ChecklistStrings = {
     TITLE: 'Checklists'
+};
+
+export const SearchTabStrings = {
+    CHOOSE_STATUS: 'Choose Status',
+    CANCEL: 'CANCEL',
+    OK: 'OK'
 };
 
 export const MissingStrings = {
