@@ -51,3 +51,9 @@ export const MyClassesStrings = {
 export const ChecklistStrings = {
     TITLE: 'Checklists'
 };
+
+export const SearchTabStrings = {
+    CHOOSE_STATUS: 'Choose Status',
+    CANCEL: 'CANCEL',
+    OK: 'OK'
+};
