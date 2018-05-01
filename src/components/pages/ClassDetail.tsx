@@ -10,14 +10,14 @@ import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
 import { StudentTableCell, AppBar } from '../shared';
 import { Student } from '../../models/Student';
-import { CSSProperties, ChangeEvent } from 'react';
+import { CSSProperties } from 'react';
 import { Status } from '../../models/Status';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Colors } from '../../config/materialUiTheme';
-import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
 import { Button } from 'material-ui';
+import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 
 namespace styles {
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
@@ -74,7 +74,9 @@ namespace styles {
 
 interface StoreProps {
     class: FiredrillClass | undefined;
-    saveStudentsStatuses: (students: Student[]) => void;
+    markStudentAsMissing: (id: number) => void;
+    markStudentAsAbsent: (id: number) => void;
+    markStudentAsFound: (id: number) => void;
     unclaimClass: () => void;
 }
 
@@ -158,16 +160,11 @@ class ClassDetail extends React.Component<Props, State> {
                     </View>
                 </ContentView>
 
-                <MaterialRadioInputList
+                <UpdateStudentStatusModal
+                    selectedStudent={this.state.selectedStudent}
+                    updateStudentMap={this.updateStudentMap}
                     open={this.state.editStatusModalIsVisible}
-                    modalHeader={ui.CHOOSE_STATUS}
-                    currentlySelectedRadioOptionValue={this.state.selectedStudentStatus}
-                    radioOptions={[Status.Found, Status.Absent, Status.Missing]}
-                    onPressRadioOption={this.onPressRadioOption}
-                    onPressCancel={() => this.cancelUpdateStudentStatus()}
-                    onPressAffirm={() => this.updateStudentStatus()}
-                    cancelButtonLabel={ui.CANCEL}
-                    affirmButtonLabel={ui.OK}
+                    close={() => this.setState({ editStatusModalIsVisible: false })}
                 />
 
                 <MaterialAlert
@@ -182,6 +179,12 @@ class ClassDetail extends React.Component<Props, State> {
             </View>
         );
     }
+
+    private updateStudentMap = (student: Student, status: Status) => {
+        const map = this.state.updatedStudentStatusesByStudentId;
+        map.set(student.userID, status);
+        this.setState({ updatedStudentStatusesByStudentId: map, editStatusModalIsVisible: false });
+    };
 
     private unclaimClass() {
         this.props.unclaimClass();
@@ -203,52 +206,22 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     private saveClassStudentStatuses(): void {
-        const updatedStudents = [...this.state.students];
-
         this.state.updatedStudentStatusesByStudentId.forEach((status, id) => {
-            const studentToUpdate = updatedStudents.find(s => s.userID === id);
-            if (studentToUpdate === undefined) {
-                throw Error(
-                    'this.state.students: Student[] does not contain a reference to this.updatedStudentStatusesByStudentId()'
-                );
-            }
-
             switch (status) {
                 case Status.Missing:
-                    studentToUpdate.markAsMissing();
+                    this.props.markStudentAsMissing(id);
                     break;
                 case Status.Found:
-                    studentToUpdate.markAsFound();
+                    this.props.markStudentAsFound(id);
                     break;
                 case Status.Absent:
-                    studentToUpdate.markAsAbsent();
+                    this.props.markStudentAsAbsent(id);
                     break;
                 default:
                     throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
             }
         });
-
-        this.props.saveStudentsStatuses(updatedStudents);
     }
-
-    private cancelUpdateStudentStatus = () => {
-        this.setState({ editStatusModalIsVisible: false });
-    };
-
-    private updateStudentStatus = () => {
-        const updatedStatus = this.state.selectedStudentStatus;
-        const selectedStudent = this.state.selectedStudent!;
-
-        const map = this.state.updatedStudentStatusesByStudentId;
-        map.set(selectedStudent.userID, updatedStatus);
-
-        this.setState({
-            editStatusModalIsVisible: false,
-            selectedStudentStatus: Status.Found,
-            selectedStudent: undefined,
-            updatedStudentStatusesByStudentId: map
-        });
-    };
 
     private getStatusForStudent(student: Student): Status {
         const status = this.state.updatedStudentStatusesByStudentId.get(student.userID);
@@ -259,17 +232,6 @@ class ClassDetail extends React.Component<Props, State> {
 
         return status || Status.Found;
     }
-
-    private onPressRadioOption = (event: ChangeEvent<HTMLInputElement>) => {
-        const valueString = event.target.value;
-        const status = Status[valueString];
-        console.assert(
-            status !== undefined,
-            `event.target.value: "${valueString}" from @onPressRadioOption() in #ClassDetail.tsx doesn't match the Status enum and returned undefined`
-        );
-
-        this.setState({ selectedStudentStatus: status });
-    };
 
     private showEditStudentStatusModal = (student: Student) => {
         this.setState({ selectedStudent: student, editStatusModalIsVisible: true });
@@ -296,8 +258,10 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
 
     return {
         class: firedrillStore.classes.get(classID),
-        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students),
-        unclaimClass: () => firedrillStore.unclaimClass(classID)
+        unclaimClass: () => firedrillStore.unclaimClass(classID),
+        markStudentAsMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
+        markStudentAsAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
+        markStudentAsFound: (id: number) => firedrillStore.markStudentAsFound(id)
     };
 }
 

@@ -14,6 +14,7 @@ import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
 import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
+import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 
 interface Props {
     students: Student[];
@@ -24,10 +25,15 @@ interface Props {
     isFiredrillInProgress: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
     endFireDrill(): Promise<void>;
+    markStudentAbsent(id: number): void;
+    markStudentMissing(id: number): void;
+    markStudentFound(id: number): void;
 }
 
 interface State {
     isManageModalOpen: boolean;
+    isStudentStatusModalOpen: boolean;
+    selectedStudent?: Student;
 }
 
 namespace styles {
@@ -69,7 +75,7 @@ class Missing extends React.Component<Props, State> {
         }
     };
 
-    public state: State = { isManageModalOpen: false };
+    public state: State = { isManageModalOpen: false, isStudentStatusModalOpen: false };
 
     public render(): JSX.Element {
         return (
@@ -84,7 +90,14 @@ class Missing extends React.Component<Props, State> {
                         <AppsIcon />
                     </IconButton>
                     <View style={styles.titleContainer} pointerEvents="none">
-                        <Typography variant="title" color="inherit">
+                        <Typography
+                            variant={
+                                this.props.firedrillElapsedTime === ManageFiredrillStrings.NO_FIREDRILL_ACTIVE
+                                    ? 'caption'
+                                    : 'title'
+                            }
+                            color="inherit"
+                        >
                             {this.props.firedrillElapsedTime}
                         </Typography>
                     </View>
@@ -125,7 +138,7 @@ class Missing extends React.Component<Props, State> {
                                     student={student}
                                     status={student.status}
                                     onClick={() => {
-                                        // TODO: Add status modal
+                                        this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
                                         return;
                                     }}
                                 />
@@ -133,6 +146,14 @@ class Missing extends React.Component<Props, State> {
                         </TableView>
                     </ScrollView>
                 </ContentView>
+
+                <UpdateStudentStatusModal
+                    selectedStudent={this.state.selectedStudent}
+                    updateStudentMap={this.markStudentAs}
+                    open={this.state.isStudentStatusModalOpen}
+                    close={() => this.setState({ isStudentStatusModalOpen: false })}
+                />
+
                 {this.props.shouldShowManage && (
                     <SharedDialogContainer open={this.state.isManageModalOpen}>
                         <View style={styles.manageButtonContainer}>
@@ -173,6 +194,24 @@ class Missing extends React.Component<Props, State> {
         );
     }
 
+    private markStudentAs = (student: Student, status: Status) => {
+        switch (status) {
+            case Status.Missing:
+                this.props.markStudentMissing(student.userID);
+                break;
+            case Status.Found:
+                this.props.markStudentFound(student.userID);
+                break;
+            case Status.Absent:
+                this.props.markStudentAbsent(student.userID);
+                break;
+            default:
+                throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
+        }
+
+        this.setState({ isStudentStatusModalOpen: false });
+    };
+
     private closeManageModal = () => this.setState({ isManageModalOpen: false });
 
     private handleStartFireDrillClick = () => {
@@ -200,7 +239,10 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         shouldShowManage: firedrillStore.shouldShowManage,
         isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
-        endFireDrill: () => firedrillStore.endFireDrill()
+        endFireDrill: () => firedrillStore.endFireDrill(),
+        markStudentAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
+        markStudentMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
+        markStudentFound: (id: number) => firedrillStore.markStudentAsFound(id)
     };
 }
 
