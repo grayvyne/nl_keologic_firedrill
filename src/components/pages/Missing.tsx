@@ -52,6 +52,7 @@ namespace styles {
     export const manageButton: React.CSSProperties = { margin: 20 };
     export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
     export const headerRight: ViewStyle = { marginRight: 25 };
+    export const manageButtonContainer: ViewStyle = { flex: 1, alignSelf: 'stretch', padding: 10 };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -134,7 +135,7 @@ class Missing extends React.Component<Props, State> {
                 </ContentView>
                 {this.props.shouldShowManage && (
                     <SharedDialogContainer open={this.state.isManageModalOpen}>
-                        <View style={{ flex: 1, alignSelf: 'stretch', padding: 10 }}>
+                        <View style={styles.manageButtonContainer}>
                             <Button
                                 style={styles.manageButton}
                                 variant="raised"
