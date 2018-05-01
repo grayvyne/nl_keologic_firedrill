@@ -14,6 +14,7 @@ import { ActionTableCell } from '../shared';
 import ContentView from '../shared/ContentView';
 import TableView from '../shared/TableView';
 import { Status } from '../../models/Status';
+import { ApplicationServices } from '../../services/ApplicationServices';
 
 interface Props {
     students: Student[];
@@ -61,7 +62,12 @@ class Missing extends React.Component<Props, State> {
             <View>
                 <AppBar position={'absolute'} style={styles.appBarStyle}>
                     <Toolbar style={styles.toolbarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                        <IconButton
+                            onClick={ApplicationServices.togglePluginMenu}
+                            color="inherit"
+                            aria-label="Menu"
+                            style={styles.iconButtonStyle}
+                        >
                             <AppsIcon />
                         </IconButton>
                         <Text>{this.props.firedrillElapsedTime}</Text>

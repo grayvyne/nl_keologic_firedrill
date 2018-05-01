@@ -11,6 +11,7 @@ import { Colors } from '../../config/materialUiTheme';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { ContentView, SearchBar, StudentTableCell, TableView } from '../shared';
+import { ApplicationServices } from '../../services/ApplicationServices';
 
 interface State {
     index: number;
@@ -61,7 +62,12 @@ class Search extends React.Component<Props, State> {
             <View>
                 <AppBar position={'absolute'} style={styles.appBarStyle}>
                     <Toolbar style={styles.toolBarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                        <IconButton
+                            onClick={ApplicationServices.togglePluginMenu}
+                            color="inherit"
+                            aria-label="Menu"
+                            style={styles.iconButtonStyle}
+                        >
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>

@@ -14,6 +14,7 @@ import ContentView from '../../shared/ContentView';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
+import { ApplicationServices } from '../../../services/ApplicationServices';
 
 export type SingleClass = {
     id: number;
@@ -70,7 +71,12 @@ export class Classes extends React.Component<Props, State> {
             <ContentView>
                 <AppBar position={'fixed'} style={styles.appBarStyle}>
                     <Toolbar style={styles.toolBarStyle}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButtonStyle}>
+                        <IconButton
+                            onClick={ApplicationServices.togglePluginMenu}
+                            color="inherit"
+                            aria-label="Menu"
+                            style={styles.iconButtonStyle}
+                        >
                             <AppsIcon />
                         </IconButton>
                         <Tabs

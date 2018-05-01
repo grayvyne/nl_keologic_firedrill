@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import ContentView from '../shared/ContentView';
+import { ApplicationServices } from '../../services/ApplicationServices';
 
 interface State {
     index: number;
@@ -42,7 +43,12 @@ export class Checklist extends React.Component<Props, State> {
             <ContentView>
                 <AppBar position={'fixed'} style={styles.hideBoxShadow}>
                     <Toolbar style={styles.toolbar}>
-                        <IconButton color="inherit" aria-label="Menu" style={styles.iconButton}>
+                        <IconButton
+                            onClick={ApplicationServices.togglePluginMenu}
+                            color="inherit"
+                            aria-label="Menu"
+                            style={styles.iconButton}
+                        >
                             <AppsIcon />
                         </IconButton>
                     </Toolbar>
