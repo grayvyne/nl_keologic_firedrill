@@ -38,6 +38,13 @@ namespace style {
         marginRight: 0,
         marginTop: -4
     };
+    export const playArrow: React.CSSProperties = {
+        height: 15,
+        width: 15,
+        position: 'absolute',
+        top: -3,
+        fill: Colors.ICON_GREY
+    };
 }
 
 interface Props {
@@ -63,15 +70,7 @@ export default class ClassesTableCell extends React.Component<Props> {
                     {singleClass.foundStudents}/{singleClass.totalStudents}
                 </Text>
                 <View style={style.rightArrowContainer}>
-                    <PlayArrow
-                        style={{
-                            height: 15,
-                            width: 15,
-                            position: 'absolute',
-                            top: -3,
-                            fill: Colors.ICON_GREY
-                        }}
-                    />
+                    <PlayArrow style={style.playArrow} />
                 </View>
             </TableCell>
         );

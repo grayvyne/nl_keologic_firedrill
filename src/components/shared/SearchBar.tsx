@@ -15,7 +15,21 @@ namespace styles {
         height: 40,
         alignItems: 'center'
     };
-    export const searchInputStyle: React.CSSProperties = { width: '100%' };
+    export const searchInputStyle: React.CSSProperties = {
+        width: '100%'
+    };
+    export const cancelIcon = {
+        fill: Colors.SEARCH_CANCEL_BUTTON,
+        width: 20,
+        height: 20
+    };
+    export const searchIcon = {
+        fill: Colors.ICON_GREY,
+        width: 30,
+        height: 30,
+        marginLeft: 10,
+        marginRight: 20
+    };
 }
 
 interface Props {
@@ -27,15 +41,7 @@ export default class SearchBar extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <Card style={styles.cardStyle}>
-                <SearchIcon
-                    style={{
-                        fill: Colors.ICON_GREY,
-                        width: 30,
-                        height: 30,
-                        marginLeft: 10,
-                        marginRight: 20
-                    }}
-                />
+                <SearchIcon style={styles.searchIcon} />
                 <Input
                     value={this.props.text}
                     onChange={this.handleChangeText}
@@ -47,13 +53,7 @@ export default class SearchBar extends React.Component<Props> {
 
                 {this.props.text !== '' && (
                     <IconButton onClick={() => this.props.onChangeText('')}>
-                        <CancelIcon
-                            style={{
-                                fill: Colors.SEARCH_CANCEL_BUTTON,
-                                width: 20,
-                                height: 20
-                            }}
-                        />
+                        <CancelIcon style={styles.cancelIcon} />
                     </IconButton>
                 )}
             </Card>
