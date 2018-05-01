@@ -11,6 +11,7 @@ interface Props {
     cellData: ActionTableCellData;
     onClick?: () => void;
     useSmallFont?: boolean;
+    isDisabled?: boolean;
 }
 
 type ActionTableCellData = {
@@ -64,6 +65,7 @@ export default class ActionTableCell extends React.Component<Props> {
                             }
                         }}
                         onClick={this.props.onClick}
+                        disabled={this.props.isDisabled}
                     >
                         <Text style={userSmallFont}>{this.props.buttonLabel}</Text>
                     </Button>

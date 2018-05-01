@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { ViewStyle, TextStyle, Dimensions } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import { Colors } from '../../../config/materialUiTheme';
 
 export namespace styles {
@@ -72,14 +72,15 @@ export namespace styles {
 
     export const buttonTextColor = 'white';
 
-    export const centerContent = {
+    export const centerContent: ViewStyle = {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flex: 1,
+        alignSelf: 'stretch'
     };
 
-    export const dialogContainer = {
-        width: Dimensions.get('window').width - 50,
-        backgroundColor: 'white'
+    export const dialogContainer: CSSProperties = {
+        alignSelf: 'stretch'
     };
 
     export const marginRight = {

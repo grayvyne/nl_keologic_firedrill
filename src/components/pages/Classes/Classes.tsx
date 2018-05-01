@@ -7,7 +7,7 @@ import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import TabStyles from '../../../config/TabStyles';
 import { Routes } from '../../../config/routes';
-import { ClassTabStrings as ui } from '../../../config/uiConstants';
+import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
 import FindClasses from './FindClasses';
@@ -122,7 +122,11 @@ export class Classes extends React.Component<Props, State> {
                         searchTerm={this.props.searchTerm}
                         onChangeSearchTerm={this.props.onChangeSearchTerm}
                     />
-                    <UnclaimedClasses classes={this.props.unclaimedClasses} />
+                    <UnclaimedClasses
+                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                        onPressClaim={this.handlePressClaim}
+                        classes={this.props.unclaimedClasses}
+                    />
                 </SwipeableViews>
             </View>
         );

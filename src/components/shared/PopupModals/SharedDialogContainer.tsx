@@ -10,8 +10,8 @@ interface Props {
 export class SharedDialogContainer extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <Dialog open={this.props.open} style={styles.centerContent}>
-                <View style={styles.dialogContainer}>{this.props.children}</View>
+            <Dialog open={this.props.open} style={styles.dialogContainer} fullWidth={true}>
+                <View>{this.props.children}</View>
             </Dialog>
         );
     }

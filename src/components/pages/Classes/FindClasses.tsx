@@ -1,20 +1,14 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-import { Colors } from '../../../config/materialUiTheme';
-import { FindClassesStrings as ui } from '../../../config/uiConstants';
-import { FiredrillClass } from '../../../models/FiredrillClass';
-import { getGradeTitleFromGradeLevel } from '../../../models/Class';
-import { ActionTableCell, SearchBar, TableView, ContentView } from '../../shared';
+import { ContentView, SearchBar, TableView } from '../../shared';
+import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
 
-interface Props {
-    classes: FiredrillClass[];
+interface Props extends AbstractClaimableClassesPageProps {
     searchTerm: string;
     onChangeSearchTerm(term: string): void;
-    getClaimedByNameForClass(aClass: FiredrillClass): string;
-    onPressClaim(classID: number): Promise<void>;
 }
 
-class FindClasses extends React.Component<Props> {
+class FindClasses extends AbstractClaimableClassesPage<Props> {
     public render(): JSX.Element {
         return (
             <ContentView>
@@ -25,43 +19,6 @@ class FindClasses extends React.Component<Props> {
             </ContentView>
         );
     }
-
-    private handlePressClaim(classID: number): () => void {
-        return () => this.props.onPressClaim(classID);
-    }
-
-    private buildCellPropsForClass(singleClass: FiredrillClass) {
-        const claimedProps = {
-            buttonLabel: ui.CLAIMED_CLASS(this.props.getClaimedByNameForClass(singleClass)),
-            buttonColor: Colors.CLAIMED_CLASS_BUTTON,
-            useSmallFont: true
-        };
-
-        const unclaimedProps = {
-            buttonLabel: ui.UNCLAIMED_CLASS,
-            buttonColor: Colors.UNCLAIMED_CLASS_BUTTON,
-            onClick: this.handlePressClaim(singleClass.classID)
-        };
-
-        const cellProps = singleClass.claimedByUserID ? claimedProps : unclaimedProps;
-
-        return cellProps;
-    }
-
-    private renderTableCell = (singleClass: FiredrillClass): JSX.Element => {
-        return (
-            <ActionTableCell
-                cellData={{
-                    id: singleClass.classID,
-                    label: singleClass.name,
-                    subLabel: getGradeTitleFromGradeLevel(singleClass.gradeLevel)
-                }}
-                key={singleClass.classID}
-                buttonTextColor={Colors.CLASS_BUTTON_TEXT}
-                {...this.buildCellPropsForClass(singleClass)}
-            />
-        );
-    };
 }
 
 export default FindClasses;
