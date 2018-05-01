@@ -74,7 +74,9 @@ namespace styles {
 
 interface StoreProps {
     class: FiredrillClass | undefined;
-    saveStudentsStatuses: (students: Student[]) => void;
+    markStudentAsMissing: (id: number) => void;
+    markStudentAsAbsent: (id: number) => void;
+    markStudentAsFound: (id: number) => void;
     unclaimClass: () => void;
 }
 
@@ -203,32 +205,21 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     private saveClassStudentStatuses(): void {
-        const updatedStudents = [...this.state.students];
-
         this.state.updatedStudentStatusesByStudentId.forEach((status, id) => {
-            const studentToUpdate = updatedStudents.find(s => s.userID === id);
-            if (studentToUpdate === undefined) {
-                throw Error(
-                    'this.state.students: Student[] does not contain a reference to this.updatedStudentStatusesByStudentId()'
-                );
-            }
-
             switch (status) {
                 case Status.Missing:
-                    studentToUpdate.markAsMissing();
+                    this.props.markStudentAsMissing(id);
                     break;
                 case Status.Found:
-                    studentToUpdate.markAsFound();
+                    this.props.markStudentAsFound(id);
                     break;
                 case Status.Absent:
-                    studentToUpdate.markAsAbsent();
+                    this.props.markStudentAsAbsent(id);
                     break;
                 default:
                     throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
             }
         });
-
-        this.props.saveStudentsStatuses(updatedStudents);
     }
 
     private cancelUpdateStudentStatus = () => {
@@ -296,8 +287,10 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
 
     return {
         class: firedrillStore.classes.get(classID),
-        saveStudentsStatuses: (students: Student[]) => firedrillStore.saveStudentsStatuses(students),
-        unclaimClass: () => firedrillStore.unclaimClass(classID)
+        unclaimClass: () => firedrillStore.unclaimClass(classID),
+        markStudentAsMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
+        markStudentAsAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
+        markStudentAsFound: (id: number) => firedrillStore.markStudentAsFound(id)
     };
 }
 
