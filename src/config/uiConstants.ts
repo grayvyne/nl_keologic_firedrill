@@ -57,3 +57,7 @@ export const SearchTabStrings = {
     CANCEL: 'CANCEL',
     OK: 'OK'
 };
+
+export const MissingStrings = {
+    MISSING_STUDENTS_COUNT: (found: number, total: number) => `${found} / ${total} Students Found`
+};

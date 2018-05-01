@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle, TextStyle } from 'react-native';
-import { TableView, ClassesTableCell, ContentView } from '../../shared';
-import { FiredrillClass } from '../../../models/FiredrillClass';
-import { Colors } from '../../../config/materialUiTheme';
-import { MyClassesStrings as ui } from '../../../config/uiConstants';
 import { Button } from 'material-ui';
+import { observer } from 'mobx-react';
+import * as React from 'react';
+import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Colors } from '../../../config/materialUiTheme';
+import { FiredrillClass } from '../../../models/FiredrillClass';
+import { ClassesTableCell, ContentView, TableView } from '../../shared';
+import { MyClassesStrings as ui } from '../../../config/uiConstants';
 
 interface Props {
     classes: FiredrillClass[];
@@ -74,4 +75,4 @@ function MyClasses(props: Props) {
     );
 }
 
-export default MyClasses;
+export default observer(MyClasses);

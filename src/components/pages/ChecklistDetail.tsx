@@ -1,13 +1,15 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
-import { Button, IconButton, Typography, Checkbox } from 'material-ui';
+import { Button, Checkbox, IconButton, Typography, withStyles } from 'material-ui';
+import { TypographyProps } from 'material-ui/Typography';
+import { red } from 'material-ui/colors';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { View, ViewStyle, Text, ScrollView } from 'react-native';
+import { ScrollView, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Stores } from '../../stores';
 import { StatefulChecklistItem } from '../../stores/ChecklistStore';
-import { ContentView, TableCell, AppBar } from '../shared';
+import { AppBar, ContentView, TableCell } from '../shared';
 
 interface StoreProps {
     checklistItems: StatefulChecklistItem[];
@@ -18,15 +20,16 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const viewStyle: ViewStyle = {
-        backgroundColor: 'white',
-        display: 'flex',
-        flexGrow: 1,
-        height: '100%'
-    };
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const expand = { flex: 1 };
+    export const checklistItemContainer: ViewStyle = { flex: 1, flexDirection: 'row', justifyContent: 'flex-start' };
+    export const checkbox: CSSProperties = { height: 24, width: 24, marginLeft: 24 };
+    export const strikethrough = { textDecorationLine: 'line-through' };
 }
+
+const StrikeThroughText = withStyles({ body1: styles.strikethrough })((props: TypographyProps) => (
+    <Typography classes={{ body1: props.classes!.body1 }} {...props} />
+));
 
 @observer
 class ChecklistDetail extends React.Component<Props> {
@@ -53,16 +56,22 @@ class ChecklistDetail extends React.Component<Props> {
                     <ScrollView>
                         {this.props.checklistItems.map(item => (
                             <TableCell onClick={this.handleChecklistItemPress(item)} key={item.key}>
-                                <View style={styles.expand}>
-                                    <Text
+                                <View style={styles.checklistItemContainer}>
+                                    <View style={styles.expand}>
+                                        {item.completed ? (
+                                            <StrikeThroughText variant="body1">{item.value}</StrikeThroughText>
+                                        ) : (
+                                            <Typography variant="body1">{item.value}</Typography>
+                                        )}
+                                    </View>
+                                    <Checkbox
+                                        checked={item.completed}
                                         style={{
-                                            textDecorationLine: item.completed ? 'line-through' : 'none'
+                                            color: item.completed ? red[400] : undefined,
+                                            ...styles.checkbox
                                         }}
-                                    >
-                                        {item.value}
-                                    </Text>
+                                    />
                                 </View>
-                                <Checkbox checked={item.completed} />
                             </TableCell>
                         ))}
                     </ScrollView>

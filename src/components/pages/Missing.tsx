@@ -1,19 +1,19 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import PersonIcon from '@material-ui/icons/Person';
-import { Button, IconButton, Modal, Typography } from 'material-ui';
+import { Button, IconButton, LinearProgress, Modal, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { ScrollView, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { ManageFiredrillStrings } from '../../config/uiConstants';
+import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
+import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { ActionTableCell, AppBar } from '../shared';
+import { AppBar, StudentTableCell } from '../shared';
 import ContentView from '../shared/ContentView';
 import TableView from '../shared/TableView';
-import { Status } from '../../models/Status';
 import { ApplicationServices } from '../../services/ApplicationServices';
 
 interface Props {
@@ -46,6 +46,9 @@ namespace styles {
         alignItems: 'center',
         justifyContent: 'center'
     };
+    export const missingBarContainer: ViewStyle = { justifyContent: 'center', alignItems: 'center' };
+    export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
+    export const missingText: React.CSSProperties = { justifyContent: 'center', alignItems: 'center' };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -88,13 +91,31 @@ class Missing extends React.Component<Props, State> {
                     )}
                 </AppBar>
                 <ContentView>
+                    <View style={styles.missingBarContainer}>
+                        <LinearProgress
+                            variant="determinate"
+                            value={this.props.foundStudentsCount / this.props.totalStudentsCount * 100}
+                            style={styles.missingBar}
+                            color="secondary"
+                        />
+                        <Typography variant="subheading" style={styles.missingText}>
+                            {MissingStrings.MISSING_STUDENTS_COUNT(
+                                this.props.foundStudentsCount,
+                                this.props.totalStudentsCount
+                            )}
+                        </Typography>
+                    </View>
                     <ScrollView>
-                        <Text>{`${this.props.foundStudentsCount}/${this.props.totalStudentsCount}`}</Text>
                         <TableView>
                             {this.props.students.map(student => (
-                                <ActionTableCell
+                                <StudentTableCell
                                     key={student.userID}
-                                    cellData={{ id: student.userID, label: student.firstName }}
+                                    student={student}
+                                    status={student.status}
+                                    onClick={() => {
+                                        // TODO: Add status modal
+                                        return;
+                                    }}
                                 />
                             ))}
                         </TableView>

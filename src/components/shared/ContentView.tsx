@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
+import { Colors } from '../../config/materialUiTheme';
 
 interface Props {
     containerStyle?: ViewStyle;
@@ -12,7 +13,8 @@ namespace style {
         paddingTop: 56,
         paddingBottom: 56,
         overflow: 'hidden',
-        width: '100%'
+        width: '100%',
+        backgroundColor: Colors.BACKGROUND
     };
     export const contentStyle: ViewStyle = { width: '100%', height: '100%' };
 }

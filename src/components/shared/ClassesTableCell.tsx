@@ -6,6 +6,7 @@ import { FiredrillClass } from '../../models/FiredrillClass';
 import TableCell from '../shared/TableCell';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
 import { Colors } from '../../config/materialUiTheme';
+import { observer } from 'mobx-react';
 
 namespace style {
     export const labelContainer: ViewStyle = {
@@ -52,6 +53,7 @@ interface Props {
     onClick: () => void;
 }
 
+@observer
 export default class ClassesTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const { singleClass } = this.props;
