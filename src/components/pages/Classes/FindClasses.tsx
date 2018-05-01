@@ -3,8 +3,8 @@ import { ScrollView } from 'react-native';
 import { Colors } from '../../../config/materialUiTheme';
 import { FindClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
-import { ActionTableCell, SearchBar, TableView } from '../../shared';
 import { getGradeTitleFromGradeLevel } from '../../../models/Class';
+import { ActionTableCell, SearchBar, TableView, ContentView } from '../../shared';
 
 interface Props {
     classes: FiredrillClass[];
@@ -17,10 +17,12 @@ interface Props {
 class FindClasses extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <ScrollView>
-                <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
-                <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
-            </ScrollView>
+            <ContentView>
+                <ScrollView>
+                    <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                    <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
+                </ScrollView>
+            </ContentView>
         );
     }
 
@@ -32,7 +34,7 @@ class FindClasses extends React.Component<Props> {
         const claimedProps = {
             buttonLabel: ui.CLAIMED_CLASS(this.props.getClaimedByNameForClass(singleClass)),
             buttonColor: Colors.CLAIMED_CLASS_BUTTON,
-            overrideFontSize: true
+            useSmallFont: true
         };
 
         const unclaimedProps = {

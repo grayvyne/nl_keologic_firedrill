@@ -1,32 +1,31 @@
 import AppsIcon from '@material-ui/icons/Apps';
-import { IconButton, Toolbar } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
+import { IconButton, Typography } from 'material-ui';
+import { inject } from 'mobx-react';
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { Text, View } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
+import { Stores } from '../../stores';
+import { TableCell, TableView, AppBar } from '../shared';
 import ContentView from '../shared/ContentView';
 import { ApplicationServices } from '../../services/ApplicationServices';
+import { ChecklistStrings } from '../../config/uiConstants';
 
 interface State {
     index: number;
 }
 
-interface Props {
-    isVisible: boolean;
+interface StoreProps {
+    checklists: string[];
 }
+
+interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const toolbar = { alignItems: 'stretch' };
     export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
-    export const viewStyle: ViewStyle = {
-        backgroundColor: 'white',
-        display: 'flex',
-        flexGrow: 1,
-        height: '100%'
-    };
-    export const hideBoxShadow = { boxShadow: 'none' };
+    export const expand = { flex: 1 };
 }
 
-export class Checklist extends React.Component<Props, State> {
+class Checklist extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
         this.state = {
@@ -40,23 +39,39 @@ export class Checklist extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <ContentView>
-                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar style={styles.toolbar}>
-                        <IconButton
-                            onClick={ApplicationServices.togglePluginMenu}
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButton}
-                        >
-                            <AppsIcon />
-                        </IconButton>
-                    </Toolbar>
+            <View>
+                <AppBar position={'fixed'}>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButton}
+                    >
+                        <AppsIcon />
+                    </IconButton>
+                    <Typography variant="title" color="inherit" style={styles.expand}>
+                        {ChecklistStrings.TITLE}
+                    </Typography>
                 </AppBar>
-                <View style={styles.viewStyle} />
-            </ContentView>
+                <ContentView>
+                    <TableView>
+                        {this.props.checklists.map(checklistName => (
+                            <TableCell
+                                onClick={() => this.props.navigation.navigate(checklistName)}
+                                key={checklistName}
+                            >
+                                <Text>{checklistName}</Text>
+                            </TableCell>
+                        ))}
+                    </TableView>
+                </ContentView>
+            </View>
         );
     }
 }
 
-export default Checklist;
+function mapStoresToProps({ checklistStore }: Stores, props: Props): StoreProps {
+    return { checklists: Object.keys(checklistStore.checklists) };
+}
+
+export default inject(mapStoresToProps)(Checklist);

@@ -47,3 +47,7 @@ export const MyClassesStrings = {
     NO_CLASSES_WARNING: `You've not claimed any classes yet.`,
     FIND_A_CLASS: 'FIND A CLASS'
 };
+
+export const ChecklistStrings = {
+    TITLE: 'Checklists'
+};

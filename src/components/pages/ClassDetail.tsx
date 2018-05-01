@@ -1,7 +1,6 @@
-import { IconButton, Toolbar } from 'material-ui';
+import { IconButton } from 'material-ui';
 import { ScrollView, View, TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
-import AppBar from 'material-ui/AppBar';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import ContentView from '../shared/ContentView';
@@ -9,7 +8,7 @@ import TableView from '../shared/TableView';
 import { FiredrillClass } from '../../models/FiredrillClass';
 import { Stores } from '../../stores';
 import { inject, observer } from 'mobx-react';
-import { StudentTableCell } from '../shared';
+import { StudentTableCell, AppBar } from '../shared';
 import { Student } from '../../models/Student';
 import { CSSProperties, ChangeEvent } from 'react';
 import { Status } from '../../models/Status';
@@ -21,7 +20,6 @@ import { getGradeTitleFromGradeLevel } from '../../models/Class';
 import { Button } from 'material-ui';
 
 namespace styles {
-    export const hideBoxShadow = { boxShadow: 'none' };
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tableViewContainer = { paddingBottom: 150 };
     export const dockedBottomButton: ViewStyle = {
@@ -35,7 +33,6 @@ namespace styles {
         alignItems: 'center'
     };
     export const containerBackground = { backgroundColor: 'white' };
-    export const stretchItems = { alignItems: 'stretch' };
     export const submitClassButton: ViewStyle = {
         height: 50,
         width: '75%',
@@ -124,32 +121,28 @@ class ClassDetail extends React.Component<Props, State> {
 
         return (
             <View style={styles.containerBackground}>
-                <AppBar position={'fixed'} style={styles.hideBoxShadow}>
-                    <Toolbar style={styles.stretchItems}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButton}
-                            onClick={() => {
-                                this.props.navigation.goBack();
-                            }}
-                        >
-                            <BackIcon />
-                        </IconButton>
-                        <View style={{ flex: 1 }} />
-                        <View style={styles.navBarTitleContainer}>
-                            <Text style={styles.navBarTitle}>
-                                {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
-                            </Text>
-                            <Text style={styles.navBarSubTitle}>{currentClass.getTeachers()[0].lastName}</Text>
-                        </View>
+                <AppBar position={'fixed'}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButton}
+                        onClick={() => {
+                            this.props.navigation.goBack();
+                        }}
+                    >
+                        <BackIcon />
+                    </IconButton>
+                    <View style={{ flex: 1 }} />
+                    <View style={styles.navBarTitleContainer}>
+                        <Text style={styles.navBarTitle}>{getGradeTitleFromGradeLevel(currentClass.gradeLevel)}</Text>
+                        <Text style={styles.navBarSubTitle}>{currentClass.getTeachers()[0].lastName}</Text>
+                    </View>
 
-                        <View style={styles.unclaimClassButton}>
-                            <Button onClick={() => this.unclaimClass()}>
-                                <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
-                            </Button>
-                        </View>
-                    </Toolbar>
+                    <View style={styles.unclaimClassButton}>
+                        <Button onClick={() => this.unclaimClass()}>
+                            <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
+                        </Button>
+                    </View>
                 </AppBar>
 
                 <ContentView>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ScrollView, Text, View, ViewStyle, TextStyle } from 'react-native';
-import { TableView, ClassesTableCell } from '../../shared';
+import { TableView, ClassesTableCell, ContentView } from '../../shared';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Colors } from '../../../config/materialUiTheme';
 import { MyClassesStrings as ui } from '../../../config/uiConstants';
@@ -56,19 +56,21 @@ function MyClasses(props: Props) {
     }
 
     return (
-        <ScrollView>
-            <TableView>
-                {props.classes.map(singleClass => {
-                    return (
-                        <ClassesTableCell
-                            onClick={() => props.onClickClass(singleClass.classID)}
-                            key={singleClass.classID}
-                            singleClass={singleClass}
-                        />
-                    );
-                })}
-            </TableView>
-        </ScrollView>
+        <ContentView>
+            <ScrollView>
+                <TableView>
+                    {props.classes.map(singleClass => {
+                        return (
+                            <ClassesTableCell
+                                onClick={() => props.onClickClass(singleClass.classID)}
+                                key={singleClass.classID}
+                                singleClass={singleClass}
+                            />
+                        );
+                    })}
+                </TableView>
+            </ScrollView>
+        </ContentView>
     );
 }
 

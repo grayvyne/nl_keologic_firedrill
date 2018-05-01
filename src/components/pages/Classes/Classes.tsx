@@ -1,6 +1,6 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import CheckIcon from '@material-ui/icons/CheckCircle';
-import { AppBar, Badge, IconButton, Tab, Tabs, Toolbar } from 'material-ui';
+import { Badge, IconButton, Tab, Tabs } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
@@ -10,11 +10,12 @@ import { Routes } from '../../../config/routes';
 import { ClassTabStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { Stores } from '../../../stores';
-import ContentView from '../../shared/ContentView';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
 import { ApplicationServices } from '../../../services/ApplicationServices';
+import { View } from 'react-native';
+import AppBar from '../../shared/AppBar';
 
 export type SingleClass = {
     id: number;
@@ -42,8 +43,6 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
-    export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tabsStyle: React.CSSProperties = { height: '100%' };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
@@ -68,45 +67,43 @@ export class Classes extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <ContentView>
-                <AppBar position={'fixed'} style={styles.appBarStyle}>
-                    <Toolbar style={styles.toolBarStyle}>
-                        <IconButton
-                            onClick={ApplicationServices.togglePluginMenu}
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButtonStyle}
+            <View>
+                <AppBar>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButtonStyle}
+                    >
+                        <AppsIcon />
+                    </IconButton>
+                    <Tabs
+                        value={this.state.index}
+                        onChange={this.handleTabChange}
+                        indicatorColor="white"
+                        textColor="inherit"
+                        fullWidth={true}
+                        style={styles.tabsStyle}
+                    >
+                        <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
+                        <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
+                        <Tab
+                            label={
+                                <span>
+                                    <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
+                                    <Badge
+                                        color="secondary"
+                                        badgeContent={this.props.unclaimedClasses.length}
+                                        children={<span />}
+                                        style={styles.unclaimedTabBadgeStyle}
+                                    />
+                                </span>
+                            }
+                            style={TabStyles}
                         >
-                            <AppsIcon />
-                        </IconButton>
-                        <Tabs
-                            value={this.state.index}
-                            onChange={this.handleTabChange}
-                            indicatorColor="white"
-                            textColor="inherit"
-                            fullWidth={true}
-                            style={styles.tabsStyle}
-                        >
-                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
-                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
-                            <Tab
-                                label={
-                                    <span>
-                                        <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
-                                        <Badge
-                                            color="secondary"
-                                            badgeContent={this.props.unclaimedClasses.length}
-                                            children={<span />}
-                                            style={styles.unclaimedTabBadgeStyle}
-                                        />
-                                    </span>
-                                }
-                                style={TabStyles}
-                            >
-                                <CheckIcon />
-                            </Tab>
-                        </Tabs>
-                    </Toolbar>
+                            <CheckIcon />
+                        </Tab>
+                    </Tabs>
                 </AppBar>
                 <SwipeableViews
                     index={this.state.index}
@@ -127,7 +124,7 @@ export class Classes extends React.Component<Props, State> {
                     />
                     <UnclaimedClasses classes={this.props.unclaimedClasses} />
                 </SwipeableViews>
-            </ContentView>
+            </View>
         );
     }
 

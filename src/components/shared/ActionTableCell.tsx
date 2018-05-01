@@ -10,7 +10,7 @@ interface Props {
     buttonTextColor?: string;
     cellData: ActionTableCellData;
     onClick?: () => void;
-    userSmallFont?: boolean;
+    useSmallFont?: boolean;
 }
 
 type ActionTableCellData = {
@@ -45,7 +45,7 @@ namespace styles {
 
 export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
-        const overrideFontSize = this.props.userSmallFont ? { fontSize: 10, lineHeight: 11 } : {};
+        const userSmallFont = this.props.useSmallFont ? { fontSize: 10, lineHeight: 11 } : {};
 
         return (
             <TableCell>
@@ -65,7 +65,7 @@ export default class ActionTableCell extends React.Component<Props> {
                         }}
                         onClick={this.props.onClick}
                     >
-                        <Text style={overrideFontSize}>{this.props.buttonLabel}</Text>
+                        <Text style={userSmallFont}>{this.props.buttonLabel}</Text>
                     </Button>
                 </View>
             </TableCell>

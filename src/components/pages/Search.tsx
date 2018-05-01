@@ -1,7 +1,6 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
-import { IconButton, Toolbar } from 'material-ui';
-import AppBar from 'material-ui/AppBar';
+import { IconButton } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
@@ -10,8 +9,8 @@ import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
-import { ContentView, SearchBar, StudentTableCell, TableView } from '../shared';
 import { ApplicationServices } from '../../services/ApplicationServices';
+import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
 
 interface State {
     index: number;
@@ -24,8 +23,6 @@ interface Props {
 }
 
 namespace styles {
-    export const appBarStyle: React.CSSProperties = { boxShadow: 'none' };
-    export const toolBarStyle: React.CSSProperties = { alignItems: 'stretch' };
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
@@ -60,17 +57,15 @@ class Search extends React.Component<Props, State> {
     public render(): JSX.Element {
         return (
             <View>
-                <AppBar position={'absolute'} style={styles.appBarStyle}>
-                    <Toolbar style={styles.toolBarStyle}>
-                        <IconButton
-                            onClick={ApplicationServices.togglePluginMenu}
-                            color="inherit"
-                            aria-label="Menu"
-                            style={styles.iconButtonStyle}
-                        >
-                            <AppsIcon />
-                        </IconButton>
-                    </Toolbar>
+                <AppBar position={'absolute'}>
+                    <IconButton
+                        onClick={ApplicationServices.togglePluginMenu}
+                        color="inherit"
+                        aria-label="Menu"
+                        style={styles.iconButtonStyle}
+                    >
+                        <AppsIcon />
+                    </IconButton>
                 </AppBar>
 
                 <ContentView>
