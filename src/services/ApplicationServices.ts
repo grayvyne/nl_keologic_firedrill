@@ -36,11 +36,18 @@ export namespace ApplicationServices {
     }
 
     export async function sendNotification(schoolID: number, text: string): Promise<void> {
-        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.SendNotification, {
-            schoolID,
-            text,
-            pluginName
-        });
+        try {
+            await getPlatformBridge().callOverBridge<null | { error: string }>(
+                ApplicationServiceMessageType.SendNotification,
+                {
+                    schoolID,
+                    text,
+                    pluginName
+                }
+            );
+        } catch (error) {
+            alert(error);
+        }
     }
 
     export function log(...args: any[]): void {

@@ -24,6 +24,7 @@ interface Props {
     isFiredrillInProgress: boolean;
     initiateFireDrill(schoolID: number): Promise<void>;
     endFireDrill(): Promise<void>;
+    cancelFireDrill(): Promise<void>;
 }
 
 interface State {
@@ -180,7 +181,7 @@ class Missing extends React.Component<Props, State> {
     };
 
     private handleCancelFireDrillClick = () => {
-        this.props.endFireDrill();
+        this.props.cancelFireDrill();
         this.closeManageModal();
     };
 
@@ -199,7 +200,8 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         shouldShowManage: firedrillStore.shouldShowManage,
         isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
         initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
-        endFireDrill: () => firedrillStore.endFireDrill()
+        endFireDrill: () => firedrillStore.endFireDrill(),
+        cancelFireDrill: () => firedrillStore.cancelFiredrill()
     };
 }
 
