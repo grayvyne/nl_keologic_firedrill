@@ -242,6 +242,27 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          {
+            // Many react-native libraries do not compile their ES6 JS.
+            test: /\.js$/,
+            include: /node_modules\/react-native-/,
+            // react-native-web is already compiled.
+            exclude: /node_modules\/react-native-web\//,
+            loader: require.resolve('babel-loader'),
+            query: { cacheDirectory: true },
+          },
+          {
+            test: /\.js$/,
+            include: [
+              /node_modules\/react-navigation/,
+            ],
+            use: {
+              loader: require.resolve('babel-loader'),
+              options: {
+                presets: ['react-native'],
+              },
+            },
+          },
           // ** STOP ** Are you adding a new loader?
           // Make sure to add the new loader(s) before the "file" loader.
         ],
@@ -276,7 +297,7 @@ module.exports = {
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
-    new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin({...env.stringified, __DEV__: JSON.stringify(false)}),
     // Minify the code.
     new UglifyJsPlugin({
       parallel: true,
