@@ -139,6 +139,8 @@ export class FiredrillStore {
                 this.startFiredrill(user.schoolID);
             } else if (null == firedrill && null != this.currentFiredrillSchoolID) {
                 this.stopFiredrill();
+            } else {
+                this._shouldShowLoadingScreen = false;
             }
         });
     }
