@@ -8,6 +8,7 @@ import { ApplicationServices } from './services/ApplicationServices';
 import { SchoolServices } from './services/SchoolServices';
 import { FiredrillStore, PlatformBridge, ChecklistStore } from './stores';
 import { theme } from './config/materialUiTheme';
+import LoadingScreen from './components/pages/LoadingScreen';
 
 namespace styles {
     export const appContainer: ViewStyle = {
@@ -30,6 +31,7 @@ class App extends React.Component {
                 <Provider firedrillStore={firedrillStore} checklistStore={checklistStore}>
                     <View style={styles.appContainer}>
                         <RootTabNav />
+                        <LoadingScreen />
                     </View>
                 </Provider>
             </MuiThemeProvider>

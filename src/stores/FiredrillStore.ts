@@ -12,6 +12,12 @@ import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
 
 export class FiredrillStore {
+    @observable private _shouldShowLoadingScreen: boolean = false;
+    @computed
+    get shouldShowLoadingScreen(): boolean {
+        return this._shouldShowLoadingScreen;
+    }
+
     @observable private currentUser: SchoolUser;
     @observable private currentFiredrillSchoolID: number | null = null;
     @computed
@@ -72,6 +78,9 @@ export class FiredrillStore {
     @observable private _firedrillElapsedTime: string = '0:00';
     @computed
     public get firedrillElapsedTime(): string {
+        if (true === this.shouldShowLoadingScreen) {
+            return '';
+        }
         if (false === this.isFiredrillInProgress) {
             return ManageFiredrillStrings.NO_FIREDRILL_ACTIVE;
         }
@@ -121,6 +130,7 @@ export class FiredrillStore {
 
     @action
     public async setup(): Promise<void> {
+        this._shouldShowLoadingScreen = true;
         const user = await ApplicationServices.getCurrentUser();
         this.currentUser = user;
         await Firebase.Auth.signInAnonymouslyAndRetrieveData();
@@ -171,6 +181,7 @@ export class FiredrillStore {
     }
 
     public async endFireDrill(): Promise<void> {
+        this._shouldShowLoadingScreen = true;
         const school = await SchoolServices.getSchool();
 
         await ApplicationServices.sendNotification(
@@ -181,6 +192,7 @@ export class FiredrillStore {
     }
 
     public async cancelFiredrill(): Promise<void> {
+        this._shouldShowLoadingScreen = true;
         const school = await SchoolServices.getSchool();
         await ApplicationServices.sendNotification(
             this.activeFiredrillSchoolID,
@@ -219,22 +231,27 @@ export class FiredrillStore {
     private async saveFinishedFiredrill(): Promise<void> {
         const firebaseData = await Firebase.Getters.activeFiredrillData(this.activeFiredrillSchoolID);
         if (null == firebaseData) {
+            this._shouldShowLoadingScreen = false;
             return;
         }
         await Firebase.Refs.finishedFiredrillForSchool(this.activeFiredrillSchoolID, firebaseData.firedrillID).set(
             firebaseData
         );
+        this._shouldShowLoadingScreen = false;
         return this.clearActiveFiredrill();
     }
 
     private clearActiveFiredrill(): Promise<void> {
+        this._shouldShowLoadingScreen = false;
         return Firebase.Refs.activeFiredrillForSchool(this.activeFiredrillSchoolID).set(null);
     }
 
     @action
     private async startFiredrill(firedrillID: number): Promise<void> {
+        this._shouldShowLoadingScreen = true;
         this._classes = new ObservableMap();
         this.currentFiredrillSchoolID = firedrillID;
+        this.trackFiredrillElapsedTime();
         const [classes, school] = await Promise.all([
             SchoolServices.getClassesForSchool(firedrillID),
             SchoolServices.getSchool()
@@ -244,7 +261,7 @@ export class FiredrillStore {
 
         this.addFiredrillDataListeners(firedrillID);
 
-        this.trackFiredrillElapsedTime();
+        this._shouldShowLoadingScreen = false;
     }
 
     private addFiredrillDataListeners(firedrillID: number) {
@@ -273,6 +290,7 @@ export class FiredrillStore {
 
     @action
     private stopFiredrill(): void {
+        this._shouldShowLoadingScreen = true;
         this.allClasses.forEach(aClass => {
             Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, aClass.classID).off();
             aClass.students.forEach(student =>
@@ -284,6 +302,7 @@ export class FiredrillStore {
         }
         this._classes = new ObservableMap();
         this.currentFiredrillSchoolID = null;
+        this._shouldShowLoadingScreen = false;
     }
 }
 
