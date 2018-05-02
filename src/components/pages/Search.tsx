@@ -13,6 +13,7 @@ import { ApplicationServices } from '../../services/ApplicationServices';
 import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
 import { Status } from '../../models/Status';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
+import { NoFiredrillIndicator } from '../shared/NoFiredrillIndicator';
 
 interface State {
     index: number;
@@ -24,6 +25,7 @@ interface State {
 interface Props {
     students: Student[];
     searchTerm: string;
+    isFiredrillInProgress: boolean;
     onChangeSearchTerm(term: string): void;
     markStudentAbsent(studentID: number): void;
     markStudentMissing(studentID: number): void;
@@ -35,6 +37,7 @@ namespace styles {
     export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
+    export const fullContainer = { height: '100%', width: '100%' };
 }
 
 class Search extends React.Component<Props, State> {
@@ -66,7 +69,7 @@ class Search extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View>
+            <View style={styles.fullContainer}>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -77,13 +80,16 @@ class Search extends React.Component<Props, State> {
                         <AppsIcon />
                     </IconButton>
                 </AppBar>
-
-                <ContentView>
-                    <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
-                    <ScrollView>
-                        <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
-                    </ScrollView>
-                </ContentView>
+                {this.props.isFiredrillInProgress ? (
+                    <ContentView>
+                        <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                        <ScrollView>
+                            <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
+                        </ScrollView>
+                    </ContentView>
+                ) : (
+                    <NoFiredrillIndicator />
+                )}
 
                 <UpdateStudentStatusModal
                     selectedStudent={this.state.selectedStudent}
@@ -137,7 +143,8 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         onChangeSearchTerm: term => firedrillStore.setStudentSearchTerm(term),
         markStudentAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
         markStudentMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
-        markStudentFound: (id: number) => firedrillStore.markStudentAsFound(id)
+        markStudentFound: (id: number) => firedrillStore.markStudentAsFound(id),
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
     };
 }
 
