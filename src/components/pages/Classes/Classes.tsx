@@ -16,7 +16,7 @@ import UnclaimedClasses from './UnclaimedClasses';
 import { ApplicationServices } from '../../../services/ApplicationServices';
 import { View } from 'react-native';
 import AppBar from '../../shared/AppBar';
-import { NoFiredrillIndicator } from '../../shared/NoFiredrillIndicator';
+import NoFiredrillIndicator from '../../shared/NoFiredrillIndicator';
 
 export type SingleClass = {
     id: number;
@@ -109,7 +109,7 @@ export class Classes extends React.Component<Props, State> {
                         </Tabs>
                     )}
                 </AppBar>
-                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
+                <NoFiredrillIndicator>
                     <SwipeableViews
                         index={this.state.index}
                         onChangeIndex={this.handleChange}

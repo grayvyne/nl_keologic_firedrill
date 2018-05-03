@@ -13,7 +13,7 @@ import { ApplicationServices } from '../../services/ApplicationServices';
 import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
 import { Status } from '../../models/Status';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
-import { NoFiredrillIndicator } from '../shared/NoFiredrillIndicator';
+import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
 import { fullContainer } from '../../config/sharedStyles';
 
 interface State {
@@ -26,7 +26,6 @@ interface State {
 interface Props {
     students: Student[];
     searchTerm: string;
-    isFiredrillInProgress: boolean;
     onChangeSearchTerm(term: string): void;
     markStudentAbsent(studentID: number): void;
     markStudentMissing(studentID: number): void;
@@ -81,7 +80,7 @@ class Search extends React.Component<Props, State> {
                     </IconButton>
                 </AppBar>
 
-                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
+                <NoFiredrillIndicator>
                     <ContentView>
                         <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
                         <ScrollView>
@@ -142,8 +141,7 @@ function mapStoresToProps({ firedrillStore }: Stores): Props {
         onChangeSearchTerm: term => firedrillStore.setStudentSearchTerm(term),
         markStudentAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
         markStudentMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
-        markStudentFound: (id: number) => firedrillStore.markStudentAsFound(id),
-        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
+        markStudentFound: (id: number) => firedrillStore.markStudentAsFound(id)
     };
 }
 

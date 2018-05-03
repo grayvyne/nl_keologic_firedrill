@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Colors } from '../../config/materialUiTheme';
 import { CSSProperties } from 'react';
 import { FiredrillIndicatorStrings as ui } from '../../config/uiConstants';
+import { Stores } from '../../stores';
+import { inject } from 'mobx-react';
 
 const FIRE_ICON = require('../../imageAssets/fireIcon.png');
 
@@ -40,8 +42,8 @@ interface Props {
     isFiredrillInProgress: boolean;
 }
 
-export class NoFiredrillIndicator extends React.Component<Props> {
-    render() {
+class NoFiredrillIndicator extends React.Component<Props> {
+    public render(): React.ReactNode {
         if (this.props.isFiredrillInProgress) {
             return this.props.children;
         }
@@ -54,3 +56,11 @@ export class NoFiredrillIndicator extends React.Component<Props> {
         );
     }
 }
+
+function mapStoresToProps({ firedrillStore }: Stores): Props {
+    return {
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
+    };
+}
+
+export default inject(mapStoresToProps)(NoFiredrillIndicator);

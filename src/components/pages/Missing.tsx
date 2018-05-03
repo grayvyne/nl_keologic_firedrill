@@ -15,7 +15,7 @@ import { Stores } from '../../stores';
 import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
-import { NoFiredrillIndicator } from '../shared/NoFiredrillIndicator';
+import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
 import { fullContainer } from '../../config/sharedStyles';
 
 interface Props {
@@ -110,7 +110,7 @@ class Missing extends React.Component<Props, State> {
                         </Button>
                     )}
                 </AppBar>
-                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
+                <NoFiredrillIndicator>
                     <ContentView>
                         <View style={styles.missingBarContainer}>
                             <LinearProgress
