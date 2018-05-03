@@ -68,3 +68,7 @@ export const MissingStrings = {
     HEADING_NAME: 'Name',
     HEADING_STATUS: 'Status'
 };
+
+export const FiredrillIndicatorStrings = {
+    NO_FIREDRILL_INDICATOR: `There's no Fire Drill right now.`
+};

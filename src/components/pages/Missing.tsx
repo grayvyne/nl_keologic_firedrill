@@ -16,6 +16,7 @@ import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '.
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 import { NoFiredrillIndicator } from '../shared/NoFiredrillIndicator';
+import { fullContainer } from '../../config/sharedStyles';
 
 interface Props {
     students: Student[];
@@ -61,7 +62,6 @@ namespace styles {
     export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
     export const headerRight: ViewStyle = { marginRight: 25 };
     export const manageButtonContainer: ViewStyle = { flex: 1, alignSelf: 'stretch', padding: 10 };
-    export const fullContainer = { height: '100%', width: '100%' };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -82,7 +82,7 @@ class Missing extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={styles.fullContainer}>
+            <View style={fullContainer}>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -110,7 +110,7 @@ class Missing extends React.Component<Props, State> {
                         </Button>
                     )}
                 </AppBar>
-                {this.props.isFiredrillInProgress ? (
+                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
                     <ContentView>
                         <View style={styles.missingBarContainer}>
                             <LinearProgress
@@ -150,9 +150,7 @@ class Missing extends React.Component<Props, State> {
                             </TableView>
                         </ScrollView>
                     </ContentView>
-                ) : (
-                    <NoFiredrillIndicator />
-                )}
+                </NoFiredrillIndicator>
                 <UpdateStudentStatusModal
                     selectedStudent={this.state.selectedStudent}
                     updateStudentMap={this.markStudentAs}

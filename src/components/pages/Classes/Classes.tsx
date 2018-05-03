@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
-import TabStyles from '../../../config/TabStyles';
+import { sharedTabStyle, fullContainer } from '../../../config/sharedStyles';
 import { Routes } from '../../../config/routes';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
@@ -51,7 +51,6 @@ namespace styles {
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
     export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
     export const tabFont = { fontSize: 10 };
-    export const fullContainer = { width: '100%', height: '100%' };
 }
 
 @observer
@@ -70,7 +69,7 @@ export class Classes extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={styles.fullContainer}>
+            <View style={fullContainer}>
                 <AppBar>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -89,8 +88,8 @@ export class Classes extends React.Component<Props, State> {
                             fullWidth={true}
                             style={styles.tabsStyle}
                         >
-                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
-                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
+                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={sharedTabStyle} />
+                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={sharedTabStyle} />
                             <Tab
                                 label={
                                     <span>
@@ -103,14 +102,14 @@ export class Classes extends React.Component<Props, State> {
                                         />
                                     </span>
                                 }
-                                style={TabStyles}
+                                style={sharedTabStyle}
                             >
                                 <CheckIcon />
                             </Tab>
                         </Tabs>
                     )}
                 </AppBar>
-                {this.props.isFiredrillInProgress ? (
+                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
                     <SwipeableViews
                         index={this.state.index}
                         onChangeIndex={this.handleChange}
@@ -134,9 +133,7 @@ export class Classes extends React.Component<Props, State> {
                             classes={this.props.unclaimedClasses}
                         />
                     </SwipeableViews>
-                ) : (
-                    <NoFiredrillIndicator />
-                )}
+                </NoFiredrillIndicator>
             </View>
         );
     }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Colors } from '../../config/materialUiTheme';
 import { CSSProperties } from 'react';
+import { FiredrillIndicatorStrings as ui } from '../../config/uiConstants';
 
 const FIRE_ICON = require('../../imageAssets/fireIcon.png');
 
@@ -35,11 +36,21 @@ namespace styles {
     };
 }
 
-export const NoFiredrillIndicator = () => {
-    return (
-        <div style={styles.container}>
-            <img src={FIRE_ICON} style={styles.iconStyle} />
-            <p style={styles.text}>There's no Fire Drill right now.</p>
-        </div>
-    );
-};
+interface Props {
+    isFiredrillInProgress: boolean;
+}
+
+export class NoFiredrillIndicator extends React.Component<Props> {
+    render() {
+        if (this.props.isFiredrillInProgress) {
+            return this.props.children;
+        }
+
+        return (
+            <div style={styles.container}>
+                <img src={FIRE_ICON} style={styles.iconStyle} />
+                <p style={styles.text}>{ui.NO_FIREDRILL_INDICATOR}</p>
+            </div>
+        );
+    }
+}

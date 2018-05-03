@@ -14,6 +14,7 @@ import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../
 import { Status } from '../../models/Status';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 import { NoFiredrillIndicator } from '../shared/NoFiredrillIndicator';
+import { fullContainer } from '../../config/sharedStyles';
 
 interface State {
     index: number;
@@ -37,7 +38,6 @@ namespace styles {
     export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
-    export const fullContainer = { height: '100%', width: '100%' };
 }
 
 class Search extends React.Component<Props, State> {
@@ -69,7 +69,7 @@ class Search extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={styles.fullContainer}>
+            <View style={fullContainer}>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -80,16 +80,15 @@ class Search extends React.Component<Props, State> {
                         <AppsIcon />
                     </IconButton>
                 </AppBar>
-                {this.props.isFiredrillInProgress ? (
+
+                <NoFiredrillIndicator isFiredrillInProgress={this.props.isFiredrillInProgress}>
                     <ContentView>
                         <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
                         <ScrollView>
                             <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
                         </ScrollView>
                     </ContentView>
-                ) : (
-                    <NoFiredrillIndicator />
-                )}
+                </NoFiredrillIndicator>
 
                 <UpdateStudentStatusModal
                     selectedStudent={this.state.selectedStudent}
