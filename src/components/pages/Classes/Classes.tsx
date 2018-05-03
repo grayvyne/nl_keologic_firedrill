@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
-import TabStyles from '../../../config/TabStyles';
+import { sharedTabStyle, fullContainer } from '../../../config/sharedStyles';
 import { Routes } from '../../../config/routes';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
@@ -16,6 +16,7 @@ import UnclaimedClasses from './UnclaimedClasses';
 import { ApplicationServices } from '../../../services/ApplicationServices';
 import { View } from 'react-native';
 import AppBar from '../../shared/AppBar';
+import NoFiredrillIndicator from '../../shared/NoFiredrillIndicator';
 
 export type SingleClass = {
     id: number;
@@ -35,6 +36,7 @@ interface StoreProps {
     unclaimedClasses: FiredrillClass[];
     matchingSearchClasses: FiredrillClass[];
     searchTerm: string;
+    isFiredrillInProgress: boolean;
     onChangeSearchTerm(term: string): void;
     getClaimedByNameForClass(aClass: FiredrillClass): string;
     claimClass(classID: number): Promise<void>;
@@ -44,7 +46,7 @@ interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
     export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
-    export const tabsStyle: React.CSSProperties = { height: '100%' };
+    export const tabsStyle: React.CSSProperties = { height: '100%', display: 'flex', flex: 1 };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
     export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
@@ -67,7 +69,7 @@ export class Classes extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View>
+            <View style={fullContainer}>
                 <AppBar>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -77,57 +79,61 @@ export class Classes extends React.Component<Props, State> {
                     >
                         <AppsIcon />
                     </IconButton>
-                    <Tabs
-                        value={this.state.index}
-                        onChange={this.handleTabChange}
-                        indicatorColor="white"
-                        textColor="inherit"
-                        fullWidth={true}
-                        style={styles.tabsStyle}
-                    >
-                        <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={TabStyles} />
-                        <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={TabStyles} />
-                        <Tab
-                            label={
-                                <span>
-                                    <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
-                                    <Badge
-                                        color="error"
-                                        badgeContent={this.props.unclaimedClasses.length}
-                                        children={<span />}
-                                        style={styles.unclaimedTabBadgeStyle}
-                                    />
-                                </span>
-                            }
-                            style={TabStyles}
+                    {this.props.isFiredrillInProgress && (
+                        <Tabs
+                            value={this.state.index}
+                            onChange={this.handleTabChange}
+                            indicatorColor="white"
+                            textColor="inherit"
+                            fullWidth={true}
+                            style={styles.tabsStyle}
                         >
-                            <CheckIcon />
-                        </Tab>
-                    </Tabs>
+                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={sharedTabStyle} />
+                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={sharedTabStyle} />
+                            <Tab
+                                label={
+                                    <span>
+                                        <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
+                                        <Badge
+                                            color="error"
+                                            badgeContent={this.props.unclaimedClasses.length}
+                                            children={<span />}
+                                            style={styles.unclaimedTabBadgeStyle}
+                                        />
+                                    </span>
+                                }
+                                style={sharedTabStyle}
+                            >
+                                <CheckIcon />
+                            </Tab>
+                        </Tabs>
+                    )}
                 </AppBar>
-                <SwipeableViews
-                    index={this.state.index}
-                    onChangeIndex={this.handleChange}
-                    style={styles.swipeableViewStyle}
-                >
-                    <MyClasses
-                        classes={this.props.myClasses}
-                        onClickClass={this.handlePressGoToClass}
-                        onClickFindClass={this.handlePressGoToFindClass}
-                    />
-                    <FindClasses
-                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                        classes={this.props.matchingSearchClasses}
-                        onPressClaim={this.handlePressClaim}
-                        searchTerm={this.props.searchTerm}
-                        onChangeSearchTerm={this.props.onChangeSearchTerm}
-                    />
-                    <UnclaimedClasses
-                        getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                        onPressClaim={this.handlePressClaim}
-                        classes={this.props.unclaimedClasses}
-                    />
-                </SwipeableViews>
+                <NoFiredrillIndicator>
+                    <SwipeableViews
+                        index={this.state.index}
+                        onChangeIndex={this.handleChange}
+                        style={styles.swipeableViewStyle}
+                    >
+                        <MyClasses
+                            classes={this.props.myClasses}
+                            onClickClass={this.handlePressGoToClass}
+                            onClickFindClass={this.handlePressGoToFindClass}
+                        />
+                        <FindClasses
+                            getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                            classes={this.props.matchingSearchClasses}
+                            onPressClaim={this.handlePressClaim}
+                            searchTerm={this.props.searchTerm}
+                            onChangeSearchTerm={this.props.onChangeSearchTerm}
+                        />
+                        <UnclaimedClasses
+                            getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                            onPressClaim={this.handlePressClaim}
+                            classes={this.props.unclaimedClasses}
+                        />
+                    </SwipeableViews>
+                </NoFiredrillIndicator>
             </View>
         );
     }
@@ -154,7 +160,8 @@ function mapStoresToProps({ firedrillStore }: Stores, _props: Props): StoreProps
         getClaimedByNameForClass: (aClass: FiredrillClass) => firedrillStore.getClaimedByNameForClass(aClass),
         onChangeSearchTerm: term => firedrillStore.setClassSearchTerm(term),
         matchingSearchClasses: firedrillStore.matchingSearchClasses,
-        searchTerm: firedrillStore.classSearchTerm
+        searchTerm: firedrillStore.classSearchTerm,
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
     };
 }
 

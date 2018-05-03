@@ -15,6 +15,8 @@ import { Stores } from '../../stores';
 import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
+import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
+import { fullContainer } from '../../config/sharedStyles';
 
 interface Props {
     students: Student[];
@@ -80,7 +82,7 @@ class Missing extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View>
+            <View style={fullContainer}>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -108,46 +110,47 @@ class Missing extends React.Component<Props, State> {
                         </Button>
                     )}
                 </AppBar>
-                <ContentView>
-                    <View style={styles.missingBarContainer}>
-                        <LinearProgress
-                            variant="determinate"
-                            value={this.props.foundStudentsCount / this.props.totalStudentsCount * 100}
-                            style={styles.missingBar}
-                            color="secondary"
-                        />
-                        <Typography variant="subheading" style={styles.missingText}>
-                            {MissingStrings.MISSING_STUDENTS_COUNT(
-                                this.props.foundStudentsCount,
-                                this.props.totalStudentsCount
-                            )}
-                        </Typography>
-                    </View>
-                    <ScrollView>
-                        <TableView>
-                            <TableHeader>
-                                <View style={styles.headerLeft}>
-                                    <Text>{MissingStrings.HEADING_NAME}</Text>
-                                </View>
-                                <View style={styles.headerRight}>
-                                    <Text>{MissingStrings.HEADING_STATUS}</Text>
-                                </View>
-                            </TableHeader>
-                            {this.props.students.map(student => (
-                                <StudentTableCell
-                                    key={student.userID}
-                                    student={student}
-                                    status={student.status}
-                                    onClick={() => {
-                                        this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
-                                        return;
-                                    }}
-                                />
-                            ))}
-                        </TableView>
-                    </ScrollView>
-                </ContentView>
-
+                <NoFiredrillIndicator>
+                    <ContentView>
+                        <View style={styles.missingBarContainer}>
+                            <LinearProgress
+                                variant="determinate"
+                                value={this.props.foundStudentsCount / this.props.totalStudentsCount * 100}
+                                style={styles.missingBar}
+                                color="secondary"
+                            />
+                            <Typography variant="subheading" style={styles.missingText}>
+                                {MissingStrings.MISSING_STUDENTS_COUNT(
+                                    this.props.foundStudentsCount,
+                                    this.props.totalStudentsCount
+                                )}
+                            </Typography>
+                        </View>
+                        <ScrollView>
+                            <TableView>
+                                <TableHeader>
+                                    <View style={styles.headerLeft}>
+                                        <Text>{MissingStrings.HEADING_NAME}</Text>
+                                    </View>
+                                    <View style={styles.headerRight}>
+                                        <Text>{MissingStrings.HEADING_STATUS}</Text>
+                                    </View>
+                                </TableHeader>
+                                {this.props.students.map(student => (
+                                    <StudentTableCell
+                                        key={student.userID}
+                                        student={student}
+                                        status={student.status}
+                                        onClick={() => {
+                                            this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
+                                            return;
+                                        }}
+                                    />
+                                ))}
+                            </TableView>
+                        </ScrollView>
+                    </ContentView>
+                </NoFiredrillIndicator>
                 <UpdateStudentStatusModal
                     selectedStudent={this.state.selectedStudent}
                     updateStudentMap={this.markStudentAs}

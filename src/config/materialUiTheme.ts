@@ -58,5 +58,6 @@ export const Colors = {
     ICON_GREY: '#757575',
     SEARCH_CANCEL_BUTTON: '#9E9E9E',
     TABLE_CELL_GREY: '#EEEEEE',
-    BACKGROUND: 'white'
+    BACKGROUND: 'white',
+    LIGHT_GREY: 'rgba(0,0,0,0.34)'
 };

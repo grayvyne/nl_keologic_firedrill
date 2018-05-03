@@ -13,6 +13,8 @@ import { ApplicationServices } from '../../services/ApplicationServices';
 import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
 import { Status } from '../../models/Status';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
+import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
+import { fullContainer } from '../../config/sharedStyles';
 
 interface State {
     index: number;
@@ -66,7 +68,7 @@ class Search extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View>
+            <View style={fullContainer}>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -78,12 +80,14 @@ class Search extends React.Component<Props, State> {
                     </IconButton>
                 </AppBar>
 
-                <ContentView>
-                    <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
-                    <ScrollView>
-                        <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
-                    </ScrollView>
-                </ContentView>
+                <NoFiredrillIndicator>
+                    <ContentView>
+                        <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                        <ScrollView>
+                            <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
+                        </ScrollView>
+                    </ContentView>
+                </NoFiredrillIndicator>
 
                 <UpdateStudentStatusModal
                     selectedStudent={this.state.selectedStudent}
