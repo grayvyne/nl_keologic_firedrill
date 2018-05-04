@@ -7,14 +7,12 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
+import { fullContainer } from '../../config/sharedStyles';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, SearchBar, StudentTableCell, TableView } from '../shared';
-import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
-import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
-import { fullContainer } from '../../config/sharedStyles';
+import { AppBar, ContentView, NoFiredrillIndicator, SearchBar, StudentTableCell, TableView, UpdateStudentStatusModal } from '../shared';
 
 interface State {
     index: number;

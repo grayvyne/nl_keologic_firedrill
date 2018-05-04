@@ -1,23 +1,19 @@
-import { IconButton } from 'material-ui';
-import { ScrollView, View, TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import BackIcon from '@material-ui/icons/ArrowBack';
-import * as React from 'react';
-import { NavigationScreenProps } from 'react-navigation';
-import ContentView from '../shared/ContentView';
-import TableView from '../shared/TableView';
-import { FiredrillClass } from '../../models/FiredrillClass';
-import { Stores } from '../../stores';
+import { Button, IconButton } from 'material-ui';
 import { inject, observer } from 'mobx-react';
-import { StudentTableCell, AppBar } from '../shared';
-import { Student } from '../../models/Student';
+import * as React from 'react';
 import { CSSProperties } from 'react';
-import { Status } from '../../models/Status';
-import { ClassDetailStrings as ui } from '../../config/uiConstants';
+import { ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
+import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
-import { Button } from 'material-ui';
-import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
+import { FiredrillClass } from '../../models/FiredrillClass';
+import { Status } from '../../models/Status';
+import { Student } from '../../models/Student';
+import { Stores } from '../../stores';
+import { AppBar, ContentView, StudentTableCell, TableView, UpdateStudentStatusModal } from '../shared';
+import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 
 namespace styles {
     export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };

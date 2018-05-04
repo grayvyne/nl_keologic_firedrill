@@ -1,16 +1,15 @@
 import AppsIcon from '@material-ui/icons/Apps';
+import PlayArrow from '@material-ui/icons/PlayArrow';
 import { IconButton, Typography } from 'material-ui';
 import { inject } from 'mobx-react';
 import * as React from 'react';
 import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import { Colors } from '../../config/materialUiTheme';
 import { ChecklistStrings } from '../../config/uiConstants';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, TableCell, TableView } from '../shared';
-import ContentView from '../shared/ContentView';
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import { Colors } from '../../config/materialUiTheme';
+import { AppBar, ContentView, TableCell, TableView } from '../shared';
 
 interface State {
     index: number;

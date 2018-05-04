@@ -4,19 +4,17 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle, TextStyle } from 'react-native';
+import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
+import { fullContainer } from '../../config/sharedStyles';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, StudentTableCell, TableHeader, TableView } from '../shared';
+import { AppBar, ContentView, NoFiredrillIndicator, StudentTableCell, TableHeader, TableView, UpdateStudentStatusModal } from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
-import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
-import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
-import { fullContainer } from '../../config/sharedStyles';
 
 interface Props {
     students: Student[];
