@@ -18,7 +18,7 @@ export const RootTabLabels = {
 };
 
 export const FindClassesStrings = {
-    CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
+    CLAIMED_CLASS: (lastName: string) => 'Claimed By ' + lastName,
     UNCLAIMED_CLASS: 'Claim'
 };
 

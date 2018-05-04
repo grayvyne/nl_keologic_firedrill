@@ -4,7 +4,7 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { ScrollView, Text, View, ViewStyle, TextStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
@@ -59,7 +59,9 @@ namespace styles {
     export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
     export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
     export const manageButton: React.CSSProperties = { margin: 20 };
+    export const manageButtonPadding = { paddingRight: 20 };
     export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
+    export const tableHeaderText: TextStyle = { fontWeight: '600' };
     export const headerRight: ViewStyle = { marginRight: 25 };
     export const manageButtonContainer: ViewStyle = { flex: 1, alignSelf: 'stretch', padding: 10 };
 }
@@ -105,8 +107,12 @@ class Missing extends React.Component<Props, State> {
                         </Typography>
                     </View>
                     {this.props.shouldShowManage && (
-                        <Button color="inherit" onClick={() => this.setState({ isManageModalOpen: true })}>
-                            Manage
+                        <Button
+                            color="inherit"
+                            style={styles.manageButtonPadding}
+                            onClick={() => this.setState({ isManageModalOpen: true })}
+                        >
+                            MANAGE
                         </Button>
                     )}
                 </AppBar>
@@ -130,10 +136,10 @@ class Missing extends React.Component<Props, State> {
                             <TableView>
                                 <TableHeader>
                                     <View style={styles.headerLeft}>
-                                        <Text>{MissingStrings.HEADING_NAME}</Text>
+                                        <Text style={styles.tableHeaderText}>{MissingStrings.HEADING_NAME}</Text>
                                     </View>
                                     <View style={styles.headerRight}>
-                                        <Text>{MissingStrings.HEADING_STATUS}</Text>
+                                        <Text style={styles.tableHeaderText}>{MissingStrings.HEADING_STATUS}</Text>
                                     </View>
                                 </TableHeader>
                                 {this.props.students.map(student => (

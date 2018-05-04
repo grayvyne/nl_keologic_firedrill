@@ -7,6 +7,7 @@ const appGreen = '#51C37D';
 const appBlue = '#02A9F4';
 const appRed = '#FF5252';
 const appLightGrey = '#EEEEEE';
+const appOrange = '#FFA727';
 
 export const theme = createMuiTheme({
     palette: {
@@ -43,8 +44,8 @@ export const theme = createMuiTheme({
 
 export const Colors = {
     DISABLED_TAB_ICON: 'rgba(0, 0, 0, 0.26)',
-    CLAIMED_CLASS_BUTTON: appGreen,
-    UNCLAIMED_CLASS_BUTTON: appBlue,
+    CLAIMED_CLASS_BUTTON: appOrange,
+    UNCLAIMED_CLASS_BUTTON: appGreen,
     CLASS_BUTTON_TEXT: 'white',
     MISSING_BUTTON: appRed,
     ABSENT_BUTTON: appBlue,

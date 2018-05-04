@@ -82,7 +82,11 @@ class Search extends React.Component<Props, State> {
 
                 <NoFiredrillIndicator>
                     <ContentView>
-                        <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                        <SearchBar
+                            text={this.props.searchTerm}
+                            placeholder="Find a Student"
+                            onChangeText={this.props.onChangeSearchTerm}
+                        />
                         <ScrollView>
                             <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
                         </ScrollView>

@@ -13,7 +13,11 @@ class FindClasses extends AbstractClaimableClassesPage<Props> {
         return (
             <ContentView>
                 <ScrollView>
-                    <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                    <SearchBar
+                        text={this.props.searchTerm}
+                        placeholder="Find a Class"
+                        onChangeText={this.props.onChangeSearchTerm}
+                    />
                     <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
                 </ScrollView>
             </ContentView>

@@ -69,7 +69,7 @@ namespace styles {
 
     export const unclaimClassButton: ViewStyle = { height: '100%', width: 100, alignSelf: 'center', marginRight: -10 };
 
-    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 12, color: 'white' };
+    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 12, color: 'white', paddingRight: 20 };
 }
 
 interface StoreProps {

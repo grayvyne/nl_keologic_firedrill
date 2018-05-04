@@ -108,7 +108,9 @@ export class FiredrillStore {
         if (this._classSearchTerm.length < 1) {
             return this.allClasses;
         }
-        return this.allClasses.filter(aClass => aClass.searchableText.includes(this._classSearchTerm));
+        return this.allClasses.filter(aClass =>
+            aClass.searchableText.toLowerCase().includes(this._classSearchTerm.toLowerCase())
+        );
     }
 
     @observable private _studentSearchTerm = '';
@@ -161,7 +163,7 @@ export class FiredrillStore {
             return '';
         }
 
-        return claimedByUser.firstName + ' ' + claimedByUser.lastName;
+        return claimedByUser.lastName;
     }
 
     public claimClass(classID: number): Promise<void> {
