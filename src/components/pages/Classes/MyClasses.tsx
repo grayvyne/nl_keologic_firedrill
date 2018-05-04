@@ -17,7 +17,8 @@ namespace styles {
     export const fullScreen: ViewStyle = {
         width: '100%',
         height: '100%',
-        paddingTop: '55%'
+        alignItems: 'stretch',
+        justifyContent: 'center'
     };
 
     export const findAClassButton = {

@@ -68,10 +68,10 @@ export class PlatformBridge {
                 const messageData: BridgeMessage<T> = JSON.parse(message.data);
                 if (messageData.type === type && messageData.id === messageID) {
                     this.responseCount++;
-                    if (isNotPlatformError(messageData.data)) {
-                        resolve(messageData.data);
-                    } else {
+                    if (isPlatformError(messageData.data)) {
                         reject(messageData.data.error);
+                    } else {
+                        resolve(messageData.data);
                     }
                     document.removeEventListener('message', handler);
                 }
@@ -132,6 +132,6 @@ export class PlatformBridge {
     }
 }
 
-function isNotPlatformError<T>(messageData: T | PlatformError): messageData is T {
-    return null == messageData || undefined === (messageData as PlatformError).error;
+function isPlatformError<T>(messageData: T | PlatformError): messageData is PlatformError {
+    return null != messageData && undefined !== (messageData as PlatformError).error;
 }
