@@ -25,16 +25,6 @@ export function Validate<T extends { new (...args: any[]): {} }>(Target: T): T {
         private validateKey(key: string, typeMap: { [key: string]: string[] | undefined }): void {
             const value = (this as any)[key];
             const type = typeMap[key];
-            console.log(
-                'Validating value ->',
-                value,
-                '\n to match type ->',
-                type,
-                '\n for key ->',
-                key,
-                '\n in object ->',
-                Target.prototype.constructor.name
-            );
             if (null != type && type.indexOf(typeof value) < 0) {
                 throw new Error(`${Target.prototype.constructor.name}: ${key} is not a ${type}`);
             }
