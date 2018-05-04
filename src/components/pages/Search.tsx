@@ -2,16 +2,16 @@ import AppsIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { Student } from '../../models/Student';
-import { Stores } from '../../stores';
-import { ApplicationServices } from '../../services/ApplicationServices';
-import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
 import { Status } from '../../models/Status';
+import { Student } from '../../models/Student';
+import { ApplicationServices } from '../../services/ApplicationServices';
+import { Stores } from '../../stores';
+import { AppBar, ContentView, SearchBar, StudentTableCell, TableView } from '../shared';
 import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
 import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
 import { fullContainer } from '../../config/sharedStyles';
@@ -39,6 +39,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
 }
 
+@observer
 class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Colors } from '../../config/materialUiTheme';
 import { ClassDetailStrings } from '../../config/uiConstants';
@@ -11,6 +12,7 @@ interface Props {
     onClick(): void;
 }
 
+@observer
 export default class StudentTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const cellProps = this.buildTableCellProps(this.props.status);
