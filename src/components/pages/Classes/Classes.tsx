@@ -3,11 +3,10 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import { Badge, IconButton, Tab, Tabs } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import { Routes } from '../../../config/routes';
-import { fullContainer, sharedTabStyle } from '../../../config/sharedStyles';
+import { sharedTabStyle } from '../../../config/sharedStyles';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ApplicationServices } from '../../../platform';
@@ -68,7 +67,7 @@ export class Classes extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={fullContainer}>
+            <div>
                 <AppBar>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -133,7 +132,7 @@ export class Classes extends React.Component<Props, State> {
                         />
                     </SwipeableViews>
                 </NoFiredrillIndicator>
-            </View>
+            </div>
         );
     }
 

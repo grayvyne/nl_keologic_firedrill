@@ -38,6 +38,9 @@ export const theme = createMuiTheme({
             fontSize: 16,
             fontWeight: 'normal',
             color: 'rgba(0,0,0,0.87)'
+        },
+        body2: {
+            fontSize: 14
         }
     }
 });
