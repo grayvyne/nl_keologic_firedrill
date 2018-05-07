@@ -1,3 +1,4 @@
+import { ButtonBase } from 'material-ui';
 import * as React from 'react';
 
 interface Props {
@@ -14,7 +15,8 @@ namespace style {
     export const highlightWrapper: React.CSSProperties = {
         flexGrow: 1,
         padding: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        textAlign: 'left'
     };
 }
 
@@ -27,7 +29,11 @@ export default class TableCell extends React.Component<Props> {
 
         return (
             <div style={{ ...style.cellContainerStyle, ...{ height: this.props.height } }}>
-                <div {...wrapperProps}>{this.props.children}</div>
+                {null != this.props.onClick ? (
+                    <ButtonBase {...wrapperProps}>{this.props.children}</ButtonBase>
+                ) : (
+                    <div {...wrapperProps}>{this.props.children}</div>
+                )}
             </div>
         );
     }

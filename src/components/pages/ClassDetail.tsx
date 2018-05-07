@@ -143,6 +143,7 @@ class ClassDetail extends React.Component<Props, State> {
                     </TableView>
                     <div style={styles.dockedBottomButton}>
                         <Button
+                            variant="raised"
                             color="secondary"
                             style={styles.submitClassButton}
                             onClick={() => this.onPressSubmitClass()}
@@ -234,6 +235,7 @@ class ClassDetail extends React.Component<Props, State> {
     private renderTableCell = (student: Student): JSX.Element => {
         return (
             <StudentTableCell
+                key={student.userID}
                 student={student}
                 status={this.getStatusForStudent(student)}
                 onClick={() => this.showEditStudentStatusModal(student)}

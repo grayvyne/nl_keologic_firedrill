@@ -10,10 +10,6 @@ import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import { AppBar, ContentView, TableCell, TableView } from '../shared';
 
-interface State {
-    index: number;
-}
-
 interface StoreProps {
     checklists: string[];
 }
@@ -26,25 +22,12 @@ namespace styles {
     export const playArrow: React.CSSProperties = {
         height: 15,
         width: 15,
-        position: 'absolute',
-        top: 25,
-        right: 15,
         fill: Colors.ICON_GREY
     };
+    export const cell: React.CSSProperties = { flexDirection: 'row', justifyContent: 'space-between' };
 }
 
-class Checklist extends React.Component<Props, State> {
-    public constructor(props: Props) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
-
-    public handleChange = (event: any, index: any) => {
-        this.setState({ index });
-    };
-
+class Checklist extends React.Component<Props> {
     public render(): JSX.Element {
         return (
             <div>
@@ -67,7 +50,7 @@ class Checklist extends React.Component<Props, State> {
                             <TableCell
                                 onClick={() => this.props.navigation.navigate(checklistName)}
                                 key={checklistName}
-                                style={{ flexDirection: 'row' }}
+                                style={styles.cell}
                             >
                                 <Typography variant="body1">{checklistName}</Typography>
                                 <PlayArrow style={styles.playArrow} />

@@ -14,6 +14,7 @@ export default class AbstractClaimableClassesPage<P extends AbstractClaimableCla
     protected renderTableCell = (singleClass: FiredrillClass): JSX.Element => {
         return (
             <ClaimableClassTableCell
+                key={singleClass.classID}
                 singleClass={singleClass}
                 claimedByName={this.props.getClaimedByNameForClass(singleClass)}
                 onClick={this.handlePressClaim(singleClass.classID)}
