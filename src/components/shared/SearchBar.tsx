@@ -34,6 +34,7 @@ namespace styles {
 
 interface Props {
     text: string;
+    placeholder: string;
     onChangeText(text: string): void;
 }
 
@@ -45,7 +46,7 @@ export default class SearchBar extends React.Component<Props> {
                 <Input
                     value={this.props.text}
                     onChange={this.handleChangeText}
-                    placeholder={'Search'}
+                    placeholder={this.props.placeholder}
                     type={'search'}
                     style={styles.searchInputStyle}
                     disableUnderline={true}

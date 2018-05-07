@@ -2,19 +2,26 @@ import AppsIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { Student } from '../../models/Student';
-import { Stores } from '../../stores';
-import { ApplicationServices } from '../../services/ApplicationServices';
-import { ContentView, SearchBar, StudentTableCell, TableView, AppBar } from '../shared';
-import { Status } from '../../models/Status';
-import { UpdateStudentStatusModal } from '../shared/UpdateStudentStatusModal';
-import NoFiredrillIndicator from '../shared/NoFiredrillIndicator';
 import { fullContainer } from '../../config/sharedStyles';
+import { Status } from '../../models/Status';
+import { Student } from '../../models/Student';
+import { ApplicationServices } from '../../services/ApplicationServices';
+import { Stores } from '../../stores';
+import {
+    AppBar,
+    ContentView,
+    NoFiredrillIndicator,
+    SearchBar,
+    StudentTableCell,
+    TableView,
+    UpdateStudentStatusModal
+} from '../shared';
+import { SearchTabStrings } from '../../config/uiConstants';
 
 interface State {
     index: number;
@@ -39,6 +46,7 @@ namespace styles {
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
 }
 
+@observer
 class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {
@@ -82,7 +90,11 @@ class Search extends React.Component<Props, State> {
 
                 <NoFiredrillIndicator>
                     <ContentView>
-                        <SearchBar text={this.props.searchTerm} onChangeText={this.props.onChangeSearchTerm} />
+                        <SearchBar
+                            text={this.props.searchTerm}
+                            placeholder={SearchTabStrings.SEARCH_PLACEHOLDER}
+                            onChangeText={this.props.onChangeSearchTerm}
+                        />
                         <ScrollView>
                             <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
                         </ScrollView>

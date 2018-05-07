@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Student } from '../../models/Student';
 import { ChangeEvent } from 'react';
-import { Status } from '../../models/Status';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
+import { Status } from '../../models/Status';
+import { Student } from '../../models/Student';
 import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
 
 interface State {
@@ -16,7 +16,7 @@ interface Props {
     close: () => void;
 }
 
-export class UpdateStudentStatusModal extends React.Component<Props, State> {
+export default class UpdateStudentStatusModal extends React.Component<Props, State> {
     public state: State = {
         selectedStudentStatus: Status.Found
     };

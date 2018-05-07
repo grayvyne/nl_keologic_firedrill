@@ -3,20 +3,19 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import { Badge, IconButton, Tab, Tabs } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
-import { sharedTabStyle, fullContainer } from '../../../config/sharedStyles';
 import { Routes } from '../../../config/routes';
+import { fullContainer, sharedTabStyle } from '../../../config/sharedStyles';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
+import { ApplicationServices } from '../../../services/ApplicationServices';
 import { Stores } from '../../../stores';
+import { AppBar, NoFiredrillIndicator } from '../../shared';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
-import { ApplicationServices } from '../../../services/ApplicationServices';
-import { View } from 'react-native';
-import AppBar from '../../shared/AppBar';
-import NoFiredrillIndicator from '../../shared/NoFiredrillIndicator';
 
 export type SingleClass = {
     id: number;

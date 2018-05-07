@@ -1,14 +1,16 @@
 import ActionTableCell from './ActionTableCell';
+import AppBar from './AppBar';
+import ClaimableClassTableCell from './ClaimableClassTableCell';
 import ClassesTableCell from './ClassesTableCell';
 import ContentView from './ContentView';
+import NoFiredrillIndicator from './NoFiredrillIndicator';
 import SearchBar from './SearchBar';
+import StudentTableCell from './StudentTableCell';
 import StyledBottomNavigation from './StyledBottomNavigation';
 import TableCell from './TableCell';
 import TableHeader from './TableHeader';
 import TableView from './TableView';
-import AppBar from './AppBar';
-import StudentTableCell from './StudentTableCell';
-import ClaimableClassTableCell from './ClaimableClassTableCell';
+import UpdateStudentStatusModal from './UpdateStudentStatusModal';
 
 export {
     ClaimableClassTableCell,
@@ -21,5 +23,7 @@ export {
     TableHeader,
     TableView,
     AppBar,
-    StudentTableCell
+    StudentTableCell,
+    UpdateStudentStatusModal,
+    NoFiredrillIndicator
 };

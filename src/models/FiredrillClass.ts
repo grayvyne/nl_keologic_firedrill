@@ -31,7 +31,7 @@ export class FiredrillClass extends Class {
     }
 
     public get searchableText(): string {
-        return this.name + ' ' + this.gradeLevel;
+        return this.name + 'grade ' + this.gradeLevel;
     }
 
     @Typeof('number', 'object')
