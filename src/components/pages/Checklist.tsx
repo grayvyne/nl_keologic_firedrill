@@ -3,7 +3,6 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import { IconButton, Typography } from 'material-ui';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ChecklistStrings } from '../../config/uiConstants';
@@ -48,8 +47,8 @@ class Checklist extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View>
-                <AppBar position={'fixed'}>
+            <div>
+                <AppBar>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
                         color="inherit"
@@ -76,7 +75,7 @@ class Checklist extends React.Component<Props, State> {
                         ))}
                     </TableView>
                 </ContentView>
-            </View>
+            </div>
         );
     }
 }
