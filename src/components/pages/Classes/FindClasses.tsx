@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { ContentView, SearchBar, TableView } from '../../shared';
 import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
+import { FindClassesStrings } from '../../../config/uiConstants';
 
 interface Props extends AbstractClaimableClassesPageProps {
     searchTerm: string;
@@ -15,7 +16,7 @@ class FindClasses extends AbstractClaimableClassesPage<Props> {
                 <ScrollView>
                     <SearchBar
                         text={this.props.searchTerm}
-                        placeholder="Find a Class"
+                        placeholder={FindClassesStrings.SEARCH_PLACEHOLDER}
                         onChangeText={this.props.onChangeSearchTerm}
                     />
                     <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
