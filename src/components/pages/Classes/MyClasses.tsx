@@ -1,7 +1,6 @@
 import { Button, Typography } from 'material-ui';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { Colors } from '../../../config/materialUiTheme';
 import { MyClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
@@ -57,19 +56,17 @@ function MyClasses(props: Props) {
 
     return (
         <ContentView>
-            <ScrollView>
-                <TableView>
-                    {props.classes.map(singleClass => {
-                        return (
-                            <ClassesTableCell
-                                onClick={() => props.onClickClass(singleClass.classID)}
-                                key={singleClass.classID}
-                                singleClass={singleClass}
-                            />
-                        );
-                    })}
-                </TableView>
-            </ScrollView>
+            <TableView>
+                {props.classes.map(singleClass => {
+                    return (
+                        <ClassesTableCell
+                            onClick={() => props.onClickClass(singleClass.classID)}
+                            key={singleClass.classID}
+                            singleClass={singleClass}
+                        />
+                    );
+                })}
+            </TableView>
         </ContentView>
     );
 }

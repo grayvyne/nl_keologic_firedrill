@@ -1,6 +1,5 @@
 import { Typography } from 'material-ui';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { ClassesStrings } from '../../../config/uiConstants';
 import { ContentView, TableHeader, TableView } from '../../shared';
 import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
@@ -11,15 +10,11 @@ class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
     public render(): JSX.Element {
         return (
             <ContentView>
-                <ScrollView>
-                    <TableView>
-                        <TableHeader>
-                            <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
-                            <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
-                        </TableHeader>
-                        {this.props.classes.map(this.renderTableCell)}
-                    </TableView>
-                </ScrollView>
+                <TableHeader>
+                    <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
+                    <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
+                </TableHeader>
+                <TableView>{this.props.classes.map(this.renderTableCell)}</TableView>
             </ContentView>
         );
     }

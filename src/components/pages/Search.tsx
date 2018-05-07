@@ -4,7 +4,6 @@ import { IconButton, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { SearchTabStrings } from '../../config/uiConstants';
@@ -97,9 +96,7 @@ class Search extends React.Component<Props, State> {
                             placeholder={SearchTabStrings.SEARCH_PLACEHOLDER}
                             onChangeText={this.props.onChangeSearchTerm}
                         />
-                        <ScrollView>
-                            <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
-                        </ScrollView>
+                        <TableView>{this.props.students.map(this.renderTableCell)}</TableView>
                     </ContentView>
                 </NoFiredrillIndicator>
 

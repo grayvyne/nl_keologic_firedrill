@@ -3,7 +3,6 @@ import { Button, IconButton, Typography } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CSSProperties } from 'react';
-import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
@@ -139,11 +138,9 @@ class ClassDetail extends React.Component<Props, State> {
                 </AppBar>
 
                 <ContentView>
-                    <ScrollView>
-                        <TableView style={styles.tableViewContainer}>
-                            {this.state.students.map(this.renderTableCell)}
-                        </TableView>
-                    </ScrollView>
+                    <TableView style={styles.tableViewContainer}>
+                        {this.state.students.map(this.renderTableCell)}
+                    </TableView>
                     <div style={styles.dockedBottomButton}>
                         <Button
                             color="secondary"

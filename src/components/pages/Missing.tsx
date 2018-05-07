@@ -4,7 +4,6 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
@@ -146,21 +145,19 @@ class Missing extends React.Component<Props, State> {
                             <Typography variant="display1">{MissingStrings.HEADING_NAME}</Typography>
                             <Typography variant="display1">{MissingStrings.HEADING_STATUS}</Typography>
                         </TableHeader>
-                        <ScrollView>
-                            <TableView>
-                                {this.props.students.map(student => (
-                                    <StudentTableCell
-                                        key={student.userID}
-                                        student={student}
-                                        status={student.status}
-                                        onClick={() => {
-                                            this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
-                                            return;
-                                        }}
-                                    />
-                                ))}
-                            </TableView>
-                        </ScrollView>
+                        <TableView>
+                            {this.props.students.map(student => (
+                                <StudentTableCell
+                                    key={student.userID}
+                                    student={student}
+                                    status={student.status}
+                                    onClick={() => {
+                                        this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
+                                        return;
+                                    }}
+                                />
+                            ))}
+                        </TableView>
                     </ContentView>
                 </NoFiredrillIndicator>
                 <UpdateStudentStatusModal

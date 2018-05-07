@@ -8,8 +8,8 @@ interface Props {
 namespace style {
     export const contentWrapperStyle: React.CSSProperties = {
         height: '100vh',
-        paddingTop: 56,
-        paddingBottom: 56,
+        marginTop: 56,
+        marginBottom: 56,
         overflow: 'hidden',
         width: '100%',
         backgroundColor: Colors.BACKGROUND,

@@ -4,11 +4,10 @@ import { TypographyProps } from 'material-ui/Typography';
 import { red } from 'material-ui/colors';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Stores } from '../../stores';
 import { StatefulChecklistItem } from '../../stores/ChecklistStore';
-import { AppBar, ContentView, TableCell } from '../shared';
+import { AppBar, ContentView, TableCell, TableView } from '../shared';
 
 interface StoreProps {
     checklistItems: StatefulChecklistItem[];
@@ -56,7 +55,7 @@ class ChecklistDetail extends React.Component<Props> {
                     </Button>
                 </AppBar>
                 <ContentView>
-                    <ScrollView>
+                    <TableView>
                         {this.props.checklistItems.map(item => (
                             <TableCell onClick={this.handleChecklistItemPress(item)} key={item.key}>
                                 <div style={styles.checklistItemContainer}>
@@ -77,7 +76,7 @@ class ChecklistDetail extends React.Component<Props> {
                                 </div>
                             </TableCell>
                         ))}
-                    </ScrollView>
+                    </TableView>
                 </ContentView>
             </div>
         );
