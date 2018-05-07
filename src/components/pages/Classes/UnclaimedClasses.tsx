@@ -1,15 +1,11 @@
+import { Typography } from 'material-ui';
 import * as React from 'react';
-import { ScrollView, Text, View, ViewStyle } from 'react-native';
+import { ScrollView } from 'react-native';
+import { ClassesStrings } from '../../../config/uiConstants';
 import { ContentView, TableHeader, TableView } from '../../shared';
 import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
-import { ClassesStrings } from '../../../config/uiConstants';
 
 interface Props extends AbstractClaimableClassesPageProps {}
-
-namespace style {
-    export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
-    export const headerRight: ViewStyle = { marginRight: 25 };
-}
 
 class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
     public render(): JSX.Element {
@@ -18,12 +14,8 @@ class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
                 <ScrollView>
                     <TableView>
                         <TableHeader>
-                            <View style={style.headerLeft}>
-                                <Text>{ClassesStrings.UNCLAIMED_HEADING_NAME}</Text>
-                            </View>
-                            <View style={style.headerRight}>
-                                <Text>{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Text>
-                            </View>
+                            <Typography variant="body2">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
+                            <Typography variant="body2">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
                         </TableHeader>
                         {this.props.classes.map(this.renderTableCell)}
                     </TableView>
