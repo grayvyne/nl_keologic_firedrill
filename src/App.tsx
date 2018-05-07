@@ -6,9 +6,7 @@ import './App.css';
 import { RootTabNav } from './components/navigators/RootTabNav';
 import LoadingScreen from './components/pages/LoadingScreen';
 import { theme } from './config/materialUiTheme';
-import { ApplicationServices } from './services/ApplicationServices';
-import { SchoolServices } from './services/SchoolServices';
-import { ChecklistStore, FiredrillStore, PlatformBridge } from './stores';
+import { ChecklistStore, FiredrillStore } from './stores';
 
 namespace styles {
     export const appContainer: ViewStyle = {
@@ -16,10 +14,6 @@ namespace styles {
         width: '100vw'
     };
 }
-
-const bridge = new PlatformBridge();
-ApplicationServices.init(bridge);
-SchoolServices.init(bridge);
 
 const firedrillStore = new FiredrillStore();
 const checklistStore = new ChecklistStore();

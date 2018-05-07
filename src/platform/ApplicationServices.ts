@@ -1,6 +1,6 @@
-import { SchoolUser, SchoolUserRecord } from '../models/User';
-import { ApplicationServiceMessageType, PlatformBridge } from '../stores/PlatformBridge';
 import { pluginName } from '../config/uiConstants';
+import { SchoolUser, SchoolUserRecord } from '../models/User';
+import { ApplicationServiceMessageType, PlatformBridge } from './PlatformBridge';
 
 let platformBridge: PlatformBridge | null = null;
 
@@ -42,7 +42,7 @@ export namespace ApplicationServices {
                 {
                     schoolID,
                     text,
-                    pluginName
+                    pluginName: pluginName
                 }
             );
         } catch (error) {

@@ -10,7 +10,7 @@ import { Routes } from '../../../config/routes';
 import { fullContainer, sharedTabStyle } from '../../../config/sharedStyles';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
-import { ApplicationServices } from '../../../services/ApplicationServices';
+import { ApplicationServices } from '../../../platform';
 import { Stores } from '../../../stores';
 import { AppBar, NoFiredrillIndicator } from '../../shared';
 import FindClasses from './FindClasses';

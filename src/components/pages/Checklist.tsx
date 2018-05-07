@@ -7,7 +7,7 @@ import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ChecklistStrings } from '../../config/uiConstants';
-import { ApplicationServices } from '../../services/ApplicationServices';
+import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import { AppBar, ContentView, TableCell, TableView } from '../shared';
 

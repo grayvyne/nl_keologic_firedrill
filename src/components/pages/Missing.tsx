@@ -11,7 +11,7 @@ import { fullContainer } from '../../config/sharedStyles';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { ApplicationServices } from '../../services/ApplicationServices';
+import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import {
     AppBar,

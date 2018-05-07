@@ -8,9 +8,10 @@ import { ScrollView, View } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { fullContainer } from '../../config/sharedStyles';
+import { SearchTabStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { ApplicationServices } from '../../services/ApplicationServices';
+import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import {
     AppBar,
@@ -21,7 +22,6 @@ import {
     TableView,
     UpdateStudentStatusModal
 } from '../shared';
-import { SearchTabStrings } from '../../config/uiConstants';
 
 interface State {
     index: number;
