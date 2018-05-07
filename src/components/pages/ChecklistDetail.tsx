@@ -18,7 +18,6 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const expand = { flex: 1 };
     export const checklistItemContainer: React.CSSProperties = {
         flex: 1,
@@ -39,12 +38,7 @@ class ChecklistDetail extends React.Component<Props> {
         return (
             <div>
                 <AppBar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButton}
-                        onClick={() => this.props.navigation.goBack()}
-                    >
+                    <IconButton color="inherit" aria-label="Menu" onClick={() => this.props.navigation.goBack()}>
                         <BackIcon />
                     </IconButton>
                     <Typography variant="title" color="inherit" style={styles.expand}>

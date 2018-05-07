@@ -38,7 +38,6 @@ interface Props {
 }
 
 namespace styles {
-    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const cardStyle: React.CSSProperties = { margin: 10, padding: 10 };
     export const searchInputStyle: React.CSSProperties = { width: '100%' };
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
@@ -76,12 +75,7 @@ class Search extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar position={'absolute'}>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButtonStyle}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     <Typography variant="title" color="inherit" style={{ flex: 1 }}>

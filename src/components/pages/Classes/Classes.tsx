@@ -43,7 +43,6 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tabsStyle: React.CSSProperties = { height: '100%', display: 'flex', flex: 1 };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
@@ -69,12 +68,7 @@ export class Classes extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButtonStyle}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     {this.props.isFiredrillInProgress && (

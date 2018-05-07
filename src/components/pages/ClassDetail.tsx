@@ -2,7 +2,6 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { Button, IconButton, Typography } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { CSSProperties } from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
@@ -15,7 +14,6 @@ import { AppBar, ContentView, StudentTableCell, TableView, UpdateStudentStatusMo
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 
 namespace styles {
-    export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tableViewContainer = { paddingBottom: 150 };
     export const dockedBottomButton: React.CSSProperties = {
         position: 'absolute',
@@ -113,17 +111,19 @@ class ClassDetail extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButton}
-                        onClick={() => {
-                            this.props.navigation.goBack();
-                        }}
-                    >
-                        <BackIcon />
-                    </IconButton>
-                    <div style={styles.navBarTitleContainer}>
+                    <div style={{ width: 100, justifyContent: 'flex-start' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Menu"
+                            onClick={() => {
+                                this.props.navigation.goBack();
+                            }}
+                        >
+                            <BackIcon />
+                        </IconButton>
+                    </div>
+                    {/* <div style={styles.navBarTitleContainer}> */}
+                    <div style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography color="inherit" style={styles.navBarTitle}>
                             {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
                         </Typography>
@@ -132,9 +132,11 @@ class ClassDetail extends React.Component<Props, State> {
                         </Typography>
                     </div>
 
-                    <Button color="inherit" onClick={() => this.unclaimClass()} style={{ paddingRight: 20 }}>
-                        {ui.UNCLAIM}
-                    </Button>
+                    <div style={{ width: 100, justifyContent: 'flex-end' }}>
+                        <Button color="inherit" onClick={() => this.unclaimClass()} style={{ paddingRight: 20 }}>
+                            {ui.UNCLAIM}
+                        </Button>
+                    </div>
                 </AppBar>
 
                 <ContentView>

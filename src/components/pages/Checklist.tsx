@@ -17,7 +17,6 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const expand = { flex: 1 };
     export const playArrow: React.CSSProperties = {
         height: 15,
@@ -32,12 +31,7 @@ class Checklist extends React.Component<Props> {
         return (
             <div>
                 <AppBar>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButton}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     <Typography variant="title" color="inherit" style={styles.expand}>

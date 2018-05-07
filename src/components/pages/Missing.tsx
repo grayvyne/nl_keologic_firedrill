@@ -48,7 +48,6 @@ namespace styles {
         height: 26,
         width: 26
     };
-    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const titleContainer: React.CSSProperties = {
         position: 'absolute',
         top: 0,
@@ -95,12 +94,7 @@ class Missing extends React.Component<Props, State> {
         return (
             <div>
                 <AppBar position={'absolute'}>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButtonStyle}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     <div style={styles.titleContainer}>
