@@ -314,6 +314,7 @@ module.exports = {
         },
         mangle: {
           safari10: true,
+          keep_fnames: true
         },
         output: {
           comments: false,

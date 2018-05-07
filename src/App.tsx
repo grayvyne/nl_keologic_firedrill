@@ -4,11 +4,11 @@ import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import './App.css';
 import { RootTabNav } from './components/navigators/RootTabNav';
+import LoadingScreen from './components/pages/LoadingScreen';
+import { theme } from './config/materialUiTheme';
 import { ApplicationServices } from './services/ApplicationServices';
 import { SchoolServices } from './services/SchoolServices';
-import { FiredrillStore, PlatformBridge, ChecklistStore } from './stores';
-import { theme } from './config/materialUiTheme';
-import LoadingScreen from './components/pages/LoadingScreen';
+import { ChecklistStore, FiredrillStore, PlatformBridge } from './stores';
 
 namespace styles {
     export const appContainer: ViewStyle = {
