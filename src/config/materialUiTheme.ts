@@ -44,7 +44,7 @@ export const theme = createMuiTheme({
         },
         display1: {
             fontSize: 14,
-            fontWeight: 600
+            fontWeight: 500
         }
     }
 });

@@ -38,8 +38,6 @@ namespace style {
     export const playArrow: React.CSSProperties = {
         height: 15,
         width: 15,
-        // position: 'absolute',
-        // top: -3,
         marginRight: -5,
         fill: Colors.ICON_GREY
     };
@@ -57,10 +55,10 @@ export default class ClassesTableCell extends React.Component<Props> {
         return (
             <TableCell onClick={this.props.onClick}>
                 <div style={style.labelContainer}>
-                    <Typography variant="body2" style={style.labelText}>
+                    <Typography variant="body1" style={style.labelText}>
                         {singleClass.name}
                     </Typography>
-                    <Typography style={style.subLabelText}>
+                    <Typography variant="body2" style={style.subLabelText}>
                         {getGradeTitleFromGradeLevel(singleClass.gradeLevel)}
                     </Typography>
                 </div>
