@@ -12,7 +12,16 @@ import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, NoFiredrillIndicator, SearchBar, StudentTableCell, TableView, UpdateStudentStatusModal } from '../shared';
+import {
+    AppBar,
+    ContentView,
+    NoFiredrillIndicator,
+    SearchBar,
+    StudentTableCell,
+    TableView,
+    UpdateStudentStatusModal
+} from '../shared';
+import { SearchTabStrings } from '../../config/uiConstants';
 
 interface State {
     index: number;
@@ -83,7 +92,7 @@ class Search extends React.Component<Props, State> {
                     <ContentView>
                         <SearchBar
                             text={this.props.searchTerm}
-                            placeholder="Find a Student"
+                            placeholder={SearchTabStrings.SEARCH_PLACEHOLDER}
                             onChangeText={this.props.onChangeSearchTerm}
                         />
                         <ScrollView>

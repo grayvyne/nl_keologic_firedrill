@@ -13,7 +13,15 @@ import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { ApplicationServices } from '../../services/ApplicationServices';
 import { Stores } from '../../stores';
-import { AppBar, ContentView, NoFiredrillIndicator, StudentTableCell, TableHeader, TableView, UpdateStudentStatusModal } from '../shared';
+import {
+    AppBar,
+    ContentView,
+    NoFiredrillIndicator,
+    StudentTableCell,
+    TableHeader,
+    TableView,
+    UpdateStudentStatusModal
+} from '../shared';
 import { SharedDialogContainer } from '../shared/PopupModals/SharedDialogContainer';
 
 interface Props {
@@ -110,7 +118,7 @@ class Missing extends React.Component<Props, State> {
                             style={styles.manageButtonPadding}
                             onClick={() => this.setState({ isManageModalOpen: true })}
                         >
-                            MANAGE
+                            {MissingStrings.MANAGE_BUTTON}
                         </Button>
                     )}
                 </AppBar>

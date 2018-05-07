@@ -19,7 +19,8 @@ export const RootTabLabels = {
 
 export const FindClassesStrings = {
     CLAIMED_CLASS: (lastName: string) => 'Claimed By ' + lastName,
-    UNCLAIMED_CLASS: 'Claim'
+    UNCLAIMED_CLASS: 'Claim',
+    SEARCH_PLACEHOLDER: 'Find a Class'
 };
 
 export const ClassDetailStrings = {
@@ -60,13 +61,15 @@ export const ChecklistStrings = {
 export const SearchTabStrings = {
     CHOOSE_STATUS: 'Choose Status',
     CANCEL: 'CANCEL',
-    OK: 'OK'
+    OK: 'OK',
+    SEARCH_PLACEHOLDER: 'Find a Student'
 };
 
 export const MissingStrings = {
     MISSING_STUDENTS_COUNT: (found: number, total: number) => `${found} / ${total} Students Found`,
     HEADING_NAME: 'Name',
-    HEADING_STATUS: 'Status'
+    HEADING_STATUS: 'Status',
+    MANAGE_BUTTON: 'MANAGE'
 };
 
 export const FiredrillIndicatorStrings = {
