@@ -20,7 +20,7 @@ export class School {
     @Typeof('number') public readonly schoolID: number;
     @Typeof('string') public readonly name: string;
     @Typeof('string') public readonly address1: string;
-    @Typeof(['string', 'object'])
+    @Typeof('string', 'object')
     public readonly address2: string | null;
     @Typeof('string') public readonly city: string;
     @Typeof('string') public readonly state: string;
