@@ -62,7 +62,8 @@ export const SearchTabStrings = {
     CHOOSE_STATUS: 'Choose Status',
     CANCEL: 'CANCEL',
     OK: 'OK',
-    SEARCH_PLACEHOLDER: 'Find a Student'
+    SEARCH_PLACEHOLDER: 'Find a Student',
+    TITLE: 'Student Search'
 };
 
 export const MissingStrings = {

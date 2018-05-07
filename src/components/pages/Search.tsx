@@ -1,13 +1,12 @@
 import AppsIcon from '@material-ui/icons/Apps';
 import SearchIcon from '@material-ui/icons/Search';
-import { IconButton } from 'material-ui';
+import { IconButton, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { fullContainer } from '../../config/sharedStyles';
 import { SearchTabStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
@@ -76,7 +75,7 @@ class Search extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={fullContainer}>
+            <div>
                 <AppBar position={'absolute'}>
                     <IconButton
                         onClick={ApplicationServices.togglePluginMenu}
@@ -86,6 +85,9 @@ class Search extends React.Component<Props, State> {
                     >
                         <AppsIcon />
                     </IconButton>
+                    <Typography variant="title" color="inherit" style={{ flex: 1 }}>
+                        {SearchTabStrings.TITLE}
+                    </Typography>
                 </AppBar>
 
                 <NoFiredrillIndicator>
@@ -107,7 +109,7 @@ class Search extends React.Component<Props, State> {
                     open={this.state.editStatusModalIsVisible}
                     close={() => this.setState({ editStatusModalIsVisible: false })}
                 />
-            </View>
+            </div>
         );
     }
 
