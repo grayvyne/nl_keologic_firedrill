@@ -1,10 +1,11 @@
 import { computed, observable } from 'mobx';
-import { Typeof } from '../lib/NLValdiate';
+import { Typeof, Validate } from '../lib/NLValdiate';
 import { Status } from './Status';
 import { SchoolUser } from './User';
 
+@Validate
 export class Student extends SchoolUser {
-    @Typeof('number')
+    @Typeof('string')
     @observable
     private _status: Status = Status.Found;
 
