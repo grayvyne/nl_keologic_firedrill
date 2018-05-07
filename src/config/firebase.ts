@@ -15,7 +15,7 @@ firebase.initializeApp(config);
 const database = firebase.database();
 
 const ACTIVE_FIREDRILLS_NODE_NAME = 'ActiveFiredrills';
-const STUDENT_STATUS_NODE_NAME = 'StudentFiredrillStatus';
+const STUDENT_STATUS_NODE_NAME = 'Students';
 const CLASSES_NODE_NAME = 'Classes';
 const FIREDRILL_START_TIME_NODE_NAME = 'startTime';
 const FINISHED_FIREDRILLS_NODE_NAME = 'FinishedFiredrills';
@@ -108,5 +108,5 @@ export interface ActiveFiredrill {
     firedrillID: string;
     startTime: number;
     Classes?: { [classID: number]: { claimedByID?: number } };
-    StudentFiredrillStatus?: { [studentID: number]: { status: Status } };
+    Students?: { [studentID: number]: { status: Status } };
 }

@@ -61,8 +61,8 @@ function getClaimedByIDForClass(firebaseData: ActiveFiredrill, aClass: Firedrill
 }
 
 function getStatusForStudent(firebaseData: ActiveFiredrill, student: Student): Status {
-    if (null == firebaseData.StudentFiredrillStatus || null == firebaseData.StudentFiredrillStatus[student.userID]) {
+    if (null == firebaseData.Students || null == firebaseData.Students[student.userID]) {
         return student.status;
     }
-    return firebaseData.StudentFiredrillStatus[student.userID].status || student.status;
+    return firebaseData.Students[student.userID].status || student.status;
 }
