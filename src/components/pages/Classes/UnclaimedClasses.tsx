@@ -14,8 +14,8 @@ class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
                 <ScrollView>
                     <TableView>
                         <TableHeader>
-                            <Typography variant="body2">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
-                            <Typography variant="body2">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
+                            <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
+                            <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
                         </TableHeader>
                         {this.props.classes.map(this.renderTableCell)}
                     </TableView>

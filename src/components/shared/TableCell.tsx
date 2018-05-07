@@ -22,7 +22,7 @@ export default class TableCell extends React.Component<Props> {
     public render(): JSX.Element {
         let wrapperProps: {} = { style: { ...style.highlightWrapper, ...this.props.style } };
         if (null != this.props.onClick) {
-            wrapperProps = { ...wrapperProps, onPress: this.props.onClick };
+            wrapperProps = { ...wrapperProps, onClick: this.props.onClick };
         }
 
         return (
