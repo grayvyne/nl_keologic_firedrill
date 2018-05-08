@@ -24,6 +24,7 @@ namespace styles {
         fill: Colors.ICON_GREY
     };
     export const cell: React.CSSProperties = { flexDirection: 'row', justifyContent: 'space-between' };
+    export const tableViewStyle = { paddingTop: 10 };
 }
 
 class Checklist extends React.Component<Props> {
@@ -39,7 +40,7 @@ class Checklist extends React.Component<Props> {
                     </Typography>
                 </AppBar>
                 <ContentView>
-                    <TableView>
+                    <TableView style={styles.tableViewStyle}>
                         {this.props.checklists.map(checklistName => (
                             <TableCell
                                 onClick={() => this.props.navigation.navigate(checklistName)}
