@@ -10,6 +10,7 @@ import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices } from '../services/ApplicationServices';
 import { SchoolServices } from '../services/SchoolServices';
+import { buildFiredrillToSave } from '../utils/saveFiredrill';
 
 export class FiredrillStore {
     @observable private _shouldShowLoadingScreen: boolean = false;
@@ -234,12 +235,13 @@ export class FiredrillStore {
 
     private async saveFinishedFiredrill(): Promise<void> {
         const firebaseData = await Firebase.Getters.activeFiredrillData(this.activeFiredrillSchoolID);
-        if (null == firebaseData) {
+        if (null == firebaseData || null == this.currentFiredrillSchoolID) {
             this._shouldShowLoadingScreen = false;
             return;
         }
-        await Firebase.Refs.finishedFiredrillForSchool(this.activeFiredrillSchoolID, firebaseData.firedrillID).set(
-            firebaseData
+        const firedrillToSave = buildFiredrillToSave(this.currentFiredrillSchoolID, this.allClasses, firebaseData);
+        await Firebase.Refs.finishedFiredrillForSchool(this.activeFiredrillSchoolID, firedrillToSave.firedrillID).set(
+            firedrillToSave
         );
         this._shouldShowLoadingScreen = false;
         return this.clearActiveFiredrill();

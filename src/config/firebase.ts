@@ -15,7 +15,7 @@ firebase.initializeApp(config);
 const database = firebase.database();
 
 const ACTIVE_FIREDRILLS_NODE_NAME = 'ActiveFiredrills';
-const STUDENT_STATUS_NODE_NAME = 'StudentFiredrillStatus';
+const STUDENT_STATUS_NODE_NAME = 'Students';
 const CLASSES_NODE_NAME = 'Classes';
 const FIREDRILL_START_TIME_NODE_NAME = 'startTime';
 const FINISHED_FIREDRILLS_NODE_NAME = 'FinishedFiredrills';
@@ -48,7 +48,7 @@ export namespace Firebase {
     }
 
     export namespace Getters {
-        export async function activeFiredrillData(schoolID: number): Promise<{ firedrillID: string } | null> {
+        export async function activeFiredrillData(schoolID: number): Promise<ActiveFiredrill | null> {
             const snapshot = await Refs.activeFiredrillForSchool(schoolID).once('value');
             if (null == snapshot) {
                 return null;
@@ -67,7 +67,10 @@ export namespace Firebase {
     }
 
     export namespace Listeners {
-        export function activeFiredrillForSchool(schoolID: number, onChange: (firedrill: {} | null) => void): void {
+        export function activeFiredrillForSchool(
+            schoolID: number,
+            onChange: (firedrill: ActiveFiredrill | null) => void
+        ): void {
             Refs.activeFiredrillForSchool(schoolID).on('value', handleNewSnapshot(onChange));
         }
 
@@ -99,4 +102,11 @@ function handleNewSnapshot<T>(
             dataHandler(null);
         }
     };
+}
+
+export interface ActiveFiredrill {
+    firedrillID: string;
+    startTime: number;
+    Classes?: { [classID: number]: { claimedByID?: number } };
+    Students?: { [studentID: number]: { status: Status } };
 }
