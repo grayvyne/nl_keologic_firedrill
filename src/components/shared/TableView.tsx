@@ -16,9 +16,7 @@ interface Props {
 
 export default class TableView extends React.Component<Props> {
     public render(): JSX.Element {
-        const style: ViewStyle = this.props.style
-            ? { ...(this.props.style as ViewStyle), ...(styles.tableStyle as ViewStyle) }
-            : (styles.tableStyle as ViewStyle);
+        const style = { ...styles.tableStyle, ...this.props.style } as ViewStyle;
         return (
             <ScrollView contentContainerStyle={{ marginBottom: 56 }} style={style}>
                 {this.props.children}
