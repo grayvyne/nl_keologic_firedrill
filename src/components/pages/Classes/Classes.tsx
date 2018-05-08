@@ -3,14 +3,13 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import { Badge, IconButton, Tab, Tabs } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import { Routes } from '../../../config/routes';
-import { fullContainer, sharedTabStyle } from '../../../config/sharedStyles';
+import { sharedTabStyle } from '../../../config/sharedStyles';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
-import { ApplicationServices } from '../../../services/ApplicationServices';
+import { ApplicationServices } from '../../../platform';
 import { Stores } from '../../../stores';
 import { AppBar, NoFiredrillIndicator } from '../../shared';
 import FindClasses from './FindClasses';
@@ -44,7 +43,6 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tabsStyle: React.CSSProperties = { height: '100%', display: 'flex', flex: 1 };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
@@ -68,14 +66,9 @@ export class Classes extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={fullContainer}>
+            <div>
                 <AppBar>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButtonStyle}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     {this.props.isFiredrillInProgress && (
@@ -133,7 +126,7 @@ export class Classes extends React.Component<Props, State> {
                         />
                     </SwipeableViews>
                 </NoFiredrillIndicator>
-            </View>
+            </div>
         );
     }
 

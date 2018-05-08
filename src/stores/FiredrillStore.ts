@@ -8,8 +8,7 @@ import { School } from '../models/School';
 import { Status } from '../models/Status';
 import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
-import { ApplicationServices } from '../services/ApplicationServices';
-import { SchoolServices } from '../services/SchoolServices';
+import { ApplicationServices, SchoolServices } from '../platform';
 import { buildFiredrillToSave } from '../utils/saveFiredrill';
 
 export class FiredrillStore {

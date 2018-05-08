@@ -2,7 +2,7 @@ import { ClassRecord } from '../models/Class';
 import { School, SchoolRecord } from '../models/School';
 import { Student } from '../models/Student';
 import { SchoolUser, SchoolUserRecord } from '../models/User';
-import { PlatformBridge, SchoolServiceMessageType } from '../stores/PlatformBridge';
+import { PlatformBridge, SchoolServiceMessageType } from './PlatformBridge';
 
 let platformBridge: PlatformBridge | null = null;
 

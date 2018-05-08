@@ -1,9 +1,7 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
-import { Button, IconButton } from 'material-ui';
+import { Button, IconButton, Typography } from 'material-ui';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { CSSProperties } from 'react';
-import { ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
@@ -16,9 +14,8 @@ import { AppBar, ContentView, StudentTableCell, TableView, UpdateStudentStatusMo
 import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
 
 namespace styles {
-    export const iconButton: CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const tableViewContainer = { paddingBottom: 150 };
-    export const dockedBottomButton: ViewStyle = {
+    export const dockedBottomButton: React.CSSProperties = {
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -28,8 +25,7 @@ namespace styles {
         justifyContent: 'center',
         alignItems: 'center'
     };
-    export const containerBackground = { backgroundColor: 'white' };
-    export const submitClassButton: ViewStyle = {
+    export const submitClassButton: React.CSSProperties = {
         height: 50,
         width: '75%',
         backgroundColor: Colors.SUBMIT_CLASS_BUTTON,
@@ -37,35 +33,30 @@ namespace styles {
         alignItems: 'center',
         borderRadius: 3
     };
-    export const submitClassText: TextStyle = {
+    export const submitClassText: React.CSSProperties = {
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center'
     };
 
-    export const buttonTextColor = 'white';
-
-    export const navBarTitleContainer: ViewStyle = {
+    export const navBarTitleContainer: React.CSSProperties = {
         position: 'absolute',
         top: 14,
         left: 0,
         width: '100%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'column'
     };
 
-    export const navBarTitle: TextStyle = {
+    export const navBarTitle: React.CSSProperties = {
         textAlign: 'center',
         fontSize: 15,
         fontWeight: 'bold'
     };
 
-    export const navBarSubTitle: TextStyle = { textAlign: 'center', fontWeight: 'bold', fontSize: 10 };
-
-    export const unclaimClassButton: ViewStyle = { height: '100%', width: 100, alignSelf: 'center', marginRight: -10 };
-
-    export const unclaimClassText: TextStyle = { textAlign: 'center', fontSize: 12, color: 'white', paddingRight: 20 };
+    export const navBarSubTitle: React.CSSProperties = { textAlign: 'center', fontWeight: 'bold', fontSize: 10 };
 }
 
 interface StoreProps {
@@ -118,42 +109,52 @@ class ClassDetail extends React.Component<Props, State> {
         }
 
         return (
-            <View style={styles.containerBackground}>
-                <AppBar position={'fixed'}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButton}
-                        onClick={() => {
-                            this.props.navigation.goBack();
-                        }}
-                    >
-                        <BackIcon />
-                    </IconButton>
-                    <View style={{ flex: 1 }} />
-                    <View style={styles.navBarTitleContainer}>
-                        <Text style={styles.navBarTitle}>{getGradeTitleFromGradeLevel(currentClass.gradeLevel)}</Text>
-                        <Text style={styles.navBarSubTitle}>{currentClass.getTeachers()[0].lastName}</Text>
-                    </View>
+            <div>
+                <AppBar>
+                    <div style={{ width: 100, justifyContent: 'flex-start' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Menu"
+                            onClick={() => {
+                                this.props.navigation.goBack();
+                            }}
+                        >
+                            <BackIcon />
+                        </IconButton>
+                    </div>
+                    {/* <div style={styles.navBarTitleContainer}> */}
+                    <div style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <Typography color="inherit" style={styles.navBarTitle}>
+                            {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
+                        </Typography>
+                        <Typography color="inherit" style={styles.navBarSubTitle}>
+                            {currentClass.getTeachers()[0].lastName}
+                        </Typography>
+                    </div>
 
-                    <View style={styles.unclaimClassButton}>
-                        <Button onClick={() => this.unclaimClass()}>
-                            <Text style={styles.unclaimClassText}>{ui.UNCLAIM}</Text>
+                    <div style={{ width: 100, justifyContent: 'flex-end' }}>
+                        <Button color="inherit" onClick={() => this.unclaimClass()} style={{ paddingRight: 20 }}>
+                            {ui.UNCLAIM}
                         </Button>
-                    </View>
+                    </div>
                 </AppBar>
 
                 <ContentView>
-                    <ScrollView>
-                        <TableView style={styles.tableViewContainer}>
-                            {this.state.students.map(this.renderTableCell)}
-                        </TableView>
-                    </ScrollView>
-                    <View style={styles.dockedBottomButton}>
-                        <TouchableOpacity style={styles.submitClassButton} onPress={() => this.onPressSubmitClass()}>
-                            <Text style={styles.submitClassText}>{ui.SUBMIT_CLASS}</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TableView style={styles.tableViewContainer}>
+                        {this.state.students.map(this.renderTableCell)}
+                    </TableView>
+                    <div style={styles.dockedBottomButton}>
+                        <Button
+                            variant="raised"
+                            color="secondary"
+                            style={styles.submitClassButton}
+                            onClick={() => this.onPressSubmitClass()}
+                        >
+                            <Typography color="inherit" style={styles.submitClassText}>
+                                {ui.SUBMIT_CLASS}
+                            </Typography>
+                        </Button>
+                    </div>
                 </ContentView>
 
                 <UpdateStudentStatusModal
@@ -172,7 +173,7 @@ class ClassDetail extends React.Component<Props, State> {
                     affirmButtonLabel={ui.OK}
                     cancelButtonLabel={ui.CANCEL}
                 />
-            </View>
+            </div>
         );
     }
 
@@ -236,6 +237,7 @@ class ClassDetail extends React.Component<Props, State> {
     private renderTableCell = (student: Student): JSX.Element => {
         return (
             <StudentTableCell
+                key={student.userID}
                 student={student}
                 status={this.getStatusForStudent(student)}
                 onClick={() => this.showEditStudentStatusModal(student)}

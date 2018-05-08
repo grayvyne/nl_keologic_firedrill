@@ -1,8 +1,7 @@
+import { Button, Typography } from 'material-ui';
 import * as React from 'react';
-import { Button } from 'material-ui';
-import { View, Text, ViewStyle, TextStyle } from 'react-native';
-import TableCell from '../shared/TableCell';
 import { Colors } from '../../config/materialUiTheme';
+import TableCell from '../shared/TableCell';
 
 interface Props {
     buttonLabel?: string;
@@ -21,20 +20,19 @@ type ActionTableCellData = {
 };
 
 namespace styles {
-    export const labelContainer: ViewStyle = {
-        display: 'flex',
-        flexGrow: 1,
+    export const labelContainer: React.CSSProperties = {
+        flex: 1,
         flexDirection: 'column'
     };
-    export const label: TextStyle = {
+    export const label: React.CSSProperties = {
         textAlign: 'left',
-        fontWeight: '400',
+        fontWeight: 400,
         fontSize: 16,
         marginBottom: '3px'
     };
-    export const subLabel: TextStyle = {
+    export const subLabel: React.CSSProperties = {
         textAlign: 'left',
-        fontWeight: '300',
+        fontWeight: 300,
         color: Colors.SUBTEXT_GREY,
         fontSize: 14
     };
@@ -46,30 +44,30 @@ namespace styles {
 
 export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
-        const userSmallFont = this.props.useSmallFont ? { fontSize: 10, lineHeight: 11 } : {};
+        const useSmallFont = this.props.useSmallFont ? { fontSize: 10 } : {};
 
         return (
             <TableCell>
-                <View style={styles.labelContainer}>
-                    <Text style={styles.label}>{this.props.cellData.label}</Text>
-                    <Text style={styles.subLabel}>{this.props.cellData.subLabel}</Text>
-                </View>
-                <View>
-                    <Button
-                        variant="raised"
-                        style={{
-                            ...styles.button,
-                            ...{
-                                color: this.props.buttonTextColor,
-                                backgroundColor: this.props.buttonColor
-                            }
-                        }}
-                        onClick={this.props.onClick}
-                        disabled={this.props.isDisabled}
-                    >
-                        <Text style={userSmallFont}>{this.props.buttonLabel}</Text>
-                    </Button>
-                </View>
+                <div style={styles.labelContainer}>
+                    <Typography style={styles.label}>{this.props.cellData.label}</Typography>
+                    <Typography style={styles.subLabel}>{this.props.cellData.subLabel}</Typography>
+                </div>
+                <Button
+                    variant="raised"
+                    style={{
+                        ...styles.button,
+                        ...{
+                            color: this.props.buttonTextColor,
+                            backgroundColor: this.props.buttonColor
+                        }
+                    }}
+                    onClick={this.props.onClick}
+                    disabled={this.props.isDisabled}
+                >
+                    <Typography variant="display1" color="inherit" style={useSmallFont}>
+                        {this.props.buttonLabel}
+                    </Typography>
+                </Button>
             </TableCell>
         );
     }

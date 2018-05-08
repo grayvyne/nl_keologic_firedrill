@@ -1,14 +1,13 @@
+import { Typography } from 'material-ui';
 import * as React from 'react';
-import { Text } from 'react-native';
-import { SharedDialogContainer } from './SharedDialogContainer';
 import { CancelOrAffirmDialogFooter } from './CancelOrAffirmDialogFooter';
+import { SharedDialogContainer } from './SharedDialogContainer';
 
 namespace styles {
     export const titleFont = { fontSize: 16 };
     export const messageFont = { fontSize: 12 };
     export const divider = { marginTop: 10 };
     export const fontStyle = {
-        color: 'black',
         paddingLeft: 20,
         paddingRight: 20,
         marginTop: 10,
@@ -32,8 +31,10 @@ export class MaterialAlert extends React.Component<Props, {}> {
 
         return (
             <SharedDialogContainer open={this.props.open}>
-                <Text style={{ ...styles.fontStyle, ...styles.titleFont }}>{this.props.alertTitle}</Text>
-                <Text style={{ ...styles.fontStyle, ...styles.messageFont }}>{this.props.alertMessage}</Text>
+                <Typography style={{ ...styles.fontStyle, ...styles.titleFont }}>{this.props.alertTitle}</Typography>
+                <Typography style={{ ...styles.fontStyle, ...styles.messageFont }}>
+                    {this.props.alertMessage}
+                </Typography>
                 <CancelOrAffirmDialogFooter {...footerProps} />
             </SharedDialogContainer>
         );

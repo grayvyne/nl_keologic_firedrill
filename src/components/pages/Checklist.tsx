@@ -3,17 +3,12 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import { IconButton, Typography } from 'material-ui';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
 import { ChecklistStrings } from '../../config/uiConstants';
-import { ApplicationServices } from '../../services/ApplicationServices';
+import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import { AppBar, ContentView, TableCell, TableView } from '../shared';
-
-interface State {
-    index: number;
-}
 
 interface StoreProps {
     checklists: string[];
@@ -22,40 +17,21 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
     export const expand = { flex: 1 };
     export const playArrow: React.CSSProperties = {
         height: 15,
         width: 15,
-        position: 'absolute',
-        top: 25,
-        right: 15,
         fill: Colors.ICON_GREY
     };
+    export const cell: React.CSSProperties = { flexDirection: 'row', justifyContent: 'space-between' };
 }
 
-class Checklist extends React.Component<Props, State> {
-    public constructor(props: Props) {
-        super(props);
-        this.state = {
-            index: 0
-        };
-    }
-
-    public handleChange = (event: any, index: any) => {
-        this.setState({ index });
-    };
-
+class Checklist extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <View>
-                <AppBar position={'fixed'}>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButton}
-                    >
+            <div>
+                <AppBar>
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
                     <Typography variant="title" color="inherit" style={styles.expand}>
@@ -68,7 +44,7 @@ class Checklist extends React.Component<Props, State> {
                             <TableCell
                                 onClick={() => this.props.navigation.navigate(checklistName)}
                                 key={checklistName}
-                                style={{ flexDirection: 'row' }}
+                                style={styles.cell}
                             >
                                 <Typography variant="body1">{checklistName}</Typography>
                                 <PlayArrow style={styles.playArrow} />
@@ -76,7 +52,7 @@ class Checklist extends React.Component<Props, State> {
                         ))}
                     </TableView>
                 </ContentView>
-            </View>
+            </div>
         );
     }
 }

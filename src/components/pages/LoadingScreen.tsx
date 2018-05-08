@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { CircularProgress } from 'material-ui/Progress';
-import { Dimensions, Animated } from 'react-native';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { Animated, Dimensions } from 'react-native';
 import { Stores } from '../../stores';
-import { inject } from 'mobx-react';
 
 interface Props {
     shouldShowLoadingScreen: boolean;
@@ -22,7 +21,6 @@ namespace styles {
         height: '100%',
         width: '100%',
         backgroundColor: '#FFFFFF66',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column'
@@ -31,7 +29,6 @@ namespace styles {
         height: Dimensions.get('window').height - 110,
         backgroundColor: 'white',
         width: '100%',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column'

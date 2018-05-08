@@ -4,14 +4,12 @@ import { Button, IconButton, LinearProgress, Typography } from 'material-ui';
 import blueGrey from 'material-ui/colors/blueGrey';
 import { inject } from 'mobx-react';
 import * as React from 'react';
-import { ScrollView, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { NavigationTabScreenOptions } from 'react-navigation';
 import { Colors } from '../../config/materialUiTheme';
-import { fullContainer } from '../../config/sharedStyles';
 import { ManageFiredrillStrings, MissingStrings } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { ApplicationServices } from '../../services/ApplicationServices';
+import { ApplicationServices } from '../../platform';
 import { Stores } from '../../stores';
 import {
     AppBar,
@@ -50,26 +48,30 @@ namespace styles {
         height: 26,
         width: 26
     };
-    export const iconButtonStyle: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
-    export const iconButton: React.CSSProperties = { alignSelf: 'center', marginLeft: -10 };
-    export const titleContainer: ViewStyle = {
+    export const titleContainer: React.CSSProperties = {
         position: 'absolute',
         top: 0,
         right: 0,
         left: 0,
         bottom: 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        pointerEvents: 'none'
     };
-    export const missingBarContainer: ViewStyle = { justifyContent: 'center', alignItems: 'center' };
-    export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch' };
+    export const missingBarContainer: React.CSSProperties = {
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
+    export const missingBar: React.CSSProperties = { height: 40, alignSelf: 'stretch', flex: 1 };
     export const missingText: React.CSSProperties = { position: 'absolute', color: Colors.BACKGROUND };
     export const manageButton: React.CSSProperties = { margin: 20 };
     export const manageButtonPadding = { paddingRight: 20 };
-    export const headerLeft: ViewStyle = { display: 'flex', flexGrow: 1 };
-    export const tableHeaderText: TextStyle = { fontWeight: '600' };
-    export const headerRight: ViewStyle = { marginRight: 25 };
-    export const manageButtonContainer: ViewStyle = { flex: 1, alignSelf: 'stretch', padding: 10 };
+    export const manageButtonContainer: React.CSSProperties = {
+        flexDirection: 'column',
+        flex: 1,
+        alignSelf: 'stretch',
+        padding: 10
+    };
 }
 
 class Missing extends React.Component<Props, State> {
@@ -90,17 +92,12 @@ class Missing extends React.Component<Props, State> {
 
     public render(): JSX.Element {
         return (
-            <View style={fullContainer}>
+            <div>
                 <AppBar position={'absolute'}>
-                    <IconButton
-                        onClick={ApplicationServices.togglePluginMenu}
-                        color="inherit"
-                        aria-label="Menu"
-                        style={styles.iconButtonStyle}
-                    >
+                    <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
                     </IconButton>
-                    <View style={styles.titleContainer} pointerEvents="none">
+                    <div style={styles.titleContainer}>
                         <Typography
                             variant={
                                 this.props.firedrillElapsedTime === ManageFiredrillStrings.NO_FIREDRILL_ACTIVE
@@ -111,7 +108,7 @@ class Missing extends React.Component<Props, State> {
                         >
                             {this.props.firedrillElapsedTime}
                         </Typography>
-                    </View>
+                    </div>
                     {this.props.shouldShowManage && (
                         <Button
                             color="inherit"
@@ -124,7 +121,7 @@ class Missing extends React.Component<Props, State> {
                 </AppBar>
                 <NoFiredrillIndicator>
                     <ContentView>
-                        <View style={styles.missingBarContainer}>
+                        <div style={styles.missingBarContainer}>
                             <LinearProgress
                                 variant="determinate"
                                 value={this.props.foundStudentsCount / this.props.totalStudentsCount * 100}
@@ -137,30 +134,24 @@ class Missing extends React.Component<Props, State> {
                                     this.props.totalStudentsCount
                                 )}
                             </Typography>
-                        </View>
-                        <ScrollView>
-                            <TableView>
-                                <TableHeader>
-                                    <View style={styles.headerLeft}>
-                                        <Text style={styles.tableHeaderText}>{MissingStrings.HEADING_NAME}</Text>
-                                    </View>
-                                    <View style={styles.headerRight}>
-                                        <Text style={styles.tableHeaderText}>{MissingStrings.HEADING_STATUS}</Text>
-                                    </View>
-                                </TableHeader>
-                                {this.props.students.map(student => (
-                                    <StudentTableCell
-                                        key={student.userID}
-                                        student={student}
-                                        status={student.status}
-                                        onClick={() => {
-                                            this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
-                                            return;
-                                        }}
-                                    />
-                                ))}
-                            </TableView>
-                        </ScrollView>
+                        </div>
+                        <TableHeader>
+                            <Typography variant="display1">{MissingStrings.HEADING_NAME}</Typography>
+                            <Typography variant="display1">{MissingStrings.HEADING_STATUS}</Typography>
+                        </TableHeader>
+                        <TableView>
+                            {this.props.students.map(student => (
+                                <StudentTableCell
+                                    key={student.userID}
+                                    student={student}
+                                    status={student.status}
+                                    onClick={() => {
+                                        this.setState({ selectedStudent: student, isStudentStatusModalOpen: true });
+                                        return;
+                                    }}
+                                />
+                            ))}
+                        </TableView>
                     </ContentView>
                 </NoFiredrillIndicator>
                 <UpdateStudentStatusModal
@@ -172,7 +163,7 @@ class Missing extends React.Component<Props, State> {
 
                 {this.props.shouldShowManage && (
                     <SharedDialogContainer open={this.state.isManageModalOpen}>
-                        <View style={styles.manageButtonContainer}>
+                        <div style={styles.manageButtonContainer}>
                             <Button
                                 style={styles.manageButton}
                                 variant="raised"
@@ -203,10 +194,10 @@ class Missing extends React.Component<Props, State> {
                             <Button style={styles.manageButton} onClick={this.closeManageModal}>
                                 {ManageFiredrillStrings.CLOSE}
                             </Button>
-                        </View>
+                        </div>
                     </SharedDialogContainer>
                 )}
-            </View>
+            </div>
         );
     }
 
