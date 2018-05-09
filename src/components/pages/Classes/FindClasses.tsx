@@ -8,6 +8,10 @@ interface Props extends AbstractClaimableClassesPageProps {
     onChangeSearchTerm(term: string): void;
 }
 
+/**
+ * This page contains a search bar that is linked to the list of classes for the current users school
+ * The <TableView/> component renders the list of table cells with the functionality for claiming a class
+ */
 class FindClasses extends AbstractClaimableClassesPage<Props> {
     public render(): JSX.Element {
         return (

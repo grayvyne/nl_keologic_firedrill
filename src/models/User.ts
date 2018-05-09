@@ -7,6 +7,9 @@ export enum UserRole {
 }
 
 export namespace UserRole {
+    /**
+     * Returns the number value of all of the roles a user can be
+     */
     export function allRoles(): UserRole[] {
         return Object.keys(UserRole)
             .map(key => UserRole[key])
@@ -26,6 +29,9 @@ export class User {
     @Typeof('string') public readonly firstName: string;
     @Typeof('string') public readonly lastName: string;
 
+    /**
+     * Creates the base user object, with userID and first/last name.
+     */
     public constructor(record: UserRecord) {
         this.userID = record.userID;
         this.firstName = record.firstName;
@@ -43,6 +49,9 @@ export class SchoolUser extends User {
     @Typeof('number') public readonly schoolID: number;
     @Typeof('number') private readonly role: UserRole;
 
+    /**
+     * Creates a school user, adding schoolId and role to a user
+     */
     public constructor(record: SchoolUserRecord) {
         super(record);
 
@@ -50,6 +59,9 @@ export class SchoolUser extends User {
         this.schoolID = record.schoolID;
     }
 
+    /**
+     * Returns the SchoolUsers role
+     */
     public getUserRole(): UserRole {
         return this.role;
     }

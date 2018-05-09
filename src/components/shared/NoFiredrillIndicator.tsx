@@ -42,6 +42,10 @@ interface Props {
     isFiredrillInProgress: boolean;
 }
 
+/**
+ * This is a component that is rendered infront of other content to hide it when there is no firedrill active
+ * It takes up the full screen and displays a message and icon
+ */
 class NoFiredrillIndicator extends React.Component<Props> {
     public render(): React.ReactNode {
         if (this.props.isFiredrillInProgress) {

@@ -6,6 +6,9 @@ import AbstractClaimableClassesPage, { AbstractClaimableClassesPageProps } from 
 
 interface Props extends AbstractClaimableClassesPageProps {}
 
+/**
+ * This page renders a list of unclaimed classes
+ */
 class UnclaimedClasses extends AbstractClaimableClassesPage<Props> {
     public render(): JSX.Element {
         return (

@@ -34,6 +34,11 @@ namespace styles {
         flexDirection: 'column'
     };
 }
+
+/**
+ * This is a overlay screen that renders a loading circle animation
+ * it is used when we are loading webview content or waiting for an async callback
+ */
 @observer
 class LoadingScreen extends React.Component<Props, State> {
     public state: State = {

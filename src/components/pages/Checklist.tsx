@@ -26,6 +26,9 @@ namespace styles {
     export const cell: React.CSSProperties = { flexDirection: 'row', justifyContent: 'space-between' };
 }
 
+/**
+ * Page that contains the list of checklists, clicking on a checklist goes into ChecklistDetail
+ */
 class Checklist extends React.Component<Props> {
     public render(): JSX.Element {
         return (
