@@ -68,7 +68,7 @@ export class FiredrillClass extends Class {
     }
 
     /**
-     * Public action that claims the class by a search teacher id
+     * Public action that claims the class and sets its id to the teacherID who claimed it
      * @param teacherID
      */
     @action
@@ -85,7 +85,7 @@ export class FiredrillClass extends Class {
     }
 
     /**
-     * Returns the students for this firedrill class
+     * Returns an array students that are associated with this firedrill class
      */
     @computed
     public get students(): Student[] {

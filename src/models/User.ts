@@ -60,7 +60,7 @@ export class SchoolUser extends User {
     }
 
     /**
-     * Returns the SchoolUsers role
+     * Returns the SchoolUser's role
      */
     public getUserRole(): UserRole {
         return this.role;

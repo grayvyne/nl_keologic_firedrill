@@ -23,7 +23,7 @@ namespace styles {
 }
 
 /**
- * This is the navigator that controls the two states of the MyClasses
+ * This is the navigator that controls the two states of the Classes page
  * A. List of classes that the user claimed, Classes
  * B. List of students within a class, ClassDetail
  */

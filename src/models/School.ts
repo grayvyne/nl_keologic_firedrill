@@ -16,7 +16,7 @@ export interface SchoolRecord {
 }
 
 /**
- * Creates a School object representing
+ * Creates a School object representing the a school from the database with all of its descriptive information as well as the users associated with it
  */
 @Validate
 export class School {

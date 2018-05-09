@@ -33,7 +33,7 @@ const StrikeThroughText = withStyles({ body1: styles.strikethrough })((props: Ty
 ));
 
 /**
- * Renders the list of checklist items
+ * The page that renders the list of checklist items within a certain checklist
  */
 @observer
 class ChecklistDetail extends React.Component<Props> {

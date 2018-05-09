@@ -18,7 +18,7 @@ export enum GradeLevel {
 }
 
 /**
- * Creates a representational string from the gradeLevel property from a "Class".
+ * Creates a representational string from the gradeLevel property of a "Class".
  * Used to display grade level in the UI
  * @param {number} gradeLevel
  */

@@ -4,7 +4,7 @@ import { Status } from './Status';
 import { SchoolUser } from './User';
 
 /**
- * Student class that's used to add properties to users with the Student role
+ * This is used to add properties to users with the Student role
  */
 @Validate
 export class Student extends SchoolUser {
