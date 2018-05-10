@@ -77,7 +77,7 @@ export class FiredrillClass extends Class {
     }
 
     /**
-     * Public action that unclaims a class, reseting the claimedByID
+     * Public action that unclaims a class, resetting the claimedByID
      */
     @action
     public unclaim(): void {

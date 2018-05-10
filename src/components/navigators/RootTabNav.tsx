@@ -38,7 +38,7 @@ const Nav = TabNavigator(
 );
 
 /**
- * This is the base level tab navigator that controlls the tabs on the bottom of the screen
+ * This is the base level tab navigator that controls the tabs on the bottom of the screen
  * A. Classes (Claimed, Class detail)
  * B. Missing (All students that are missing)
  * C. Search (Search functionality for all students)

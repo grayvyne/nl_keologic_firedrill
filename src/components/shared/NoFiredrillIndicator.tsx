@@ -43,7 +43,7 @@ interface Props {
 }
 
 /**
- * This is a component that is rendered infront of other content to hide it when there is no firedrill active
+ * This is a component that is rendered in front of other content to hide it when there is no firedrill active
  * It takes up the full screen and displays a message and icon
  */
 class NoFiredrillIndicator extends React.Component<Props> {

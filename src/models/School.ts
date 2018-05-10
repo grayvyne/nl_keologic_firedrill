@@ -54,7 +54,7 @@ export class School {
     }
 
     /**
-     * Returns the users in the school, excluding those with a role of Student: (teachers, principle, office staff);
+     * Returns the users in the school, excluding those with a role of Student: (teachers, principal, office staff);
      */
     public getStaff(): SchoolUser[] {
         const staffRoles = UserRole.allRoles().filter(role => role !== UserRole.Student);

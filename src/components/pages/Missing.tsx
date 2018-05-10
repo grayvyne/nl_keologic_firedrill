@@ -80,7 +80,7 @@ namespace styles {
  * It also contains a progress bar showing the status of all the students that fills a progressbar as all students' statuses are set to Found or Absent
  * It will be hidden by a "No Firedrill Active" indicator when there is no firedrill going on
  * You can also update a students status through functionality on the rendered table cell
- * There is a hidden button: "Manage". This is only shown to users with the principle role. This allows the user to start/cancel/end a firedrill.
+ * There is a hidden button: "Manage". This is only shown to users with the principal role. This allows the user to start/cancel/end a firedrill.
  */
 class Missing extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
