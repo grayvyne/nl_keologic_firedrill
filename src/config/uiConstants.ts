@@ -1,3 +1,8 @@
+/**
+ * This file holds all of the User Interface text thats used in the application.
+ * We keep them in a single file so we can easily find/update text throughout the app
+ */
+
 export const pluginName = 'Firedrill';
 
 export const ClassesStrings = {

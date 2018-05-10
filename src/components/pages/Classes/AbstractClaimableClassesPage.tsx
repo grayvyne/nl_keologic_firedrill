@@ -8,6 +8,9 @@ export interface AbstractClaimableClassesPageProps {
     onPressClaim(classID: number): Promise<void>;
 }
 
+/**
+ * This abstract class gives a function to render a table cell that provides functionality to claim a class by a teacher
+ */
 export default class AbstractClaimableClassesPage<P extends AbstractClaimableClassesPageProps> extends React.Component<
     P
 > {

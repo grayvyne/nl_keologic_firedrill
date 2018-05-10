@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
-import { MaterialRadioInputList } from '../shared/PopupModals/MaterialRadioInputList';
+import { MaterialRadioInputList } from '../shared/NLMaterialModals/MaterialRadioInputList';
 
 interface State {
     selectedStudentStatus: Status;
@@ -16,6 +16,10 @@ interface Props {
     close: () => void;
 }
 
+/**
+ * This is the modal that shows up when you're trying to update a students status
+ * Its used in multiple places throughout the app, so we put the bulk of the functionality into a shared component
+ */
 export default class UpdateStudentStatusModal extends React.Component<Props, State> {
     public state: State = {
         selectedStudentStatus: Status.Found

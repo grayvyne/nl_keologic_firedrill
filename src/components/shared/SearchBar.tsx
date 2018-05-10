@@ -38,6 +38,9 @@ interface Props {
     onChangeText(text: string): void;
 }
 
+/**
+ * This is the search bar component that is shared between multiple screens
+ */
 export default class SearchBar extends React.Component<Props> {
     public render(): JSX.Element {
         return (

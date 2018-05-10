@@ -20,6 +20,12 @@ interface SavedFiredrillStudent {
     status: Status;
 }
 
+/**
+ * Builds firedrill record object that matches our database model. Returns the object to be sent to the database
+ * @param schoolID
+ * @param allClasses
+ * @param activeFiredrill
+ */
 export function buildFiredrillToSave(
     schoolID: number,
     allClasses: FiredrillClass[],

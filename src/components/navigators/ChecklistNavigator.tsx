@@ -20,6 +20,11 @@ interface Props {
     checklists: string[];
 }
 
+/**
+ * This is the navigator that controls the two states of the checklist tab
+ * A. Checklist titles
+ * B. Checklist details
+ */
 class ChecklistNavigator extends React.Component<Props> {
     static navigationOptions: NavigationTabScreenOptions = {
         tabBarIcon: ({ focused, tintColor }) => {

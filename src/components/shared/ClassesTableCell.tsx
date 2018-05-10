@@ -48,6 +48,10 @@ interface Props {
     onClick: () => void;
 }
 
+/**
+ * This renders a table cell that includes label and sub label.
+ * It also includes a rendered counter for found count vs all students in class count.
+ */
 @observer
 export default class ClassesTableCell extends React.Component<Props> {
     public render(): JSX.Element {

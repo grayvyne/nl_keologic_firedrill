@@ -11,6 +11,9 @@ interface Props extends AppBarProps {
     toolbarStyle?: React.CSSProperties;
 }
 
+/**
+ * Default wrapper for the App bar to give it styles that are shared between all components that use it
+ */
 const DefaultAppBar: React.SFC<Props> = ({ style, children, toolbarStyle, ...props }) => (
     <AppBar position="absolute" style={{ ...styles.hideBoxShadow, ...style }} {...props}>
         <Toolbar style={{ ...styles.toolbar, ...toolbarStyle }}>{children}</Toolbar>

@@ -3,12 +3,18 @@ import blueGrey from 'material-ui/colors/blueGrey';
 import lightBlue from 'material-ui/colors/lightBlue';
 import { createMuiTheme } from 'material-ui/styles';
 
+/**
+ * The base colors used & shared between many elements throughout the application
+ */
 const appGreen = '#51C37D';
 const appBlue = '#02A9F4';
 const appRed = '#FF5252';
 const appLightGrey = '#EEEEEE';
 const appOrange = '#FFA727';
 
+/**
+ * Material UI theme that is used throughout the application for MaterialUI elements
+ */
 export const theme = createMuiTheme({
     palette: {
         primary: {
@@ -49,6 +55,9 @@ export const theme = createMuiTheme({
     }
 });
 
+/**
+ * User Interface colors that are used/shared throughout the application
+ */
 export const Colors = {
     DISABLED_TAB_ICON: 'rgba(0, 0, 0, 0.26)',
     CLAIMED_CLASS_BUTTON: appOrange,

@@ -12,6 +12,10 @@ const styles = {
     }
 };
 
+/**
+ * This is the wrapper for bottom navigation actions, it allows you to pass in properties to style your tabs
+ * @param props
+ */
 function bottomNavigationAction(props: BottomNavigationActionProps) {
     return (
         <BottomNavigationAction {...props} showLabel={props.showLabel}>

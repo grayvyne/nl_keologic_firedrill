@@ -27,6 +27,9 @@ namespace styles {
     export const tableViewStyle = { paddingTop: 10 };
 }
 
+/**
+ * Page that contains the list of checklists, clicking on a checklist goes into ChecklistDetail
+ */
 class Checklist extends React.Component<Props> {
     public render(): JSX.Element {
         return (

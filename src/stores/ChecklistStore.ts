@@ -1,4 +1,9 @@
-import { observable, computed, action } from 'mobx';
+/**
+ * @module ChecklistStore
+ * @exports ChecklistStore
+ */
+
+import { action, computed, observable } from 'mobx';
 
 interface CheckListItem {
     value: string;
@@ -32,6 +37,9 @@ interface StatefulChecklists {
     [name: string]: StatefulChecklistItem[];
 }
 
+/**
+ * A secondary store for managing the details and state of all checklists.
+ */
 export class ChecklistStore {
     @observable
     private _checklists: StatefulChecklists = Object.keys(checklistData).reduce(
@@ -42,15 +50,28 @@ export class ChecklistStore {
         {}
     );
 
+    /**
+     * An `object` containing all available checklists, keyed by name/role.
+     * @public @property {object}
+     */
     @computed
     public get checklists(): StatefulChecklists {
         return { ...this._checklists };
     }
 
+    /**
+     * Creates a new `ChecklistStore`.
+     */
     public constructor() {
         Object.keys(this._checklists).forEach(this.updateChecklistFromStorage);
     }
 
+    /**
+     * Update and save the completion status of a specific item in a specific checklist.
+     * @param {string} listName Name/role of the parent list.
+     * @param {string} key Key fo the item to update.
+     * @param {boolean} completed Whether the item should be marked complete or incomplete.
+     */
     @action
     public setChecklistItemStatus(listName: string, key: string, completed: boolean): void {
         saveChecklistItemStatus(listName, key, completed);
@@ -65,6 +86,10 @@ export class ChecklistStore {
         selectedItem.completed = completed;
     }
 
+    /**
+     * Resets the status of all items in a checklist to incomplete.
+     * @param {string} listName Name/role of the list to clear.
+     */
     @action
     public clearChecklistStatus(listName: string) {
         localStorage.setItem(getChecklistStorageKey(listName), '{}');

@@ -43,6 +43,10 @@ namespace styles {
     export const iconButton: React.CSSProperties = { height: 25, width: 25 };
 }
 
+/**
+ * This page allows you to search through all students, regardless of status.
+ * This page also allows you to update the status of any student
+ */
 @observer
 class Search extends React.Component<Props, State> {
     static navigationOptions: NavigationTabScreenOptions = {
