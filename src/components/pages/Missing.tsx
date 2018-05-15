@@ -163,6 +163,9 @@ class Missing extends React.Component<Props, State> {
                     </ContentView>
                 </NoFiredrillIndicator>
                 <UpdateStudentStatusModal
+                    selectedStudentStatus={
+                        null != this.state.selectedStudent ? this.state.selectedStudent.status : undefined
+                    }
                     selectedStudent={this.state.selectedStudent}
                     updateStudentMap={this.markStudentAs}
                     open={this.state.isStudentStatusModalOpen}

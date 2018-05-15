@@ -10,6 +10,7 @@ interface State {
 }
 
 interface Props {
+    selectedStudentStatus?: Status;
     selectedStudent?: Student;
     updateStudentMap: (student: Student, status: Status) => void;
     open: boolean;
@@ -22,8 +23,17 @@ interface Props {
  */
 export default class UpdateStudentStatusModal extends React.Component<Props, State> {
     public state: State = {
-        selectedStudentStatus: Status.Found
+        selectedStudentStatus: this.props.selectedStudentStatus || Status.Found
     };
+
+    componentWillReceiveProps(nextProps: Props) {
+        if (
+            null != nextProps.selectedStudentStatus &&
+            nextProps.selectedStudentStatus !== this.props.selectedStudentStatus
+        ) {
+            this.setState({ selectedStudentStatus: nextProps.selectedStudentStatus });
+        }
+    }
 
     public render(): JSX.Element {
         return (
