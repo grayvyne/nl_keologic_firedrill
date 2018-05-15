@@ -7,11 +7,22 @@ import { ClassRecord } from '../models/Class';
 import { School, SchoolRecord } from '../models/School';
 import { Student } from '../models/Student';
 import { SchoolUser, SchoolUserRecord } from '../models/User';
-import { PlatformBridge, SchoolServiceMessageType } from './PlatformBridge';
+import { PlatformBridge } from './PlatformBridge';
 
-let platformBridge: PlatformBridge | null = null;
+enum SchoolServiceMessageType {
+    GetAllSchools = 'school:get_all_schools',
+    GetAllClasses = 'school:get_all_classes',
+    GetAllStudents = 'school:get_all_students',
+    GetAllFaculty = 'school:get_all_faculty',
+    GetAllUsers = 'school:get_all_users',
+    GetSingleSchool = 'school:get_single_school',
+    GetSingleClass = 'school:get_single_class',
+    GetSingleUser = 'school:get_single_user'
+}
 
-function getPlatformBridge(): PlatformBridge {
+let platformBridge: PlatformBridge<SchoolServiceMessageType> | null = null;
+
+function getPlatformBridge(): PlatformBridge<SchoolServiceMessageType> {
     if (null == platformBridge) {
         throw new Error('Trying to access bridge before calling init');
     }
@@ -23,7 +34,7 @@ function getPlatformBridge(): PlatformBridge {
  * the platform.
  */
 export namespace SchoolServices {
-    export function init(bridge: PlatformBridge): void {
+    export function init(bridge: PlatformBridge<SchoolServiceMessageType>): void {
         platformBridge = bridge;
     }
 

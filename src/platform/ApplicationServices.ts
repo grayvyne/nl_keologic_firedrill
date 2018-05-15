@@ -5,11 +5,19 @@
 
 import { pluginName } from '../config/uiConstants';
 import { SchoolUser, SchoolUserRecord } from '../models/User';
-import { ApplicationServiceMessageType, PlatformBridge } from './PlatformBridge';
+import { PlatformBridge } from './PlatformBridge';
 
-let platformBridge: PlatformBridge | null = null;
+enum ApplicationServiceMessageType {
+    OpenPluginsMenu = 'application:open_plugins_menu',
+    ClosePluginsMenu = 'application:close_plugins_menu',
+    TogglePluginsMenu = 'application:toggle_plugins_menu',
+    GetCurrentUser = 'application:get_current_user',
+    SendNotification = 'application:send_notification'
+}
 
-function getPlatformBridge(): PlatformBridge {
+let platformBridge: PlatformBridge<ApplicationServiceMessageType> | null = null;
+
+function getPlatformBridge(): PlatformBridge<ApplicationServiceMessageType> {
     if (null == platformBridge) {
         throw new Error('Trying to access bridge before calling init');
     }
@@ -21,7 +29,7 @@ function getPlatformBridge(): PlatformBridge {
  * plugins menu, and logging debug information.
  */
 export namespace ApplicationServices {
-    export function init(bridge: PlatformBridge): void {
+    export function init(bridge: PlatformBridge<ApplicationServiceMessageType>): void {
         platformBridge = bridge;
     }
 
