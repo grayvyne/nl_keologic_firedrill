@@ -11,7 +11,7 @@ import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { Stores } from '../../stores';
 import { AppBar, ContentView, StudentTableCell, TableView, UpdateStudentStatusModal } from '../shared';
-import { MaterialAlert } from '../shared/PopupModals/MaterialAlert';
+import { MaterialAlert } from '../shared/NLMaterialModals/MaterialAlert';
 
 namespace styles {
     export const tableViewContainer = { paddingBottom: 150 };

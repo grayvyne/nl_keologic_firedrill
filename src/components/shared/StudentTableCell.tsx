@@ -12,6 +12,9 @@ interface Props {
     onClick(): void;
 }
 
+/**
+ * This is an action table cell that is given properties specific to a student table cell
+ */
 @observer
 export default class StudentTableCell extends React.Component<Props> {
     public render(): JSX.Element {

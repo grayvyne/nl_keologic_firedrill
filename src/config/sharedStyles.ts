@@ -1,8 +1,6 @@
-import * as React from 'react';
-
-export const sharedTabStyle: React.CSSProperties = {
-    height: 56
-};
+/**
+ * Shared styles frequently used/shared between different components
+ */
 
 export const fullContainer = {
     height: '100%',

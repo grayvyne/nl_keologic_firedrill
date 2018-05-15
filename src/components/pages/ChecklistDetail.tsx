@@ -32,6 +32,9 @@ const StrikeThroughText = withStyles({ body1: styles.strikethrough })((props: Ty
     <Typography classes={{ body1: props.classes!.body1 }} {...props} />
 ));
 
+/**
+ * The page that renders the list of checklist items within a certain checklist
+ */
 @observer
 class ChecklistDetail extends React.Component<Props> {
     public render(): JSX.Element {

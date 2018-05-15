@@ -22,6 +22,11 @@ namespace styles {
     export const iconStyle = { height: 28, width: 28 };
 }
 
+/**
+ * This is the navigator that controls the two states of the Classes page
+ * A. List of classes that the user claimed, Classes
+ * B. List of students within a class, ClassDetail
+ */
 export default class ClassesNavigator extends React.Component {
     static navigationOptions = ({ navigation }: NavigationScreenProps): NavigationTabScreenOptions => ({
         tabBarIcon: ({ focused, tintColor }) => {

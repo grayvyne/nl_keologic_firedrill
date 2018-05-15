@@ -6,7 +6,6 @@ import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import SwipeableViews from 'react-swipeable-views';
 import { Routes } from '../../../config/routes';
-import { sharedTabStyle } from '../../../config/sharedStyles';
 import { ClassesStrings as ui } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ApplicationServices } from '../../../platform';
@@ -48,8 +47,13 @@ namespace styles {
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
     export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
     export const tabFont = { fontSize: 10 };
+    export const sharedTabStyle = { height: 56 };
 }
 
+/**
+ * The container page for the "Classes" tab. This hold a top tab-navigator(<AppBar/>) to switch between "Your Classes" "Find Classes" and "Unclaimed"
+ * The content and the tabs are also wrapped in a listener that will hide the functionality when a firedrill is not active
+ */
 @observer
 export class Classes extends React.Component<Props, State> {
     public state: State = {
@@ -80,8 +84,14 @@ export class Classes extends React.Component<Props, State> {
                             fullWidth={true}
                             style={styles.tabsStyle}
                         >
-                            <Tab label={<span style={styles.tabFont}>Your Classes</span>} style={sharedTabStyle} />
-                            <Tab label={<span style={styles.tabFont}>Find Classes</span>} style={sharedTabStyle} />
+                            <Tab
+                                label={<span style={styles.tabFont}>Your Classes</span>}
+                                style={styles.sharedTabStyle}
+                            />
+                            <Tab
+                                label={<span style={styles.tabFont}>Find Classes</span>}
+                                style={styles.sharedTabStyle}
+                            />
                             <Tab
                                 label={
                                     <span>
@@ -94,7 +104,7 @@ export class Classes extends React.Component<Props, State> {
                                         />
                                     </span>
                                 }
-                                style={sharedTabStyle}
+                                style={styles.sharedTabStyle}
                             >
                                 <CheckIcon />
                             </Tab>

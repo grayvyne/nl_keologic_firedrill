@@ -17,6 +17,11 @@ export enum GradeLevel {
     Twelth
 }
 
+/**
+ * Creates a representational string from the gradeLevel property of a "Class".
+ * Used to display grade level in the UI
+ * @param {number} gradeLevel
+ */
 export function getGradeTitleFromGradeLevel(gradeLevel: number) {
     switch (gradeLevel) {
         case 0:
@@ -42,6 +47,10 @@ export class Class {
     @Typeof('object') private readonly _users: SchoolUser[];
     @Typeof('object') private readonly teachers: SchoolUser[];
 
+    /**
+     * Creates a "Class" object which holds information about grade level, students, and teachers belonging to the class.
+     * @param { ClassRecord } record
+     */
     public constructor(record: ClassRecord) {
         this.classID = record.classID;
         this.gradeLevel = record.gradeLevel;
@@ -57,11 +66,16 @@ export class Class {
             this.name = '';
         }
     }
-
+    /**
+     * Returns a list of students associated with the class
+     */
     public get users(): SchoolUser[] {
         return this._users;
     }
 
+    /**
+     * Returns a list of teachers associated with the class
+     */
     public getTeachers(): SchoolUser[] {
         return this.teachers;
     }

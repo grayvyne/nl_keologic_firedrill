@@ -20,6 +20,10 @@ namespace style {
     };
 }
 
+/**
+ * This is the wrapper we use for all the different table cells
+ * Provides some base functionality and styles to keep consistant throughout the app
+ */
 export default class TableCell extends React.Component<Props> {
     public render(): JSX.Element {
         let wrapperProps: {} = { style: { ...style.highlightWrapper, ...this.props.style } };

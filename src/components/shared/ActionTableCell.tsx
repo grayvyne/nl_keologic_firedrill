@@ -42,9 +42,14 @@ namespace styles {
     };
 }
 
+/**
+ * This renders a table cell with a button on the right hand side
+ */
 export default class ActionTableCell extends React.Component<Props> {
     public render(): JSX.Element {
-        const useSmallFont = this.props.useSmallFont ? { fontSize: 10 } : {};
+        const useSmallFont: React.CSSProperties = this.props.useSmallFont
+            ? { fontSize: 10, paddingTop: 2, fontWeight: 600 }
+            : {};
 
         return (
             <TableCell>

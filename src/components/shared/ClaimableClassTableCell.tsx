@@ -11,6 +11,9 @@ interface Props {
     onClick(): void;
 }
 
+/**
+ * This takes ActionTableCell and gives it properties exclusive to the tablecells that allow you to claim classes
+ */
 export default class ClaimableClassTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const { singleClass } = this.props;

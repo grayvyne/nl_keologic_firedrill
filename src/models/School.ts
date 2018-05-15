@@ -15,6 +15,9 @@ export interface SchoolRecord {
     classes: ClassRecord[];
 }
 
+/**
+ * Creates a School object representing the a school from the database with all of its descriptive information as well as the users associated with it
+ */
 @Validate
 export class School {
     @Typeof('number') public readonly schoolID: number;
@@ -28,6 +31,10 @@ export class School {
     @Typeof('object') private usersByRole: Map<UserRole, SchoolUser[]>;
     @Typeof('object') private classes: Class[];
 
+    /**
+     * Creates a school object and assigns/creates users objects with roles.
+     * @param {SchoolRecord} record
+     */
     public constructor(record: SchoolRecord) {
         this.schoolID = record.schoolID;
         this.name = record.name;
@@ -46,6 +53,9 @@ export class School {
         );
     }
 
+    /**
+     * Returns the users in the school, excluding those with a role of Student: (teachers, principal, office staff);
+     */
     public getStaff(): SchoolUser[] {
         const staffRoles = UserRole.allRoles().filter(role => role !== UserRole.Student);
         const usersForStaffRoles = staffRoles
@@ -54,6 +64,9 @@ export class School {
         return usersForStaffRoles.reduce<SchoolUser[]>((staff, users) => [...staff, ...users!], []);
     }
 
+    /**
+     * Returns the users in the school with the role of Student
+     */
     public getStudents(): SchoolUser[] {
         const students = this.usersByRole.get(UserRole.Student);
         if (null == students) {
@@ -62,10 +75,16 @@ export class School {
         return students;
     }
 
+    /**
+     * Returns all users within the school
+     */
     public getCommunity(): SchoolUser[] {
         return [...this.getStaff(), ...this.getStudents()];
     }
 
+    /**
+     * Returns all classes within the school
+     */
     public getClasses(): Class[] {
         return this.classes;
     }

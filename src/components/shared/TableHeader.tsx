@@ -12,6 +12,10 @@ namespace style {
     };
 }
 
+/**
+ * This is the wrapper for a table header
+ * its basically a table cell with overriden style properties to match our table header designs
+ */
 export default class TableHeader extends React.Component<{ style?: React.CSSProperties }> {
     public render(): JSX.Element {
         return <TableCell style={{ ...style.cellStyle, ...this.props.style }}>{this.props.children}</TableCell>;

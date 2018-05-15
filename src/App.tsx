@@ -16,6 +16,10 @@ namespace styles {
 const firedrillStore = new FiredrillStore();
 const checklistStore = new ChecklistStore();
 
+/**
+ * This is the entry point component
+ * It is the top level container for the whole application
+ */
 class App extends React.Component {
     public render(): JSX.Element {
         return (

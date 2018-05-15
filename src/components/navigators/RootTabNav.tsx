@@ -37,6 +37,13 @@ const Nav = TabNavigator(
     }
 );
 
+/**
+ * This is the base level tab navigator that controls the tabs on the bottom of the screen
+ * A. Classes (Claimed, Class detail)
+ * B. Missing (All students that are missing)
+ * C. Search (Search functionality for all students)
+ * D. Checklist (Shows all checklists)
+ */
 export class RootTabNav extends React.Component {
     public render(): JSX.Element {
         return <Nav />;

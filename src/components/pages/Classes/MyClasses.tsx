@@ -39,6 +39,11 @@ namespace styles {
     };
 }
 
+/**
+ * This component renders the list of classes that a teacher has claimed
+ * If they have claimed no classes (props.classes.length == 0), then it will render a warning with a button to take them to the claimable class list
+ * Else it will render a table view of all of their claimed classes
+ */
 function MyClasses(props: Props) {
     if (props.classes.length === 0) {
         return (

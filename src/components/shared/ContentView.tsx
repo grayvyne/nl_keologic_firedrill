@@ -17,6 +17,9 @@ namespace style {
     };
 }
 
+/**
+ * This is default wrapper component we use to have all pages containers render the same way
+ */
 export default class ContentView extends React.Component<Props> {
     public render(): JSX.Element {
         return (
