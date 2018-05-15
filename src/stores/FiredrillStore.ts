@@ -94,7 +94,9 @@ export class FiredrillStore {
      */
     @computed
     public get allStudents(): Student[] {
-        return this.allClasses.reduce<Student[]>((a, c) => a.concat([...c.students]), []);
+        return this.allClasses
+            .reduce<Student[]>((a, c) => a.concat([...c.students]), [])
+            .sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
     }
 
     /**

@@ -64,7 +64,7 @@ export class FiredrillClass extends Class {
     public constructor(record: ClassRecord) {
         super(record);
         this._claimedByID = null;
-        this._students = record.students.map(s => new Student(s));
+        this._students = record.students.map(s => new Student(s)).sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
     }
 
     /**
