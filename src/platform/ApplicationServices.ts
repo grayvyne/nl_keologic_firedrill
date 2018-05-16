@@ -12,7 +12,9 @@ enum ApplicationServiceMessageType {
     ClosePluginsMenu = 'application:close_plugins_menu',
     TogglePluginsMenu = 'application:toggle_plugins_menu',
     GetCurrentUser = 'application:get_current_user',
-    SendNotification = 'application:send_notification'
+    SendNotification = 'application:send_notification',
+    SetTopBarColor = 'application:set_top_bar_color',
+    SetBottomBarColor = 'application:set_bottom_bar_color'
 }
 
 let platformBridge: PlatformBridge<ApplicationServiceMessageType> | null = null;
@@ -114,5 +116,23 @@ export namespace ApplicationServices {
      */
     export function logError(...args: any[]): void {
         getPlatformBridge().logError(...args);
+    }
+
+    /**
+     * Sets the background color of the status bar on large format (i.e. iPhone X) phones
+     * @param {string} color
+     * @returns {Promise}
+     */
+    export async function setTopBarColor(color: string): Promise<void> {
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.SetTopBarColor, { color });
+    }
+
+    /**
+     * Sets the background color of the bottom safe area on large format (i.e. iPhone X) phones
+     * @param {string} color
+     * @returns {Promise}
+     */
+    export async function setBottomBarColor(color: string): Promise<void> {
+        await getPlatformBridge().callOverBridge(ApplicationServiceMessageType.SetBottomBarColor, { color });
     }
 }
