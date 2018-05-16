@@ -18,7 +18,7 @@ namespace styles {
 interface Props {
     open: boolean;
     alertTitle: string;
-    alertMessage: string;
+    alertMessage?: string;
     onPressAffirm: () => void;
     onPressCancel: () => void;
     affirmButtonLabel: string;
@@ -32,9 +32,11 @@ export class MaterialAlert extends React.Component<Props, {}> {
         return (
             <SharedDialogContainer open={this.props.open}>
                 <Typography style={{ ...styles.fontStyle, ...styles.titleFont }}>{this.props.alertTitle}</Typography>
-                <Typography style={{ ...styles.fontStyle, ...styles.messageFont }}>
-                    {this.props.alertMessage}
-                </Typography>
+                {null != this.props.alertMessage && (
+                    <Typography style={{ ...styles.fontStyle, ...styles.messageFont }}>
+                        {this.props.alertMessage}
+                    </Typography>
+                )}
                 <CancelOrAffirmDialogFooter {...footerProps} />
             </SharedDialogContainer>
         );

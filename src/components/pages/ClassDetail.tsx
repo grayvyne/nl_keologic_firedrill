@@ -168,20 +168,18 @@ class ClassDetail extends React.Component<Props, State> {
 
                 <MaterialAlert
                     alertTitle={ui.SUBMIT_CLASS_ALERT_TITLE}
-                    alertMessage={ui.SUBMIT_CLASS_ALERT_MESSAGE}
                     open={this.state.showSubmitClassAlert}
                     onPressCancel={() => this.cancelSubmitClass()}
                     onPressAffirm={() => this.confirmSubmitClass()}
-                    affirmButtonLabel={ui.OK}
+                    affirmButtonLabel={ui.MODAL_CONFIRM}
                     cancelButtonLabel={ui.CANCEL}
                 />
                 <MaterialAlert
                     alertTitle={ui.UNSAVED_CHANGES_ALERT_TITLE}
-                    alertMessage={ui.UNSAVED_CHANGES_ALERT_MESSAGE}
                     open={this.state.shouldShowUnsavedChangesWarning}
                     onPressCancel={this.hideUnsavedChangesWarning}
                     onPressAffirm={this.goBackWithUnsavedChanges}
-                    affirmButtonLabel={ui.OK}
+                    affirmButtonLabel={ui.MODAL_CONFIRM}
                     cancelButtonLabel={ui.CANCEL}
                 />
             </div>
