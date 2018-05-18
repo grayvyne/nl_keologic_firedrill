@@ -27,9 +27,6 @@ export default class ClaimableClassTableCell extends React.Component<Props, Stat
     public state: State = { animationValue: new Animated.Value(1) };
 
     public componentWillReceiveProps(nextProps: Props) {
-        if (null == nextProps.isVisible) {
-            return;
-        }
         if (false === nextProps.isVisible && this.props.isVisible) {
             Animated.timing(this.state.animationValue, { toValue: 0, duration: 500 }).start();
         }
