@@ -235,6 +235,7 @@ class ClassDetail extends React.Component<Props, State> {
                 case Status.Missing:
                     this.props.markStudentAsMissing(id);
                     break;
+                case Status.Default:
                 case Status.Found:
                     this.props.markStudentAsFound(id);
                     break;

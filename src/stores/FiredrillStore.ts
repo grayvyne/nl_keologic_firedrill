@@ -100,21 +100,21 @@ export class FiredrillStore {
     }
 
     /**
-     * The total number of students for the current fire drill.
+     * The total number of students for the current fire drill, minus absent students.
      * @public @property {number}
      */
     @computed
-    public get allStudentsCount(): number {
-        return this.allStudents.length;
+    public get totalStudentsCount(): number {
+        return this.allStudents.filter(s => s.status !== Status.Absent).length;
     }
 
     /**
-     * The number of students that are missing for the current fire drill.
+     * The number of students that have been marked found for the current fire drill.
      * @public @property {number}
      */
     @computed
-    public get missingStudentsCount(): number {
-        return this.allStudents.filter(s => s.status === Status.Missing).length;
+    public get foundStudentsCount(): number {
+        return this.allStudents.filter(s => s.status === Status.Found).length;
     }
 
     /**

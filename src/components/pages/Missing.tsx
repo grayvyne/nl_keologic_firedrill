@@ -217,6 +217,7 @@ class Missing extends React.Component<Props, State> {
             case Status.Missing:
                 this.props.markStudentMissing(student.userID);
                 break;
+            case Status.Default:
             case Status.Found:
                 this.props.markStudentFound(student.userID);
                 break;
@@ -251,8 +252,8 @@ class Missing extends React.Component<Props, State> {
 function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
         students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
-        totalStudentsCount: firedrillStore.allStudentsCount,
-        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
+        totalStudentsCount: firedrillStore.totalStudentsCount,
+        foundStudentsCount: firedrillStore.foundStudentsCount,
         firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
         shouldShowManage: firedrillStore.shouldShowManage,
         isFiredrillInProgress: firedrillStore.isFiredrillInProgress,

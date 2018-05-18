@@ -31,7 +31,7 @@ export class FiredrillClass extends Class {
      */
     @computed
     public get totalStudents(): number {
-        return this._students.length;
+        return this._students.filter(s => s.status !== Status.Absent).length;
     }
 
     /**
@@ -39,7 +39,7 @@ export class FiredrillClass extends Class {
      */
     @computed
     public get foundStudents(): number {
-        return this._students.filter(s => s.status === Status.Found).length;
+        return this._students.filter(s => s.status === Status.Found || s.status === Status.Default).length;
     }
 
     /**

@@ -116,6 +116,7 @@ class Search extends React.Component<Props, State> {
             case Status.Missing:
                 this.props.markStudentMissing(student.userID);
                 break;
+            case Status.Default:
             case Status.Found:
                 this.props.markStudentFound(student.userID);
                 break;
