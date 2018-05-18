@@ -1,55 +1,26 @@
-import { computed, observable } from 'mobx';
-
-export enum ApplicationServiceMessageType {
-    OpenPluginsMenu = 'application:open_plugins_menu',
-    ClosePluginsMenu = 'application:close_plugins_menu',
-    TogglePluginsMenu = 'application:toggle_plugins_menu',
+enum BasePlatformMessageType {
     LogDebugMessage = 'application:log_debug_message',
     LogWarningMessage = 'application:log_warning_message',
     LogErrorMessage = 'application:log_error_message',
-    IsAnyoneListening = 'application:is_anyone_listening',
-    GetCurrentUser = 'application:get_current_user',
-    SendNotification = 'application:send_notification'
+    IsAnyoneListening = 'application:is_anyone_listening'
 }
-
-export enum SchoolServiceMessageType {
-    GetAllSchools = 'school:get_all_schools',
-    GetAllClasses = 'school:get_all_classes',
-    GetAllStudents = 'school:get_all_students',
-    GetAllFaculty = 'school:get_all_faculty',
-    GetAllUsers = 'school:get_all_users',
-    GetSingleSchool = 'school:get_single_school',
-    GetSingleClass = 'school:get_single_class',
-    GetSingleUser = 'school:get_single_user'
-}
-
-type PlatformBridgeMessageType = ApplicationServiceMessageType | SchoolServiceMessageType;
 
 interface PlatformError {
     error: string;
 }
 
-interface BridgeMessage<T> {
+interface BridgeMessage<V, T = BasePlatformMessageType> {
     id: number;
-    type: PlatformBridgeMessageType;
-    data?: T | PlatformError;
+    type: T;
+    data?: V | PlatformError;
 }
 
-export class PlatformBridge {
-    @observable public sendCount = 0;
-    @observable public responseCount = 0;
-    @computed
-    public get numQueuedMessages(): number {
-        return this.queuedMessages.length;
-    }
-    private inPluginMode: boolean;
+export class PlatformBridge<T> {
     private isReadyToSend: boolean = false;
     private lastSentMessageID: number = 0;
-    @observable private queuedMessages: {}[] = [];
+    private queuedMessages: {}[] = [];
 
     public constructor() {
-        this.inPluginMode = false;
-
         setTimeout(async () => {
             this.isReadyToSend = true;
 
@@ -58,16 +29,15 @@ export class PlatformBridge {
         }, 1000);
     }
 
-    public callOverBridge<T>(type: PlatformBridgeMessageType, data?: object): Promise<T> {
+    public callOverBridge<V>(type: T | BasePlatformMessageType, data?: object): Promise<V> {
         const messageID = this.lastSentMessageID;
         this.lastSentMessageID++;
         this.sendWebViewMessage({ type, data, id: messageID });
 
         return new Promise((resolve, reject) => {
             const handler = (message: MessageEvent) => {
-                const messageData: BridgeMessage<T> = JSON.parse(message.data);
+                const messageData: BridgeMessage<V, T> = JSON.parse(message.data);
                 if (messageData.type === type && messageData.id === messageID) {
-                    this.responseCount++;
                     if (isPlatformError(messageData.data)) {
                         reject(messageData.data.error);
                     } else {
@@ -81,24 +51,24 @@ export class PlatformBridge {
     }
 
     public log(...message: any[]): void {
-        this.logMessageToConsoleOrBridge(ApplicationServiceMessageType.LogDebugMessage, message);
+        this.logMessageToConsoleOrBridge(BasePlatformMessageType.LogDebugMessage, message);
     }
 
     public logWarning(...message: any[]): void {
-        this.logMessageToConsoleOrBridge(ApplicationServiceMessageType.LogWarningMessage, message);
+        this.logMessageToConsoleOrBridge(BasePlatformMessageType.LogWarningMessage, message);
     }
 
     public logError(...message: any[]): void {
-        this.logMessageToConsoleOrBridge(ApplicationServiceMessageType.LogErrorMessage, message);
+        this.logMessageToConsoleOrBridge(BasePlatformMessageType.LogErrorMessage, message);
     }
 
-    private logMessageToConsoleOrBridge(type: ApplicationServiceMessageType, message: any[]): void {
+    private logMessageToConsoleOrBridge(type: T | BasePlatformMessageType, message: any[]): void {
         this.callOverBridge(type, message);
         switch (type) {
-            case ApplicationServiceMessageType.LogWarningMessage:
+            case BasePlatformMessageType.LogWarningMessage:
                 console.warn(message);
                 break;
-            case ApplicationServiceMessageType.LogErrorMessage:
+            case BasePlatformMessageType.LogErrorMessage:
                 console.error(message);
                 break;
             default:
@@ -110,7 +80,6 @@ export class PlatformBridge {
         if (this.isReadyToSend) {
             try {
                 window.postMessage(JSON.stringify(message), '*');
-                this.sendCount++;
             } catch (error) {
                 console.error('Error Posting Message:', error, message);
             }
@@ -120,9 +89,7 @@ export class PlatformBridge {
     };
 
     private async checkIfPluginMode(): Promise<void> {
-        await this.callOverBridge(ApplicationServiceMessageType.IsAnyoneListening);
-        this.inPluginMode = true;
-        this.log('in plugin mode', this.inPluginMode);
+        await this.callOverBridge(BasePlatformMessageType.IsAnyoneListening);
     }
 
     private flushQueue(): void {

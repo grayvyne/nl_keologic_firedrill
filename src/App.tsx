@@ -4,7 +4,8 @@ import * as React from 'react';
 import './App.css';
 import { RootTabNav } from './components/navigators/RootTabNav';
 import LoadingScreen from './components/pages/LoadingScreen';
-import { theme } from './config/materialUiTheme';
+import { Colors, theme } from './config/materialUiTheme';
+import { ApplicationServices } from './platform';
 import { ChecklistStore, FiredrillStore } from './stores';
 
 namespace styles {
@@ -21,6 +22,11 @@ const checklistStore = new ChecklistStore();
  * It is the top level container for the whole application
  */
 class App extends React.Component {
+    public componentDidMount(): void {
+        ApplicationServices.setBottomBarColor(Colors.TAB_BAR_GREY);
+        ApplicationServices.setTopBarColor(Colors.TOP_TAB_BLUE);
+    }
+
     public render(): JSX.Element {
         return (
             <MuiThemeProvider theme={theme}>

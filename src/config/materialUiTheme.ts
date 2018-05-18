@@ -76,5 +76,7 @@ export const Colors = {
     SEARCH_CANCEL_BUTTON: '#9E9E9E',
     TABLE_CELL_GREY: '#EEEEEE',
     BACKGROUND: 'white',
-    LIGHT_GREY: 'rgba(0,0,0,0.34)'
+    LIGHT_GREY: 'rgba(0,0,0,0.34)',
+    TAB_BAR_GREY: 'rgb(247, 247, 247)',
+    TOP_TAB_BLUE: '#03a9f4'
 };

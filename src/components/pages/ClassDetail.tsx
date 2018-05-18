@@ -158,6 +158,11 @@ class ClassDetail extends React.Component<Props, State> {
                 </ContentView>
 
                 <UpdateStudentStatusModal
+                    selectedStudentStatus={
+                        null != this.state.selectedStudent
+                            ? this.state.updatedStudentStatusesByStudentId.get(this.state.selectedStudent.userID)
+                            : undefined
+                    }
                     selectedStudent={this.state.selectedStudent}
                     updateStudentMap={this.updateStudentMap}
                     open={this.state.editStatusModalIsVisible}

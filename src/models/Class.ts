@@ -25,7 +25,7 @@ export enum GradeLevel {
 export function getGradeTitleFromGradeLevel(gradeLevel: number) {
     switch (gradeLevel) {
         case 0:
-            return 'Kindergarden';
+            return 'Kindergarten';
         default:
             return 'Grade ' + gradeLevel;
     }
