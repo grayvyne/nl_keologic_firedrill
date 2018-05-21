@@ -46,7 +46,7 @@ export default class UpdateStudentStatusModal extends React.Component<Props, Sta
                 onPressCancel={() => this.props.close()}
                 onPressAffirm={() => this.updateStudentStatus()}
                 cancelButtonLabel={ui.CANCEL}
-                affirmButtonLabel={ui.OK}
+                affirmButtonLabel={ui.CONFIRM_STATUS}
             />
         );
     }

@@ -76,6 +76,8 @@ interface State {
     showSubmitClassAlert: boolean;
     students: Student[];
     updatedStudentStatusesByStudentId: Map<number, Status>;
+    hasMadeChanges: boolean;
+    shouldShowUnsavedChangesWarning: boolean;
 }
 
 @observer
@@ -98,7 +100,9 @@ class ClassDetail extends React.Component<Props, State> {
             selectedStudentStatus: Status.Found,
             showSubmitClassAlert: false,
             students: studentClass.students,
-            updatedStudentStatusesByStudentId: studentStatusMapById
+            updatedStudentStatusesByStudentId: studentStatusMapById,
+            hasMadeChanges: false,
+            shouldShowUnsavedChangesWarning: false
         };
     }
 
@@ -112,17 +116,10 @@ class ClassDetail extends React.Component<Props, State> {
             <div>
                 <AppBar>
                     <div style={{ width: 100, justifyContent: 'flex-start' }}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Menu"
-                            onClick={() => {
-                                this.props.navigation.goBack();
-                            }}
-                        >
+                        <IconButton color="inherit" aria-label="Menu" onClick={this.warnOnUnsavedChanges}>
                             <BackIcon />
                         </IconButton>
                     </div>
-                    {/* <div style={styles.navBarTitleContainer}> */}
                     <div style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Typography color="inherit" style={styles.navBarTitle}>
                             {getGradeTitleFromGradeLevel(currentClass.gradeLevel)}
@@ -171,21 +168,47 @@ class ClassDetail extends React.Component<Props, State> {
 
                 <MaterialAlert
                     alertTitle={ui.SUBMIT_CLASS_ALERT_TITLE}
-                    alertMessage={ui.SUBMIT_CLASS_ALERT_MESSAGE}
                     open={this.state.showSubmitClassAlert}
                     onPressCancel={() => this.cancelSubmitClass()}
                     onPressAffirm={() => this.confirmSubmitClass()}
-                    affirmButtonLabel={ui.OK}
+                    affirmButtonLabel={ui.MODAL_CONFIRM}
+                    cancelButtonLabel={ui.CANCEL}
+                />
+                <MaterialAlert
+                    alertTitle={ui.UNSAVED_CHANGES_ALERT_TITLE}
+                    open={this.state.shouldShowUnsavedChangesWarning}
+                    onPressCancel={this.hideUnsavedChangesWarning}
+                    onPressAffirm={this.goBackWithUnsavedChanges}
+                    affirmButtonLabel={ui.MODAL_CONFIRM}
                     cancelButtonLabel={ui.CANCEL}
                 />
             </div>
         );
     }
 
+    private warnOnUnsavedChanges = () => {
+        if (this.state.hasMadeChanges) {
+            this.setState({ shouldShowUnsavedChangesWarning: true });
+        } else {
+            this.props.navigation.goBack();
+        }
+    };
+
+    private hideUnsavedChangesWarning = (): void => this.setState({ shouldShowUnsavedChangesWarning: false });
+
+    private goBackWithUnsavedChanges = (): void => {
+        this.hideUnsavedChangesWarning();
+        this.props.navigation.goBack();
+    };
+
     private updateStudentMap = (student: Student, status: Status) => {
         const map = this.state.updatedStudentStatusesByStudentId;
         map.set(student.userID, status);
-        this.setState({ updatedStudentStatusesByStudentId: map, editStatusModalIsVisible: false });
+        this.setState({
+            hasMadeChanges: true,
+            updatedStudentStatusesByStudentId: map,
+            editStatusModalIsVisible: false
+        });
     };
 
     private unclaimClass() {

@@ -97,7 +97,7 @@ export class Classes extends React.Component<Props, State> {
                                     <span>
                                         <span style={styles.unclaimedTabStyle}>{ui.UNCLAIMED}</span>
                                         <Badge
-                                            color="error"
+                                            color={this.props.unclaimedClasses.length > 0 ? 'error' : 'secondary'}
                                             badgeContent={this.props.unclaimedClasses.length}
                                             children={<span />}
                                             style={styles.unclaimedTabBadgeStyle}
