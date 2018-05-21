@@ -42,7 +42,7 @@ export const ClassDetailStrings = {
     UNCLAIM: 'UNCLAIM',
     UNLCAIM_CLASS_ALERT: 'Unclaim class?',
     UNCLAIM_CLASS_MESSAGE: 'Are you sure you want to unclaim this class?',
-    UNSAVED_CHANGES_ALERT_TITLE: 'Your progress will not be saved, are you sure you want to go back?',
+    UNSAVED_CHANGES_ALERT_TITLE: 'Your progress will not be saved; are you sure you want to go back?',
     UNSAVED_CHANGES_ALERT_MESSAGE:
         'Are you sure you want to go back? Your changes will not be saved if you do not submit.'
 };
