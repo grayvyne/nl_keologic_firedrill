@@ -202,12 +202,13 @@ class ClassDetail extends React.Component<Props, State> {
     };
 
     private updateStudentMap = (student: Student, status: Status) => {
-        if (false === this.state.hasMadeChanges) {
-            this.setState({ hasMadeChanges: true });
-        }
         const map = this.state.updatedStudentStatusesByStudentId;
         map.set(student.userID, status);
-        this.setState({ updatedStudentStatusesByStudentId: map, editStatusModalIsVisible: false });
+        this.setState({
+            hasMadeChanges: true,
+            updatedStudentStatusesByStudentId: map,
+            editStatusModalIsVisible: false
+        });
     };
 
     private unclaimClass() {
