@@ -14,7 +14,7 @@ import { Status } from '../models/Status';
 import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices, SchoolServices } from '../platform';
-import { orderClassesByGrade, orderClassesByName } from '../utils/class';
+import { orderClassesByGradeAndName } from '../utils/class';
 import { buildFiredrillToSave } from '../utils/saveFiredrill';
 
 /**
@@ -66,9 +66,7 @@ export class FiredrillStore {
      */
     @computed
     public get allClasses(): FiredrillClass[] {
-        return Array.from(this._classes.values())
-            .sort(orderClassesByName)
-            .sort(orderClassesByGrade);
+        return Array.from(this._classes.values()).sort(orderClassesByGradeAndName);
     }
 
     /**
