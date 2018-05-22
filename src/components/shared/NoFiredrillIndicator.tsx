@@ -1,9 +1,10 @@
-import * as React from 'react';
-import { Colors } from '../../config/materialUiTheme';
-import { CSSProperties } from 'react';
-import { FiredrillIndicatorStrings as ui } from '../../config/uiConstants';
-import { Stores } from '../../stores';
+import { Button } from 'material-ui';
 import { inject } from 'mobx-react';
+import * as React from 'react';
+import { CSSProperties } from 'react';
+import { Colors } from '../../config/materialUiTheme';
+import { FiredrillIndicatorStrings as ui, ManageFiredrillStrings } from '../../config/uiConstants';
+import { Stores } from '../../stores';
 
 const FIRE_ICON = require('../../imageAssets/fireIcon.png');
 
@@ -36,10 +37,14 @@ namespace styles {
         color: Colors.LIGHT_GREY,
         marginTop: 20
     };
+
+    export const manageButton: React.CSSProperties = { marginTop: 20 };
 }
 
 interface Props {
     isFiredrillInProgress: boolean;
+    shouldShowManage: boolean;
+    initiateFiredrill(): void;
 }
 
 /**
@@ -56,6 +61,17 @@ class NoFiredrillIndicator extends React.Component<Props> {
             <div style={styles.container}>
                 <img src={FIRE_ICON} style={styles.iconStyle} />
                 <p style={styles.text}>{ui.NO_FIREDRILL_INDICATOR}</p>
+                {this.props.shouldShowManage && (
+                    <Button
+                        style={styles.manageButton}
+                        variant="raised"
+                        color="secondary"
+                        onClick={this.props.initiateFiredrill}
+                        disabled={this.props.isFiredrillInProgress}
+                    >
+                        {ManageFiredrillStrings.START_FIREDRILL}
+                    </Button>
+                )}
             </div>
         );
     }
@@ -63,7 +79,9 @@ class NoFiredrillIndicator extends React.Component<Props> {
 
 function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
-        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
+        shouldShowManage: firedrillStore.shouldShowManage,
+        initiateFiredrill: () => firedrillStore.initiateFiredrill()
     };
 }
 

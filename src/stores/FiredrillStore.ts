@@ -162,6 +162,9 @@ export class FiredrillStore {
      */
     @computed
     public get shouldShowManage(): boolean {
+        if (null == this.currentUser) {
+            return false;
+        }
         return this.currentUser.getUserRole() === UserRole.Principal;
     }
 
@@ -288,10 +291,13 @@ export class FiredrillStore {
      * @param {number} schoolID
      * @returns {Promise}
      */
-    public async initiateFiredrill(schoolID: number): Promise<void> {
+    public async initiateFiredrill(): Promise<void> {
         const school = await SchoolServices.getSchool();
-        await this.createNewFiredrill(schoolID);
-        return ApplicationServices.sendNotification(schoolID, ManageFiredrillStrings.START_NOTIFICATION(school.name));
+        await this.createNewFiredrill(school.schoolID);
+        return ApplicationServices.sendNotification(
+            school.schoolID,
+            ManageFiredrillStrings.START_NOTIFICATION(school.name)
+        );
     }
 
     /**
