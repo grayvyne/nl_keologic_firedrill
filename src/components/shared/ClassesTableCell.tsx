@@ -1,3 +1,4 @@
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import { Typography } from 'material-ui';
 import teal from 'material-ui/colors/teal';
@@ -38,9 +39,16 @@ namespace style {
     export const playArrow: React.CSSProperties = {
         height: 15,
         width: 15,
-        marginRight: -5,
+        marginRight: 10,
         fill: Colors.ICON_GREY
     };
+    export const claimCheck: React.CSSProperties = {
+        height: 35,
+        width: 35,
+        marginLeft: -10,
+        fill: Colors.FOUND_BUTTON
+    };
+    export const tableCell: React.CSSProperties = { paddingRight: 10 };
 }
 
 interface Props {
@@ -57,7 +65,7 @@ export default class ClassesTableCell extends React.Component<Props> {
     public render(): JSX.Element {
         const { singleClass } = this.props;
         return (
-            <TableCell onClick={this.props.onClick}>
+            <TableCell style={style.tableCell} onClick={this.props.onClick}>
                 <div style={style.labelContainer}>
                     <Typography variant="body1" style={style.labelText}>
                         {singleClass.name}
@@ -71,7 +79,11 @@ export default class ClassesTableCell extends React.Component<Props> {
                     {singleClass.foundStudents}/{singleClass.totalStudents}
                 </Typography>
 
-                <PlayArrow style={style.playArrow} />
+                {singleClass.isSubmitted ? (
+                    <CheckCircle style={style.claimCheck} />
+                ) : (
+                    <PlayArrow style={style.playArrow} />
+                )}
             </TableCell>
         );
     }

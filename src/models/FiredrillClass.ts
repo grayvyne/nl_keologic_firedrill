@@ -43,6 +43,14 @@ export class FiredrillClass extends Class {
     }
 
     /**
+     * Whether or not the class (and the statuses of its students) has been submitted by a staff member
+     */
+    @computed
+    get isSubmitted(): boolean {
+        return this._isSubmitted;
+    }
+
+    /**
      * Returns the searchable text string to match against in the search bar
      */
     public get searchableText(): string {
@@ -57,6 +65,10 @@ export class FiredrillClass extends Class {
     @observable
     private _students: Student[];
 
+    @Typeof('boolean')
+    @observable
+    private _isSubmitted: boolean;
+
     /**
      * Creates a firedrill class record, and initiates its claimedByID to null
      * @param {ClassRecord} record
@@ -65,6 +77,7 @@ export class FiredrillClass extends Class {
         super(record);
         this._claimedByID = null;
         this._students = record.students.map(s => new Student(s)).sort((a, b) => a.lastName.localeCompare(b.lastName));
+        this._isSubmitted = false;
     }
 
     /**
@@ -90,5 +103,10 @@ export class FiredrillClass extends Class {
     @computed
     public get students(): Student[] {
         return this._students;
+    }
+
+    @action
+    public markAsSubmitted(): void {
+        this._isSubmitted = true;
     }
 }

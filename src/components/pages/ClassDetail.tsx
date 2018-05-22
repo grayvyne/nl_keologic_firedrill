@@ -61,10 +61,8 @@ namespace styles {
 
 interface StoreProps {
     class: FiredrillClass | undefined;
-    markStudentAsMissing: (id: number) => void;
-    markStudentAsAbsent: (id: number) => void;
-    markStudentAsFound: (id: number) => void;
     unclaimClass: () => void;
+    submitClass(statusByStudentID: Map<number, Status>): Promise<void>;
 }
 
 interface Props extends NavigationScreenProps<{ classID: number }>, StoreProps {}
@@ -230,23 +228,8 @@ class ClassDetail extends React.Component<Props, State> {
         this.setState({ showSubmitClassAlert: true });
     };
 
-    private saveClassStudentStatuses(): void {
-        this.state.updatedStudentStatusesByStudentId.forEach((status, id) => {
-            switch (status) {
-                case Status.Missing:
-                    this.props.markStudentAsMissing(id);
-                    break;
-                case Status.Default:
-                case Status.Found:
-                    this.props.markStudentAsFound(id);
-                    break;
-                case Status.Absent:
-                    this.props.markStudentAsAbsent(id);
-                    break;
-                default:
-                    throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
-            }
-        });
+    private saveClassStudentStatuses(): Promise<void> {
+        return this.props.submitClass(this.state.updatedStudentStatusesByStudentId);
     }
 
     private getStatusForStudent(student: Student): Status {
@@ -286,9 +269,7 @@ function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps 
     return {
         class: firedrillStore.classes.get(classID),
         unclaimClass: () => firedrillStore.unclaimClass(classID),
-        markStudentAsMissing: (id: number) => firedrillStore.markStudentAsMissiong(id),
-        markStudentAsAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),
-        markStudentAsFound: (id: number) => firedrillStore.markStudentAsFound(id)
+        submitClass: statusByStudentID => firedrillStore.submitClass(classID, statusByStudentID)
     };
 }
 

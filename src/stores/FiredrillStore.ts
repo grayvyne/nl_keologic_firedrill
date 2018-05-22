@@ -326,12 +326,26 @@ export class FiredrillStore {
     }
 
     /**
-     * Updates the database with the new status for multiple students.
-     * @param {Array} students An array of Students with updated statuses to save in the database.
+     * Marks the class as submitted and updates the database with the new status for all students
+     * @param {string} classID
+     * @param {Map} statusByStudentID A map of studentID -> Status
      * @returns {Promise}
      */
-    public async saveStudentsStatuses(students: Student[]): Promise<void> {
-        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
+    public async submitClass(classID: number, statusByStudentID: Map<number, Status>): Promise<void> {
+        const actionByStatus = {
+            [Status.Absent]: (id: number) => this.markStudentAsAbsent(id),
+            [Status.Found]: (id: number) => this.markStudentAsFound(id),
+            [Status.Default]: (id: number) => this.markStudentAsFound(id),
+            [Status.Missing]: (id: number) => this.markStudentAsMissiong(id)
+        };
+        const updateStatuses = Array.from(statusByStudentID.entries()).map(([studentID, status]) => {
+            const statusAction = actionByStatus[status];
+            return statusAction(studentID);
+        });
+        const updateSubmit = Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, classID).update({
+            isSubmitted: true
+        });
+        await Promise.all([...updateStatuses, updateSubmit]);
     }
 
     /**
@@ -493,12 +507,20 @@ function handleStudentStatusChange(student: Student): (newStatus: { status: Stat
     };
 }
 
-function handleClassClaimedByChange(aClass: FiredrillClass): (newStatus: { claimedByID: number } | null) => void {
+function handleClassClaimedByChange(
+    aClass: FiredrillClass
+): (newStatus: { claimedByID?: number; isSubmitted?: boolean } | null) => void {
     return newStatus => {
         if (null == newStatus) {
+            return;
+        }
+        if (null == newStatus.claimedByID) {
             aClass.unclaim();
         } else {
             aClass.claim(newStatus.claimedByID);
+        }
+        if (null != newStatus.isSubmitted && newStatus.isSubmitted) {
+            aClass.markAsSubmitted();
         }
     };
 }
