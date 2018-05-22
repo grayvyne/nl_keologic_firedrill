@@ -4,6 +4,7 @@ import { ClassDetailStrings as ui } from '../../config/uiConstants';
 import { Status } from '../../models/Status';
 import { Student } from '../../models/Student';
 import { MaterialRadioInputList } from '../shared/NLMaterialModals/MaterialRadioInputList';
+import { Colors } from '../../config/materialUiTheme';
 
 interface State {
     selectedStudentStatus: Status;
@@ -41,7 +42,11 @@ export default class UpdateStudentStatusModal extends React.Component<Props, Sta
                 open={this.props.open}
                 modalHeader={ui.CHOOSE_STATUS}
                 currentlySelectedRadioOptionValue={this.state.selectedStudentStatus}
-                radioOptions={[Status.Found, Status.Absent, Status.Missing]}
+                radioOptions={[
+                    { value: Status.Found, color: Colors.FOUND_BUTTON },
+                    { value: Status.Absent, color: Colors.ABSENT_BUTTON },
+                    { value: Status.Missing, color: Colors.MISSING_BUTTON }
+                ]}
                 onPressRadioOption={this.onPressRadioOption}
                 onPressCancel={() => this.props.close()}
                 onPressAffirm={() => this.updateStudentStatus()}

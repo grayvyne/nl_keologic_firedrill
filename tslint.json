@@ -1,6 +1,7 @@
 {
     "extends": ["tslint-react"],
     "rules": {
+        "jsx-curly-spacing": false,
         "align": [true, "parameters", "statements"],
         "ban": false,
         "class-name": true,

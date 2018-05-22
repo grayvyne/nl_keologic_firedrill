@@ -49,7 +49,7 @@ export const ClassDetailStrings = {
 };
 
 export const ManageFiredrillStrings = {
-    NO_FIREDRILL_ACTIVE: 'NO FIREDRILL ACTIVE',
+    NO_FIREDRILL_ACTIVE: 'No Active Fire Drill',
     START_FIREDRILL: 'Start Fire Drill',
     CANCEL_FIREDRILL: 'Cancel Fire Drill',
     FINISH_FIREDRILL: 'Complete Fire Drill',
