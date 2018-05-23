@@ -1,10 +1,10 @@
 import { FiredrillClass } from '../models/FiredrillClass';
 
 export function orderClassesByGradeAndName(classA: FiredrillClass, classB: FiredrillClass): number {
-    if (classA.gradeLevel > classB.gradeLevel) {
-        return 1;
-    } else if (classA.gradeLevel < classB.gradeLevel) {
-        return -1;
+    const gradeLevelDiff = classA.gradeLevel - classB.gradeLevel;
+    if (0 === gradeLevelDiff) {
+        return classA.name.localeCompare(classB.name);
     }
-    return classA.name.localeCompare(classB.name);
+
+    return gradeLevelDiff;
 }
