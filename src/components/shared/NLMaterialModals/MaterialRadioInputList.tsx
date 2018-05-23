@@ -1,9 +1,9 @@
-import { RadioGroup, Radio, FormControlLabel, FormControl, FormLabel } from 'material-ui';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from 'material-ui';
 import * as React from 'react';
-import { SharedDialogContainer } from './SharedDialogContainer';
-import { styles } from './sharedStyles';
 import { ChangeEvent } from 'react';
 import { CancelOrAffirmDialogFooter } from './CancelOrAffirmDialogFooter';
+import { SharedDialogContainer } from './SharedDialogContainer';
+import { styles } from './sharedStyles';
 
 interface Props {
     onPressRadioOption: (e: ChangeEvent<{}>) => void;
@@ -14,7 +14,7 @@ interface Props {
     affirmButtonLabel: string;
     cancelButtonLabel: string;
     currentlySelectedRadioOptionValue: string;
-    radioOptions: string[];
+    radioOptions: { value: string; color: string }[];
 }
 
 export class MaterialRadioInputList extends React.Component<Props> {
@@ -34,9 +34,9 @@ export class MaterialRadioInputList extends React.Component<Props> {
                             return (
                                 <FormControlLabel
                                     key={index}
-                                    value={radioOption}
-                                    control={<Radio style={styles.radioButton} />}
-                                    label={radioOption}
+                                    value={radioOption.value}
+                                    control={<Radio style={{ ...styles.radioButton, color: radioOption.color }} />}
+                                    label={radioOption.value}
                                 />
                             );
                         })}

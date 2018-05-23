@@ -144,8 +144,11 @@ export class Classes extends React.Component<Props, State> {
         this.setState({ index: 1 });
     };
 
-    private handlePressClaim = (classID: number): Promise<void> => {
-        return this.props.claimClass(classID);
+    private handlePressClaim = async (classID: number): Promise<void> => {
+        await this.props.claimClass(classID);
+        setTimeout(() => {
+            this.setState({ index: 0 });
+        }, 500);
     };
 
     private handlePressGoToClass = (classID: number): void => {

@@ -29,7 +29,7 @@ interface Props {
     firedrillElapsedTime: string;
     shouldShowManage: boolean;
     isFiredrillInProgress: boolean;
-    initiateFireDrill(schoolID: number): Promise<void>;
+    initiateFireDrill(): Promise<void>;
     endFireDrill(): Promise<void>;
     cancelFireDrill(): Promise<void>;
     markStudentAbsent(id: number): void;
@@ -217,6 +217,7 @@ class Missing extends React.Component<Props, State> {
             case Status.Missing:
                 this.props.markStudentMissing(student.userID);
                 break;
+            case Status.Default:
             case Status.Found:
                 this.props.markStudentFound(student.userID);
                 break;
@@ -233,7 +234,7 @@ class Missing extends React.Component<Props, State> {
     private closeManageModal = () => this.setState({ isManageModalOpen: false });
 
     private handleStartFireDrillClick = () => {
-        this.props.initiateFireDrill(1);
+        this.props.initiateFireDrill();
         this.closeManageModal();
     };
 
@@ -251,12 +252,12 @@ class Missing extends React.Component<Props, State> {
 function mapStoresToProps({ firedrillStore }: Stores): Props {
     return {
         students: firedrillStore.allStudents.filter(student => student.status === Status.Missing),
-        totalStudentsCount: firedrillStore.allStudentsCount,
-        foundStudentsCount: firedrillStore.allStudentsCount - firedrillStore.missingStudentsCount,
+        totalStudentsCount: firedrillStore.totalStudentsCount,
+        foundStudentsCount: firedrillStore.foundStudentsCount,
         firedrillElapsedTime: firedrillStore.firedrillElapsedTime,
         shouldShowManage: firedrillStore.shouldShowManage,
         isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
-        initiateFireDrill: schoolID => firedrillStore.initiateFiredrill(schoolID),
+        initiateFireDrill: () => firedrillStore.initiateFiredrill(),
         endFireDrill: () => firedrillStore.endFireDrill(),
         cancelFireDrill: () => firedrillStore.cancelFiredrill(),
         markStudentAbsent: (id: number) => firedrillStore.markStudentAsAbsent(id),

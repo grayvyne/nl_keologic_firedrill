@@ -2,6 +2,7 @@ import { Typography } from 'material-ui';
 import * as React from 'react';
 import { ClassesStrings } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
+import { orderClassesByGrade, orderClassesByName } from '../../../utils/class';
 import { ContentView, TableHeader, TableView } from '../../shared';
 import ClaimableClassTableCell from '../../shared/ClaimableClassTableCell';
 import { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
@@ -43,14 +44,7 @@ class UnclaimedClasses extends React.Component<Props, State> {
                     <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_NAME}</Typography>
                     <Typography variant="display1">{ClassesStrings.UNCLAIMED_HEADING_STATUS}</Typography>
                 </TableHeader>
-                <TableView>
-                    {Object.keys(this.state.displayedClasses).map(classID =>
-                        this.renderTableCell(
-                            this.state.displayedClasses[classID].class,
-                            this.state.displayedClasses[classID].isVisible
-                        )
-                    )}
-                </TableView>
+                <TableView>{this.classRows}</TableView>
             </ContentView>
         );
     }
@@ -66,6 +60,14 @@ class UnclaimedClasses extends React.Component<Props, State> {
             />
         );
     };
+
+    private get classRows(): JSX.Element[] {
+        const classes = Object.keys(this.state.displayedClasses).map(classID => this.state.displayedClasses[classID]);
+        const sortedClasses = classes
+            .sort((a, b) => orderClassesByName(a.class, b.class))
+            .sort((a, b) => orderClassesByGrade(a.class, b.class));
+        return sortedClasses.map(aClass => this.renderTableCell(aClass.class, aClass.isVisible));
+    }
 
     private handlePressClaim(classID: number): () => void {
         return () => this.props.onPressClaim(classID);

@@ -40,6 +40,7 @@ export default class StudentTableCell extends React.Component<Props> {
                 return { buttonLabel: ClassDetailStrings.MISSING, buttonColor: Colors.MISSING_BUTTON };
             case Status.Absent:
                 return { buttonLabel: ClassDetailStrings.ABSENT, buttonColor: Colors.ABSENT_BUTTON };
+            case Status.Default:
             case Status.Found:
                 return { buttonLabel: ClassDetailStrings.FOUND, buttonColor: Colors.FOUND_BUTTON };
             default:

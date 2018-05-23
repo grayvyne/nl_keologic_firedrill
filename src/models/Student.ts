@@ -10,7 +10,7 @@ import { SchoolUser } from './User';
 export class Student extends SchoolUser {
     @Typeof('string')
     @observable
-    private _status: Status = Status.Found;
+    private _status: Status = Status.Default;
 
     /**
      * Returns the students current status

@@ -14,6 +14,7 @@ import { Status } from '../models/Status';
 import { Student } from '../models/Student';
 import { SchoolUser, UserRole } from '../models/User';
 import { ApplicationServices, SchoolServices } from '../platform';
+import { orderClassesByGradeAndName } from '../utils/class';
 import { buildFiredrillToSave } from '../utils/saveFiredrill';
 
 /**
@@ -65,7 +66,7 @@ export class FiredrillStore {
      */
     @computed
     public get allClasses(): FiredrillClass[] {
-        return Array.from(this._classes.values());
+        return Array.from(this._classes.values()).sort(orderClassesByGradeAndName);
     }
 
     /**
@@ -100,21 +101,21 @@ export class FiredrillStore {
     }
 
     /**
-     * The total number of students for the current fire drill.
+     * The total number of students for the current fire drill, minus absent students.
      * @public @property {number}
      */
     @computed
-    public get allStudentsCount(): number {
-        return this.allStudents.length;
+    public get totalStudentsCount(): number {
+        return this.allStudents.filter(s => s.status !== Status.Absent).length;
     }
 
     /**
-     * The number of students that are missing for the current fire drill.
+     * The number of students that have been marked found for the current fire drill.
      * @public @property {number}
      */
     @computed
-    public get missingStudentsCount(): number {
-        return this.allStudents.filter(s => s.status === Status.Missing).length;
+    public get foundStudentsCount(): number {
+        return this.allStudents.filter(s => s.status === Status.Found).length;
     }
 
     /**
@@ -162,6 +163,9 @@ export class FiredrillStore {
      */
     @computed
     public get shouldShowManage(): boolean {
+        if (null == this.currentUser) {
+            return false;
+        }
         return this.currentUser.getUserRole() === UserRole.Principal;
     }
 
@@ -288,10 +292,13 @@ export class FiredrillStore {
      * @param {number} schoolID
      * @returns {Promise}
      */
-    public async initiateFiredrill(schoolID: number): Promise<void> {
+    public async initiateFiredrill(): Promise<void> {
         const school = await SchoolServices.getSchool();
-        await this.createNewFiredrill(schoolID);
-        return ApplicationServices.sendNotification(schoolID, ManageFiredrillStrings.START_NOTIFICATION(school.name));
+        await this.createNewFiredrill(school.schoolID);
+        return ApplicationServices.sendNotification(
+            school.schoolID,
+            ManageFiredrillStrings.START_NOTIFICATION(school.name)
+        );
     }
 
     /**
@@ -326,12 +333,26 @@ export class FiredrillStore {
     }
 
     /**
-     * Updates the database with the new status for multiple students.
-     * @param {Array} students An array of Students with updated statuses to save in the database.
+     * Marks the class as submitted and updates the database with the new status for all students
+     * @param {string} classID
+     * @param {Map} statusByStudentID A map of studentID -> Status
      * @returns {Promise}
      */
-    public async saveStudentsStatuses(students: Student[]): Promise<void> {
-        await Promise.all(students.map(student => this.saveStudentStatus(student.userID, student.status)));
+    public async submitClass(classID: number, statusByStudentID: Map<number, Status>): Promise<void> {
+        const actionByStatus = {
+            [Status.Absent]: (id: number) => this.markStudentAsAbsent(id),
+            [Status.Found]: (id: number) => this.markStudentAsFound(id),
+            [Status.Default]: (id: number) => this.markStudentAsFound(id),
+            [Status.Missing]: (id: number) => this.markStudentAsMissiong(id)
+        };
+        const updateStatuses = Array.from(statusByStudentID.entries()).map(([studentID, status]) => {
+            const statusAction = actionByStatus[status];
+            return statusAction(studentID);
+        });
+        const updateSubmit = Firebase.Refs.classFiredrillData(this.activeFiredrillSchoolID, classID).update({
+            isSubmitted: true
+        });
+        await Promise.all([...updateStatuses, updateSubmit]);
     }
 
     /**
@@ -493,12 +514,20 @@ function handleStudentStatusChange(student: Student): (newStatus: { status: Stat
     };
 }
 
-function handleClassClaimedByChange(aClass: FiredrillClass): (newStatus: { claimedByID: number } | null) => void {
+function handleClassClaimedByChange(
+    aClass: FiredrillClass
+): (newStatus: { claimedByID?: number; isSubmitted?: boolean } | null) => void {
     return newStatus => {
         if (null == newStatus) {
+            return;
+        }
+        if (null == newStatus.claimedByID) {
             aClass.unclaim();
         } else {
             aClass.claim(newStatus.claimedByID);
+        }
+        if (null != newStatus.isSubmitted && newStatus.isSubmitted) {
+            aClass.markAsSubmitted();
         }
     };
 }

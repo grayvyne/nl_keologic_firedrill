@@ -4,7 +4,7 @@ import { CancelOrAffirmDialogFooter } from './CancelOrAffirmDialogFooter';
 import { SharedDialogContainer } from './SharedDialogContainer';
 
 namespace styles {
-    export const titleFont = { fontSize: 16 };
+    export const titleFont = { fontSize: 16, marginTop: 20 };
     export const messageFont = { fontSize: 12 };
     export const divider = { marginTop: 10 };
     export const fontStyle = {
