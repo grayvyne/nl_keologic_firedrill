@@ -55,7 +55,7 @@ class UnclaimedClasses extends React.Component<Props, State> {
                 key={singleClass.classID}
                 singleClass={singleClass}
                 claimedByName={this.props.getClaimedByNameForClass(singleClass)}
-                onClick={this.handlePressClaim(singleClass.classID)}
+                onClick={this.handlePressClaim(singleClass)}
                 isVisible={isVisible}
             />
         );
@@ -67,8 +67,8 @@ class UnclaimedClasses extends React.Component<Props, State> {
         return sortedClasses.map(aClass => this.renderTableCell(aClass.class, aClass.isVisible));
     }
 
-    private handlePressClaim(classID: number): () => void {
-        return () => this.props.onPressClaim(classID);
+    private handlePressClaim(singleClass: FiredrillClass): () => void {
+        return () => this.props.onPressClaim(singleClass);
     }
 
     private removeClassesWithDelay(nextProps: Props) {

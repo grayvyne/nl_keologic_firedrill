@@ -518,12 +518,10 @@ function handleClassClaimedByChange(
     aClass: FiredrillClass
 ): (newStatus: { claimedByID?: number; isSubmitted?: boolean } | null) => void {
     return newStatus => {
-        if (null == newStatus) {
-            return;
+        if (null == newStatus || null == newStatus.claimedByID) {
+            return aClass.unclaim();
         }
-        if (null == newStatus.claimedByID) {
-            aClass.unclaim();
-        } else {
+        if (null != newStatus.claimedByID) {
             aClass.claim(newStatus.claimedByID);
         }
         if (null != newStatus.isSubmitted && newStatus.isSubmitted) {
