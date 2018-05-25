@@ -2,7 +2,7 @@ import { Typography } from 'material-ui';
 import * as React from 'react';
 import { ClassesStrings } from '../../../config/uiConstants';
 import { FiredrillClass } from '../../../models/FiredrillClass';
-import { orderClassesByGrade, orderClassesByName } from '../../../utils/class';
+import { orderClassesByGradeAndName } from '../../../utils/class';
 import { ContentView, TableHeader, TableView } from '../../shared';
 import ClaimableClassTableCell from '../../shared/ClaimableClassTableCell';
 import { AbstractClaimableClassesPageProps } from './AbstractClaimableClassesPage';
@@ -55,7 +55,7 @@ class UnclaimedClasses extends React.Component<Props, State> {
                 key={singleClass.classID}
                 singleClass={singleClass}
                 claimedByName={this.props.getClaimedByNameForClass(singleClass)}
-                onClick={this.handlePressClaim(singleClass.classID)}
+                onClick={this.handlePressClaim(singleClass)}
                 isVisible={isVisible}
             />
         );
@@ -63,14 +63,12 @@ class UnclaimedClasses extends React.Component<Props, State> {
 
     private get classRows(): JSX.Element[] {
         const classes = Object.keys(this.state.displayedClasses).map(classID => this.state.displayedClasses[classID]);
-        const sortedClasses = classes
-            .sort((a, b) => orderClassesByName(a.class, b.class))
-            .sort((a, b) => orderClassesByGrade(a.class, b.class));
+        const sortedClasses = classes.sort((a, b) => orderClassesByGradeAndName(a.class, b.class));
         return sortedClasses.map(aClass => this.renderTableCell(aClass.class, aClass.isVisible));
     }
 
-    private handlePressClaim(classID: number): () => void {
-        return () => this.props.onPressClaim(classID);
+    private handlePressClaim(singleClass: FiredrillClass): () => void {
+        return () => this.props.onPressClaim(singleClass);
     }
 
     private removeClassesWithDelay(nextProps: Props) {

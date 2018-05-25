@@ -1,15 +1,21 @@
+import { inject } from 'mobx-react';
 import * as React from 'react';
 import { Animated, Dimensions } from 'react-native';
 import { Colors } from '../../config/materialUiTheme';
 import { ClassesStrings } from '../../config/uiConstants';
 import { getGradeTitleFromGradeLevel } from '../../models/Class';
 import { FiredrillClass } from '../../models/FiredrillClass';
+import { Stores } from '../../stores';
 import ActionTableCell from './ActionTableCell';
 
 const EXPANDED_HEIGHT = 86;
 const EXPANDED_WIDTH = Dimensions.get('window').width;
 
-interface Props {
+interface StoreProps {
+    canUnclaim: boolean;
+}
+
+interface Props extends StoreProps {
     claimedByName: string;
     singleClass: FiredrillClass;
     isVisible?: boolean;
@@ -23,7 +29,7 @@ interface State {
 /**
  * This takes ActionTableCell and gives it properties exclusive to the tablecells that allow you to claim classes
  */
-export default class ClaimableClassTableCell extends React.Component<Props, State> {
+class ClaimableClassTableCell extends React.Component<Props, State> {
     public state: State = { animationValue: new Animated.Value(1) };
 
     public componentWillReceiveProps(nextProps: Props) {
@@ -44,7 +50,7 @@ export default class ClaimableClassTableCell extends React.Component<Props, Stat
                     }}
                     key={singleClass.classID}
                     buttonTextColor={Colors.CLASS_BUTTON_TEXT}
-                    isDisabled={null != singleClass.claimedByUserID}
+                    isDisabled={null != singleClass.claimedByUserID && false === this.props.canUnclaim}
                     {...this.buildCellPropsForClass(singleClass)}
                 />
             </Animated.View>
@@ -60,6 +66,7 @@ export default class ClaimableClassTableCell extends React.Component<Props, Stat
             };
         }
         return {
+            onClick: this.props.onClick,
             buttonLabel: ClassesStrings.CLAIMED_CLASS(this.props.claimedByName),
             buttonColor: Colors.CLAIMED_CLASS_BUTTON,
             useSmallFont: true
@@ -83,3 +90,9 @@ export default class ClaimableClassTableCell extends React.Component<Props, Stat
         };
     }
 }
+
+function mapStoresToProps({ firedrillStore }: Stores, props: Props): StoreProps {
+    return { canUnclaim: firedrillStore.shouldShowManage };
+}
+
+export default inject(mapStoresToProps)(ClaimableClassTableCell);

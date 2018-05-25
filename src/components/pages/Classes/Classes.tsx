@@ -11,6 +11,7 @@ import { FiredrillClass } from '../../../models/FiredrillClass';
 import { ApplicationServices } from '../../../platform';
 import { Stores } from '../../../stores';
 import { AppBar, NoFiredrillIndicator } from '../../shared';
+import { MaterialAlert } from '../../shared/NLMaterialModals/MaterialAlert';
 import FindClasses from './FindClasses';
 import MyClasses from './MyClasses';
 import UnclaimedClasses from './UnclaimedClasses';
@@ -25,6 +26,8 @@ export type SingleClass = {
 
 interface State {
     index: number;
+    shouldShowConfirmUnclaim: boolean;
+    classToBeUnclaimed: FiredrillClass | undefined;
 }
 
 interface StoreProps {
@@ -37,6 +40,7 @@ interface StoreProps {
     onChangeSearchTerm(term: string): void;
     getClaimedByNameForClass(aClass: FiredrillClass): string;
     claimClass(classID: number): Promise<void>;
+    unclaimClass(classID: number): Promise<void>;
 }
 
 interface Props extends StoreProps, NavigationScreenProps {}
@@ -57,7 +61,9 @@ namespace styles {
 @observer
 export class Classes extends React.Component<Props, State> {
     public state: State = {
-        index: 0
+        index: 0,
+        shouldShowConfirmUnclaim: false,
+        classToBeUnclaimed: undefined
     };
 
     public handleTabChange = (_event: any, index: number) => {
@@ -136,6 +142,14 @@ export class Classes extends React.Component<Props, State> {
                         />
                     </SwipeableViews>
                 </NoFiredrillIndicator>
+                <MaterialAlert
+                    open={this.state.shouldShowConfirmUnclaim}
+                    alertTitle={ui.UNCLAIM_TITLE}
+                    onPressAffirm={this.handlePressConfirmUnclaim}
+                    onPressCancel={this.hideUnclaimAlert}
+                    affirmButtonLabel={ui.UNCLAIM_CONFIRM}
+                    cancelButtonLabel={ui.UNCLAIM_CANCEL}
+                />
             </div>
         );
     }
@@ -144,15 +158,32 @@ export class Classes extends React.Component<Props, State> {
         this.setState({ index: 1 });
     };
 
-    private handlePressClaim = async (classID: number): Promise<void> => {
-        await this.props.claimClass(classID);
-        setTimeout(() => {
-            this.setState({ index: 0 });
-        }, 500);
+    private handlePressClaim = async (aClass: FiredrillClass): Promise<void> => {
+        if (null != aClass.claimedByUserID) {
+            this.setState({ shouldShowConfirmUnclaim: true, classToBeUnclaimed: aClass });
+        } else {
+            ApplicationServices.log('claiming');
+            await this.props.claimClass(aClass.classID);
+            setTimeout(() => {
+                this.setState({ index: 0 });
+            }, 500);
+        }
     };
 
     private handlePressGoToClass = (classID: number): void => {
         this.props.navigation.navigate(Routes.ClassDetail, { classID });
+    };
+
+    private handlePressConfirmUnclaim = async () => {
+        if (null == this.state.classToBeUnclaimed) {
+            return;
+        }
+        await this.props.unclaimClass(this.state.classToBeUnclaimed.classID);
+        this.hideUnclaimAlert();
+    };
+
+    private hideUnclaimAlert = () => {
+        this.setState({ shouldShowConfirmUnclaim: false, classToBeUnclaimed: undefined });
     };
 }
 
@@ -162,6 +193,7 @@ function mapStoresToProps({ firedrillStore }: Stores, _props: Props): StoreProps
         classes: firedrillStore.allClasses,
         unclaimedClasses: firedrillStore.unclaimedClasses,
         claimClass: classID => firedrillStore.claimClass(classID),
+        unclaimClass: classID => firedrillStore.unclaimClass(classID),
         getClaimedByNameForClass: (aClass: FiredrillClass) => firedrillStore.getClaimedByNameForClass(aClass),
         onChangeSearchTerm: term => firedrillStore.setClassSearchTerm(term),
         matchingSearchClasses: firedrillStore.matchingSearchClasses,

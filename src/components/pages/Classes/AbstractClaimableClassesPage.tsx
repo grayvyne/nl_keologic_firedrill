@@ -5,7 +5,7 @@ import { ClaimableClassTableCell } from '../../shared';
 export interface AbstractClaimableClassesPageProps {
     classes: FiredrillClass[];
     getClaimedByNameForClass(aClass: FiredrillClass): string;
-    onPressClaim(classID: number): Promise<void>;
+    onPressClaim(singleClass: FiredrillClass): Promise<void>;
 }
 
 /**
@@ -20,12 +20,12 @@ export default class AbstractClaimableClassesPage<P extends AbstractClaimableCla
                 key={singleClass.classID}
                 singleClass={singleClass}
                 claimedByName={this.props.getClaimedByNameForClass(singleClass)}
-                onClick={this.handlePressClaim(singleClass.classID)}
+                onClick={this.handlePressClaim(singleClass)}
             />
         );
     };
 
-    private handlePressClaim(classID: number): () => void {
-        return () => this.props.onPressClaim(classID);
+    private handlePressClaim(singleClass: FiredrillClass): () => void {
+        return () => this.props.onPressClaim(singleClass);
     }
 }

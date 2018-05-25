@@ -12,7 +12,10 @@ export const ClassesStrings = {
     CLAIMED_CLASS: (className: string) => 'Claimed By ' + className,
     UNCLAIMED_CLASS: 'Claim',
     UNCLAIMED_HEADING_NAME: 'Class',
-    UNCLAIMED_HEADING_STATUS: 'Status'
+    UNCLAIMED_HEADING_STATUS: 'Status',
+    UNCLAIM_TITLE: 'Are you sure you want to mark this class as unclaimed?',
+    UNCLAIM_CANCEL: 'CANCEL',
+    UNCLAIM_CONFIRM: 'YES'
 };
 
 export const RootTabLabels = {
