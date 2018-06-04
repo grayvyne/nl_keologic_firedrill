@@ -46,10 +46,10 @@ interface StoreProps {
 interface Props extends StoreProps, NavigationScreenProps {}
 
 namespace styles {
-    export const tabsStyle: React.CSSProperties = { height: '100%', display: 'flex', flex: 1 };
+    export const tabsStyle: React.CSSProperties = { display: 'flex', flex: 1 };
     export const unclaimedTabStyle: React.CSSProperties = { fontSize: 10, marginRight: 40 };
     export const unclaimedTabBadgeStyle: React.CSSProperties = { marginLeft: -20, fontSize: 8 };
-    export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', height: '100%' };
+    export const swipeableViewStyle: React.CSSProperties = { backgroundColor: 'white', flex: 1 };
     export const tabFont = { fontSize: 10 };
     export const sharedTabStyle = { height: 56 };
 }
