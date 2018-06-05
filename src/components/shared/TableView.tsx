@@ -6,7 +6,7 @@ namespace styles {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
-        marginBottom: 56
+        marginBottom: 112
     };
 }
 
@@ -21,10 +21,6 @@ interface Props {
 export default class TableView extends React.Component<Props> {
     public render(): JSX.Element {
         const style = { ...styles.tableStyle, ...this.props.style } as ViewStyle;
-        return (
-            <ScrollView contentContainerStyle={{ marginBottom: 56 }} style={style}>
-                {this.props.children}
-            </ScrollView>
-        );
+        return <ScrollView style={style}>{this.props.children}</ScrollView>;
     }
 }

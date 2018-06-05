@@ -5,6 +5,12 @@
 
 export const pluginName = 'Firedrill';
 
+export const EndFiredrillAlertStrings = {
+    TITLE: 'All students have been found. Would you like to end the fire drill?',
+    CONFIRM: 'Yes',
+    CANCEL: 'No'
+};
+
 export const ClassesStrings = {
     YOUR_CLASSES: 'Your Classes',
     FIND_CLASSES: 'Find Classes',

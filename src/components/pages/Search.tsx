@@ -127,7 +127,7 @@ class Search extends React.Component<Props, State> {
                 throw new Error('Case unaccounted for @updateStudentStatus #ClassDetail.tsx');
         }
 
-        this.setState({ editStatusModalIsVisible: false });
+        this.setState({ editStatusModalIsVisible: false }, () => this.props.onChangeSearchTerm(''));
     };
 
     private renderTableCell = (student: Student): JSX.Element => {

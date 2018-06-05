@@ -14,7 +14,6 @@ interface Props {
 
 namespace styles {
     export const fullScreen: React.CSSProperties = {
-        height: '100vh',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

@@ -2,7 +2,7 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { Provider } from 'mobx-react';
 import * as React from 'react';
 import './App.css';
-import { RootTabNav } from './components/navigators/RootTabNav';
+import RootTabNav from './components/navigators/RootTabNav';
 import LoadingScreen from './components/pages/LoadingScreen';
 import { Colors, theme } from './config/materialUiTheme';
 import { ApplicationServices } from './platform';
