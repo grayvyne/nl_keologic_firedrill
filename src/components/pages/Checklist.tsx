@@ -24,7 +24,7 @@ namespace styles {
         fill: Colors.ICON_GREY
     };
     export const cell: React.CSSProperties = { flexDirection: 'row', justifyContent: 'space-between' };
-    export const tableViewStyle = { paddingTop: 10 };
+    export const container: React.CSSProperties = { display: 'flex', flex: 1 };
 }
 
 /**
@@ -33,7 +33,7 @@ namespace styles {
 class Checklist extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <div>
+            <div style={styles.container}>
                 <AppBar>
                     <IconButton onClick={ApplicationServices.togglePluginMenu} color="inherit" aria-label="Menu">
                         <AppsIcon />
@@ -43,7 +43,7 @@ class Checklist extends React.Component<Props> {
                     </Typography>
                 </AppBar>
                 <ContentView>
-                    <TableView style={styles.tableViewStyle}>
+                    <TableView>
                         {this.props.checklists.map(checklistName => (
                             <TableCell
                                 onClick={() => this.props.navigation.navigate(checklistName)}

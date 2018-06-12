@@ -132,7 +132,7 @@ class Missing extends React.Component<Props, State> {
                         <div style={styles.missingBarContainer}>
                             <LinearProgress
                                 variant="determinate"
-                                value={this.props.foundStudentsCount / this.props.totalStudentsCount * 100}
+                                value={(this.props.foundStudentsCount / this.props.totalStudentsCount) * 100}
                                 style={styles.missingBar}
                                 color="secondary"
                             />

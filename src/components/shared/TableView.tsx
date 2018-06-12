@@ -5,8 +5,7 @@ namespace styles {
     export const tableStyle: React.CSSProperties = {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: 'white',
-        marginBottom: 112
+        backgroundColor: 'white'
     };
 }
 

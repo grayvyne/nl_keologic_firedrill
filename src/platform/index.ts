@@ -3,9 +3,13 @@
  * @exports SchoolServices
  */
 
+import { Firebase } from '../config/firebase';
+import { NLFirebaseLogger } from '../lib/NLFirebaseLogger';
 import { ApplicationServices } from './ApplicationServices';
 import { PlatformBridge } from './PlatformBridge';
 import { SchoolServices } from './SchoolServices';
+
+NLFirebaseLogger.setup(Firebase.Refs.root(), {});
 
 const bridge = new PlatformBridge();
 

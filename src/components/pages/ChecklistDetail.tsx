@@ -1,7 +1,7 @@
 import BackIcon from '@material-ui/icons/ArrowBack';
 import { Button, Checkbox, IconButton, Typography, withStyles } from 'material-ui';
-import { TypographyProps } from 'material-ui/Typography';
 import { red } from 'material-ui/colors';
+import { TypographyProps } from 'material-ui/Typography';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
@@ -26,6 +26,7 @@ namespace styles {
     };
     export const checkbox: React.CSSProperties = { height: 24, width: 24, marginLeft: 24 };
     export const strikethrough: React.CSSProperties = { textDecorationLine: 'line-through' };
+    export const container: React.CSSProperties = { display: 'flex', flex: 1 };
 }
 
 const StrikeThroughText = withStyles({ body1: styles.strikethrough })((props: TypographyProps) => (
@@ -39,7 +40,7 @@ const StrikeThroughText = withStyles({ body1: styles.strikethrough })((props: Ty
 class ChecklistDetail extends React.Component<Props> {
     public render(): JSX.Element {
         return (
-            <div>
+            <div style={styles.container}>
                 <AppBar>
                     <IconButton color="inherit" aria-label="Menu" onClick={() => this.props.navigation.goBack()}>
                         <BackIcon />

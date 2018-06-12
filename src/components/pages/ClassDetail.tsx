@@ -14,12 +14,9 @@ import { AppBar, ContentView, StudentTableCell, TableView, UpdateStudentStatusMo
 import { MaterialAlert } from '../shared/NLMaterialModals/MaterialAlert';
 
 namespace styles {
-    export const tableViewContainer = { paddingBottom: 150 };
     export const dockedBottomButton: React.CSSProperties = {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
+        display: 'flex',
+        alignSelf: 'stretch',
         height: 80,
         backgroundColor: Colors.POPOVER_DOCK_BG,
         justifyContent: 'center',
@@ -135,9 +132,7 @@ class ClassDetail extends React.Component<Props, State> {
                 </AppBar>
 
                 <ContentView>
-                    <TableView style={styles.tableViewContainer}>
-                        {this.state.students.map(this.renderTableCell)}
-                    </TableView>
+                    <TableView>{this.state.students.map(this.renderTableCell)}</TableView>
                     <div style={styles.dockedBottomButton}>
                         <Button
                             variant="raised"
