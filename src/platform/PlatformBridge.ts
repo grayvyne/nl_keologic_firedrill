@@ -1,3 +1,5 @@
+import { NLFirebaseLogger } from '../lib/NLFirebaseLogger';
+
 enum BasePlatformMessageType {
     LogDebugMessage = 'application:log_debug_message',
     LogWarningMessage = 'application:log_warning_message',
@@ -21,10 +23,14 @@ export class PlatformBridge<T> {
     private queuedMessages: {}[] = [];
 
     public constructor() {
+        const idForLog = new Int32Array([0]);
+        crypto.getRandomValues(idForLog);
+        NLFirebaseLogger.logDebug('Constructing platform bridge for', idForLog);
         setTimeout(async () => {
             this.isReadyToSend = true;
-
+            NLFirebaseLogger.logDebug('Sending awake message for', idForLog);
             await this.checkIfPluginMode();
+            NLFirebaseLogger.logDebug('Got awake response for', idForLog);
             this.flushQueue();
         }, 1000);
     }

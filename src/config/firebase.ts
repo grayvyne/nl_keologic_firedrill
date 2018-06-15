@@ -30,6 +30,9 @@ export namespace Firebase {
      * Container for functions the return refrences to locations in the databbase
      */
     export namespace Refs {
+        export function root(): firebase.database.Reference {
+            return database.ref();
+        }
         /**
          * Refrence to an active firedrill for a student(studentID) within a school(schoolID)
          * @param schoolID
