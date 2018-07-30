@@ -37,6 +37,7 @@ interface StoreProps {
     matchingSearchClasses: FiredrillClass[];
     searchTerm: string;
     isFiredrillInProgress: boolean;
+    shouldShowLoadingScreen: boolean;
     onChangeSearchTerm(term: string): void;
     getClaimedByNameForClass(aClass: FiredrillClass): string;
     claimClass(classID: number): Promise<void>;
@@ -118,29 +119,31 @@ export class Classes extends React.Component<Props, State> {
                     )}
                 </AppBar>
                 <NoFiredrillIndicator>
-                    <SwipeableViews
-                        index={this.state.index}
-                        onChangeIndex={this.handleChange}
-                        style={styles.swipeableViewStyle}
-                    >
-                        <MyClasses
-                            classes={this.props.myClasses}
-                            onClickClass={this.handlePressGoToClass}
-                            onClickFindClass={this.handlePressGoToFindClass}
-                        />
-                        <FindClasses
-                            getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                            classes={this.props.matchingSearchClasses}
-                            onPressClaim={this.handlePressClaim}
-                            searchTerm={this.props.searchTerm}
-                            onChangeSearchTerm={this.props.onChangeSearchTerm}
-                        />
-                        <UnclaimedClasses
-                            getClaimedByNameForClass={this.props.getClaimedByNameForClass}
-                            onPressClaim={this.handlePressClaim}
-                            classes={this.props.unclaimedClasses}
-                        />
-                    </SwipeableViews>
+                    {false === this.props.shouldShowLoadingScreen && (
+                        <SwipeableViews
+                            index={this.state.index}
+                            onChangeIndex={this.handleChange}
+                            style={styles.swipeableViewStyle}
+                        >
+                            <MyClasses
+                                classes={this.props.myClasses}
+                                onClickClass={this.handlePressGoToClass}
+                                onClickFindClass={this.handlePressGoToFindClass}
+                            />
+                            <FindClasses
+                                getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                                classes={this.props.matchingSearchClasses}
+                                onPressClaim={this.handlePressClaim}
+                                searchTerm={this.props.searchTerm}
+                                onChangeSearchTerm={this.props.onChangeSearchTerm}
+                            />
+                            <UnclaimedClasses
+                                getClaimedByNameForClass={this.props.getClaimedByNameForClass}
+                                onPressClaim={this.handlePressClaim}
+                                classes={this.props.unclaimedClasses}
+                            />
+                        </SwipeableViews>
+                    )}
                 </NoFiredrillIndicator>
                 <MaterialAlert
                     open={this.state.shouldShowConfirmUnclaim}
@@ -198,7 +201,8 @@ function mapStoresToProps({ firedrillStore }: Stores, _props: Props): StoreProps
         onChangeSearchTerm: term => firedrillStore.setClassSearchTerm(term),
         matchingSearchClasses: firedrillStore.matchingSearchClasses,
         searchTerm: firedrillStore.classSearchTerm,
-        isFiredrillInProgress: firedrillStore.isFiredrillInProgress
+        isFiredrillInProgress: firedrillStore.isFiredrillInProgress,
+        shouldShowLoadingScreen: firedrillStore.shouldShowLoadingScreen
     };
 }
 

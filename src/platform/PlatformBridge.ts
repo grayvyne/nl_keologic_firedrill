@@ -1,5 +1,3 @@
-import { NLFirebaseLogger } from '../lib/NLFirebaseLogger';
-
 enum BasePlatformMessageType {
     LogDebugMessage = 'application:log_debug_message',
     LogWarningMessage = 'application:log_warning_message',
@@ -21,18 +19,10 @@ export class PlatformBridge<T> {
     private isReadyToSend: boolean = false;
     private lastSentMessageID: number = 0;
     private queuedMessages: {}[] = [];
+    private platformCheckRepeater: NodeJS.Timer | null = null;
 
     public constructor() {
-        const idForLog = new Int32Array([0]);
-        crypto.getRandomValues(idForLog);
-        NLFirebaseLogger.logDebug('Constructing platform bridge for', idForLog);
-        setTimeout(async () => {
-            this.isReadyToSend = true;
-            NLFirebaseLogger.logDebug('Sending awake message for', idForLog);
-            await this.checkIfPluginMode();
-            NLFirebaseLogger.logDebug('Got awake response for', idForLog);
-            this.flushQueue();
-        }, 1000);
+        this.checkIfPluginMode();
     }
 
     public callOverBridge<V>(type: T | BasePlatformMessageType, data?: object): Promise<V> {
@@ -94,8 +84,20 @@ export class PlatformBridge<T> {
         }
     };
 
-    private async checkIfPluginMode(): Promise<void> {
-        await this.callOverBridge(BasePlatformMessageType.IsAnyoneListening);
+    private checkIfPluginMode(): void {
+        this.platformCheckRepeater = setInterval(() => {
+            window.postMessage(JSON.stringify({ type: BasePlatformMessageType.IsAnyoneListening }), '*');
+        }, 250);
+        const handler = (message: MessageEvent) => {
+            const messageData: BridgeMessage<void, BasePlatformMessageType> = JSON.parse(message.data);
+            if (messageData.type === BasePlatformMessageType.IsAnyoneListening) {
+                clearInterval(this.platformCheckRepeater!);
+                this.isReadyToSend = true;
+                this.flushQueue();
+                document.removeEventListener('message', handler);
+            }
+        };
+        document.addEventListener('message', handler);
     }
 
     private flushQueue(): void {
