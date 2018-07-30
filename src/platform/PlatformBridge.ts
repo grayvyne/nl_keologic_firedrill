@@ -1,5 +1,3 @@
-import { NLFirebaseLogger } from '../lib/NLFirebaseLogger';
-
 enum BasePlatformMessageType {
     LogDebugMessage = 'application:log_debug_message',
     LogWarningMessage = 'application:log_warning_message',

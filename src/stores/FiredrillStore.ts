@@ -3,7 +3,7 @@
  * @exports FiredrillStore
  */
 
-import { ObservableMap, action, computed, observable } from 'mobx';
+import { action, computed, observable, ObservableMap } from 'mobx';
 import * as moment from 'moment';
 import * as uuid from 'uuid';
 import { Firebase } from '../config/firebase';
@@ -420,12 +420,10 @@ export class FiredrillStore {
         await Firebase.Refs.finishedFiredrillForSchool(this.activeFiredrillSchoolID, firedrillToSave.firedrillID).set(
             firedrillToSave
         );
-        this._shouldShowLoadingScreen = false;
         return this.clearActiveFiredrill();
     }
 
     private clearActiveFiredrill(): Promise<void> {
-        this._shouldShowLoadingScreen = false;
         return Firebase.Refs.activeFiredrillForSchool(this.activeFiredrillSchoolID).set(null);
     }
 
