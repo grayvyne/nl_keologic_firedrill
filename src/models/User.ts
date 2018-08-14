@@ -3,7 +3,9 @@ import { Typeof, Validate } from '../lib/NLValdiate';
 export enum UserRole {
     Student,
     Faculty,
-    Principal
+    Principal,
+    OfficeStaff,
+    OtherStaff
 }
 
 export namespace UserRole {
