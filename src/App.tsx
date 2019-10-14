@@ -1,37 +1,44 @@
+import { MuiThemeProvider } from 'material-ui/styles';
+import { Provider } from 'mobx-react';
 import * as React from 'react';
 import './App.css';
-import { PlatformBridge } from './stores/PlatformBridge';
-import { TabNavigator } from 'react-navigation';
+import RootTabNav from './components/navigators/RootTabNav';
+import LoadingScreen from './components/pages/LoadingScreen';
+import { Colors, theme } from './config/materialUiTheme';
+import { ApplicationServices } from './platform';
+import { ChecklistStore, FiredrillStore } from './stores';
 
-const logo = require('./logo.svg');
+namespace styles {
+    export const appContainer: React.CSSProperties = {
+        height: '100vh'
+    };
+}
 
-const bridge = new PlatformBridge();
+const firedrillStore = new FiredrillStore();
+const checklistStore = new ChecklistStore();
 
-class App extends React.Component<{}> {
-    render() {
+/**
+ * This is the entry point component
+ * It is the top level container for the whole application
+ */
+class App extends React.Component {
+    public componentDidMount(): void {
+        ApplicationServices.setBottomBarColor(Colors.TAB_BAR_GREY);
+        ApplicationServices.setTopBarColor(Colors.TOP_TAB_BLUE);
+    }
+
+    public render(): JSX.Element {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.tsx</code> and save to reload YOUR DREW FACE.
-                </p>
-                <button
-                    onClick={() =>
-                        bridge
-                            .makeCall('{"type":"toggle_plugins_menu"}')
-                            .then(() => bridge.log('Got a bridge response'))
-                    }
-                >
-                    <p>Menu</p>
-                </button>
-            </div>
+            <MuiThemeProvider theme={theme}>
+                <Provider firedrillStore={firedrillStore} checklistStore={checklistStore}>
+                    <div style={styles.appContainer}>
+                        <RootTabNav />
+                        <LoadingScreen />
+                    </div>
+                </Provider>
+            </MuiThemeProvider>
         );
     }
 }
-
-const TabNav = TabNavigator({ App: App });
 
 export default App;

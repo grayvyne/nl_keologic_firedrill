@@ -1,13 +1,6 @@
-// import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import './index.css';
 import { AppRegistry } from 'react-native';
-
-// ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+import App from './App';
+import './index.css';
 
 AppRegistry.registerComponent('App', () => App);
 AppRegistry.runApplication('App', { rootTag: document.getElementById('root') });
-
-registerServiceWorker();
